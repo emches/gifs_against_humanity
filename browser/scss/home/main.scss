@@ -51,12 +51,72 @@ img {
     border: 2px solid #000;
     background: #fff;
     float: left;
-    width: 192px;
-    height: 215px;
-    margin: 5px 8px 5px 0px; /*margin between images*/
+    width: 130px;
+    height: 165px;
+    display: inline-block;
+    margin: 5px 8px 5px 0px;
 }
 .whitecard:hover {
     box-shadow:0px 0px 30px gray; /*CSS3 shadow: 30px blurred shadow all around image*/
     z-index: 1;
     border: 2px solid red;
+}
+
+
+
+.img-frame {
+    width: 145px;
+    height: 145px;
+
+}
+
+#player-score {
+    text-align: center;
+    color: blue;
+    font-size: 30px;
+    display: block;
+    min-width: 20px;
+    padding: 3px 7px;
+    lint-height: 1;
+    white-space: no-wrap;
+    vertical-align: middle;
+    background-color: #777;
+    border-radius: 10px;
+    margin: auto;
+
+}
+
+.current-status {
+    text-align: center;
+    color: blue;
+    font-size: 30px;
+    display: block;
+    min-width: 20px;
+    padding: 3px 7px;
+    lint-height: 1;
+    white-space: no-wrap;
+    vertical-align: middle;
+    border-radius: 10px;
+    margin: auto;
+
+}
+
+.cardRow {
+    background-color: purple;
+    border-radius: 10px;
+    margin: auto;
+    width: 100%;
+    display: table;
+    list-style: none;
+
+}
+
+#vert {
+    -webkit-transform:rotate(270deg);
+    font-size: 50px;
+ // position: absolute;
+  top: 0%;
+  left: 0%;
+  background: #DDD;
+  margin: 40;
 }

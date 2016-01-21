@@ -1,24 +1,18 @@
 <section id="home">
     <div class="container">
         <div class="row">
-            <div>
-                <gif-card the-card=""></gif-card>
-            </div>
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th>User</th>
-                        <th>Score</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr ng-repeat="user in users">
-                        <td>{{user.name}}</td>
-                        <td>{{user.score}}</td>
-                    </tr>
-                </tbody>
-            </table>
+
+             <div class="col-xs-3">
+            <button ng-click="newDealer()">NEW DEALER</button>
         </div>
+        </div>
+        <div class="row">
+             <div ng-repeat="playerInfo in users" class="col-xs-3 avatar">
+            <player player-info="playerInfo"></player>
+            </div>
+        </div>
+
+
         <div class="row">
             <div class="col-md-6">
                 <form onSubmit={this.handleSubmit}>
@@ -28,7 +22,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-xs-6">
                 <form onSubmit={this.handleSubmit}>
                     <input placeholder="submit gif" ref="gif" />
                     <button>Add</button>
@@ -36,13 +30,13 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-xs-6">
                 <button onClick={this.newQCard}>Pick New Question</button>
                 <hr />
             </div>
         </div>
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-xs-6">
                 <div id="blackcard">
                     <div class="cardText black">
                         <h3>QUESTION CARD</h3>
@@ -50,7 +44,7 @@
                 </div>
             </div>
 
-            <div class="col-md-6">
+            <div class="col-xs-2">
                 <div id="whitecard">
                     <h3>USERNAME</h3>
                     <div class="cardText white">
@@ -58,8 +52,23 @@
                     </div>
                 </div>
             </div>
-
-
+    </div>
+    <div class="row cardRow" >
+         <div class="col-xs-1">
+            <div id="vert">
+                 HAND
+            </div>
+        </div>
+        <div class="col-xs-11">
+            <div id="whitecard" ng-repeat="test in testCards" class="col-xs-1.5">
+                <div >
+                    <h5>USERNAME</h5>
+                    <div class="cardText white">
+                        <img class="cardgif" height="100%" width="100%" src="http://static.mybs.com/wp-content/uploads/2013/06/Ui526.gif" />
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+</div>
 </section>
