@@ -6,7 +6,7 @@
         </div>
         </div>
         <div class="row">
-             <div ng-repeat="playerInfo in users" class="col-xs-3 avatar">
+             <div ng-repeat="playerInfo in users" class="col-xs-2 avatar">
             <player player-info="playerInfo"></player>
             </div>
         </div>
@@ -14,8 +14,8 @@
 
         <div class="row">
             <div class="col-md-6">
-                <form onSubmit={this.handleSubmit}>
-                    <input placeholder="enter username" ref="user" />
+                <form ng-submit="addUser()">
+                    <input placeholder="enter username" ng-model="newUser" />
                     <button>ADD USER</button>
                 </form>
             </div>

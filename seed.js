@@ -23,9 +23,12 @@ var chalk = require('chalk');
 var connectToDb = require('./server/db');
 var User = Promise.promisifyAll(mongoose.model('User'));
 var Question = Promise.promisifyAll(mongoose.model('Question'));
+var Avatar = Promise.promisifyAll(mongoose.model('Avatar'));
 
 var qCardData =require('./server/seeds/questions.js')
 var userData =require('./server/seeds/users.js')
+var avatarData =require('./server/seeds/avatars.js')
+
 
 console.log("QCARD", qCardData)
 
@@ -47,6 +50,15 @@ function seedQCards (qCardData) {
    return Promise.all(promises)
 }
 
+function seedAvatars (avatarData) {
+  console.log("seeding avatars")
+   var promises = []
+   avatarData.forEach(function(avatar){
+     promises.push(Avatar.create(avatar))
+   })
+   return Promise.all(promises)
+}
+
 connectToDb.then(function () {
 return Promise.all([Question.remove({}),User.remove({})])
     })
@@ -57,9 +69,14 @@ return Promise.all([Question.remove({}),User.remove({})])
         return seedQCards(qCardData);
     })
     .then(function () {
+        return seedAvatars(avatarData)
+    })
+    .then(function () {
         console.log(chalk.green('Seed successful!'));
         process.kill(0);
     }).catch(function (err) {
         console.error(err);
         process.kill(1);
     });
+
+

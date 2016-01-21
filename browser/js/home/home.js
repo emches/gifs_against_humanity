@@ -16,7 +16,7 @@ app.config(function ($stateProvider) {
     });
 });
 
-app.controller('QuestionController', function($scope, QuestionFactory, allqCards, allUsers) {
+app.controller('QuestionController', function($scope, UserFactory, QuestionFactory, allqCards, allUsers) {
        console.log("qcards", allqCards)
        console.log("users", allUsers)
        $scope.users = _.shuffle(allUsers)
@@ -37,6 +37,11 @@ app.controller('QuestionController', function($scope, QuestionFactory, allqCards
 
         $scope.testCards = [1,2,3,4,5,6,7,8]
 
+        $scope.newUser = function(){
+
+
+        }
+
 
 });
 
@@ -52,3 +57,4 @@ app.factory('QuestionFactory', function($http) {
 
     return QuestionFactory;
 })
+
