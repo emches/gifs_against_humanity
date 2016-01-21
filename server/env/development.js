@@ -1,5 +1,5 @@
 module.exports = {
-  "DATABASE_URI": "mongodb://localhost:27017/stackathon",
+  "DATABASE_URI": "mongodb://localhost:27017/gifs-against-humanity",
   "SESSION_SECRET": "Optimus Prime is my real dad",
   "TWITTER": {
     "consumerKey": "INSERT_TWITTER_CONSUMER_KEY_HERE",

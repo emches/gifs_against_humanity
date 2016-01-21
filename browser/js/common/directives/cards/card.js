@@ -1,6 +1,9 @@
 app.directive('gifCard', function () {
     return {
         restrict: 'E',
-        templateUrl: 'js/common/directives/cards/cards.html'
+        scope: {
+            theCard: '='
+        },
+        templateUrl: 'js/common/directives/cards/card.html',
     };
 });

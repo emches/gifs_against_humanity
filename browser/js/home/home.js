@@ -17,8 +17,8 @@ app.config(function ($stateProvider) {
 });
 
 app.controller('QuestionController', function($scope, QuestionFactory, allqCards, allUsers) {
-       console.log("qcards", allqCards)
-       console.log("users", allUsers)
+       console.log("qcards", allqCards);
+       console.log("users", allUsers);
        $scope.users = allUsers
 
 });
