@@ -19,7 +19,24 @@ app.config(function ($stateProvider) {
 app.controller('QuestionController', function($scope, QuestionFactory, allqCards, allUsers) {
        console.log("qcards", allqCards)
        console.log("users", allUsers)
-       $scope.users = allUsers
+       $scope.users = _.shuffle(allUsers)
+       $scope.users.forEach(function(user){
+        user.currentStatus = "PLAYER"
+       })
+
+       $scope.dealerIndex = 0
+       $scope.users[$scope.dealerIndex].currentStatus = "DEALER"
+       var currentUserIndex = Math.floor(Math.random() * $scope.users.length)
+       $scope.currentUser = $scope.users[currentUserIndex]
+
+        $scope.newDealer = function(){
+            $scope.users[$scope.dealerIndex].currentStatus = "PLAYER"
+            $scope.dealerIndex = $scope.dealerIndex < $scope.users.length-1 ?  $scope.dealerIndex+1 : 0;
+            $scope.users[$scope.dealerIndex ].currentStatus = "DEALER"
+        }
+
+        $scope.testCards = [1,2,3,4,5,6,7,8]
+
 
 });
 

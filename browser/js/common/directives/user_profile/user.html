@@ -1,25 +1,27 @@
-<div class = "container">
-    <div class = "row">
-        <div class="col-xs-6 avatar">
-            <img ng-src="imageURL"/>
-        </div>
-        <div class="col-xs-6">
-            <div class="profile-name">
+            <div class="row">
+                <div class="col-xs-6 img-frame">
+                    <img class="avatar" ng-src="{{playerInfo.imageURL}}" />
+                </div>
+                <div class="col-xs-6">
+                    <div class="row">
+                        <div class="profile-name col-xs-12">
+                            <h3>{{playerInfo.name}}</h3>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="profile-status col-xs-12">
+                           <h3>Yasssss GIFs</h3>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class = "profile-status">
+            <div class="row">
+                <div class="col-xs-12">
+                    <span  id="player-score">{{playerInfo.score}}</span>
+                </div>
             </div>
-        </div>
-    </div>
-
-    <div class = "row player-score">
-        <div class="col-xs-12">
-        </div>
-    </div>
-
-    <div class = "row current-status">
-        <div class="col-xs-12">
-        </div>
-    </div>
-
-
-</div>
+            <div class="row current-status">
+                <div class="col-xs-12">
+                    <h3>{{playerInfo.currentStatus}}</h3>
+                </div>
+            </div>

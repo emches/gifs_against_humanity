@@ -4,10 +4,12 @@ app.directive('player', function ($rootScope, AuthService, AUTH_EVENTS, $state) 
         restrict: 'E',
         scope: {
             playerInfo: '='
-
         },
         templateUrl: 'js/common/directives/user_profile/user.html',
-        controller: 'UserController'
+        link: function(scope){
+            console.log("SCOPE", scope)
+            console.log("PLAYER INFO", scope.playerInfo)
+        }
 
     };
 
@@ -37,5 +39,7 @@ app.controller('UserController', function($scope, UserFactory) {
     UserFactory.fetchAll()
         .then(function(users){
             $scope.players = users;
+
+
         });
 });
