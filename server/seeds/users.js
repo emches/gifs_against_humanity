@@ -9,6 +9,7 @@ var users = [
  "salt": "testuser",
  "admin": false,
  "myturn": true,
+ "hand": []
 },
 {
  "name": "Bobby Hanover",
@@ -16,7 +17,9 @@ var users = [
  "imageURL": "http://s3.gomedia.us/wp-content/uploads/2013/08/image20.png",
  "password": "secretpassword",
  "salt": "testuser",
- "admin": false
+ "admin": false,
+  "hand": []
+
 },
 {
  "name": "Sasha Resnikov",
@@ -24,7 +27,9 @@ var users = [
  "imageURL": "http://s3.gomedia.us/wp-content/uploads/2013/08/image20.png",
  "password": "secretpassword",
  "salt": "testuser3",
- "admin": false
+ "admin": false,
+  "hand": []
+
 },
 
 {
@@ -33,7 +38,9 @@ var users = [
  "imageURL": "http://s3.gomedia.us/wp-content/uploads/2013/08/image20.png",
  "password": "secretpassword",
  "salt": "testuser4",
- "admin": true
+ "admin": true,
+  "hand": []
+
 }
 ];
 module.exports = users;

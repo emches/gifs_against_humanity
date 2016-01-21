@@ -1,0 +1,41 @@
+app.directive('player', function ($rootScope, AuthService, AUTH_EVENTS, $state) {
+
+    return {
+        restrict: 'E',
+        scope: {
+            playerInfo: '='
+
+        },
+        templateUrl: 'js/common/directives/user_profile/user.html',
+        controller: 'UserController'
+
+    };
+
+});
+
+app.factory('UserFactory', function($http) {
+    return {
+        fetchById: function(id) {
+            return $http.get('/api/users/' + id)
+                .then(function(response) {
+                    console.log("response", response.data)
+                    return response.data;
+                });
+        },
+        fetchAll: function() {
+            return $http.get('/api/users')
+                .then(function(response) {
+                    console.log("response", response.data)
+                    return response.data;
+                });
+        }
+    }
+});
+
+app.controller('UserController', function($scope, UserFactory) {
+
+    UserFactory.fetchAll()
+        .then(function(users){
+            $scope.players = users;
+        });
+});

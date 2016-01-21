@@ -7,9 +7,15 @@ var schema = new mongoose.Schema({
     imageUrl: {
         type: String,
         required: true
+    },
+    used: {
+        type: Boolean,
+        default: false,
+        required: true
     }
 });
 
 
 
-mongoose.model('Question', schema);
+mongoose.model('Gif', schema);
+module.exports = schema

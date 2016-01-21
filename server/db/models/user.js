@@ -2,6 +2,7 @@
 var crypto = require('crypto');
 var mongoose = require('mongoose');
 var _ = require('lodash');
+var cardSchema = require('./gif.js')
 
 var schema = new mongoose.Schema({
     name: {
@@ -38,6 +39,9 @@ var schema = new mongoose.Schema({
         default: false,
         required: true
     },
+    hand: {
+        type: [cardSchema],
+        default: []    }
 });
 
 // method to remove sensitive information from user objects before sending them out
