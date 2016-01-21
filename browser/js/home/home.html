@@ -1,0 +1,59 @@
+<section id="home">
+    <div class="container">
+        <div class="row">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>User</th>
+                        <th>Score</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="user in users">
+                        <td>{{user.name}}</td>
+                        <td>{{user.score}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <form onSubmit={this.handleSubmit}>
+                    <input placeholder="enter username" ref="user" />
+                    <button>ADD USER</button>
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <form onSubmit={this.handleSubmit}>
+                    <input placeholder="submit gif" ref="gif" />
+                    <button>Add</button>
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <button onClick={this.newQCard}>Pick New Question</button>
+                <hr />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div id="blackcard">
+                    <div class="cardText black">
+                        <h3>QUESTION CARD</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div id="whitecard">
+                    <h3>USERNAME</h3>
+                    <div class="cardText white">
+                        <img class="cardgif" height="100%" width="100%" src="http://static.mybs.com/wp-content/uploads/2013/06/Ui526.gif" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

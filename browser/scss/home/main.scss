@@ -1,0 +1,62 @@
+#home {
+  fullstack-logo {
+    padding-top: 30px;
+    width: 150px;
+    margin: 0 auto;
+  }
+  h1 {
+    margin-top: 40px;
+    text-align: center;
+  }
+}
+
+#blackcard {
+    border: 2px solid black;
+    background: black;
+    width: 192px;
+    height: 215px;
+    display: inline-block;
+}
+
+.cardText {
+    font: 'Tahoma';
+    font-weight: bold;
+}
+.black {
+    color: white;
+    font-size: 30px;
+    padding: 10px 15px 0px 15px;
+    line-height: 25px;
+}
+
+#blackcard #cardgif {
+    height: 100%;
+    width: 100%;
+}
+
+img {
+    height: 100%;
+    width: 100%;
+
+}
+
+.white {
+    color: #000;
+    font-size: 40px;
+    padding: 5px 10px 0px 10px;
+    line-height: 15px;
+}
+
+#whitecard {
+    border: 2px solid #000;
+    background: #fff;
+    float: left;
+    width: 192px;
+    height: 215px;
+    margin: 5px 8px 5px 0px; /*margin between images*/
+}
+.whitecard:hover {
+    box-shadow:0px 0px 30px gray; /*CSS3 shadow: 30px blurred shadow all around image*/
+    z-index: 1;
+    border: 2px solid red;
+}
