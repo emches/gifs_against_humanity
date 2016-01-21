@@ -25,8 +25,18 @@ router.post('/', function(req, res, next) {
             console.log("FOUND Avatars", avatar)
             avatar.used = true;
             avatar.save
-          //  User.create
-            res.json(users);
+            var newUser = { name: req.body.username,
+             imageURL: avatar.imageURL,
+             "password": "secretpassword",
+             "salt": "testuser",
+             "admin": false,
+             "myturn": false,
+             "hand": []
+            }
+            User.create(newUser)
+                .then(function(user){
+                    res.json(user);
+                })
         })
         .then(null, next);
 });

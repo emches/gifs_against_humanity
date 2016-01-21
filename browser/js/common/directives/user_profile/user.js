@@ -32,7 +32,7 @@ app.factory('UserFactory', function($http) {
                 });
         },
         addUser: function(username) {
-            return $http.post('/api/users', username )
+            return $http.post('/api/users', {username: username} )
                 .then(function(response) {
                     console.log("response", response.data)
                     return response.data;
