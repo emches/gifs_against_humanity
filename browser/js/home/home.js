@@ -16,7 +16,7 @@ app.config(function ($stateProvider) {
     });
 });
 
-app.controller('QuestionController', function($scope, UserFactory, QuestionFactory, allqCards, allUsers) {
+app.controller('QuestionController', function($scope, $window, UserFactory, QuestionFactory, allqCards, allUsers) {
        console.log("qcards", allqCards)
        console.log("users", allUsers)
        $scope.users = _.shuffle(allUsers)
@@ -37,8 +37,19 @@ app.controller('QuestionController', function($scope, UserFactory, QuestionFacto
 
         $scope.testCards = [1,2,3,4,5,6,7,8]
 
-        $scope.newUser = function(){
-
+        $scope.addUser = function(){
+            console.log("users",$scope.users.length )
+            if ($scope.users.length >5){ return $window.alert("ROOM FULL SORRY!!!"); }
+            console.log("add this", $scope.newUser)
+            UserFactory.addUser($scope.newUser)
+                .then(function(user){
+                    console.log("got user back", user)
+                    user.currentStatus = "PLAYER"
+                    $scope.users.push(user)
+                    console.log("new scope", $scope.users)
+                    $scope.currentUser = user
+                    console.log("new current", $scope.currentUser)
+                })
 
         }
 
