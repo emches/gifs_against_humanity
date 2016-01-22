@@ -1,4 +1,4 @@
-<form id="login-form" name="loginForm" ng-submit="loginForm.$valid && sendLogin(login)">
+<!-- <form id="login-form" name="loginForm" ng-submit="loginForm.$valid && sendLogin(login)">
 
     <alert type="danger" ng-show="error">
         {{ error }}
@@ -13,4 +13,26 @@
         <input type="password" ng-model="login.password" class="form-control" id="login-password" placeholder="Password">
     </div>
     <button type="submit" class="btn btn-default">Submit</button>
-</form>
+</form> -->
+
+
+<section  >
+    <div class="container fill" id="section1">
+        <div class = "loginForm col-xs-12">
+        <h1 class="text-center">GIFS AGAINST HUMANITY</h1>
+<!--         <h2 class="text-center lato animate slideInDown">Change It To Say <b>Something</b> Unique</h2>
+ -->        <p class="text-center">
+            <br>
+                <form  ng-submit="addUser()">
+                    <input class="loginForm entry" placeholder="enter username" ng-model="newUser" />
+                    <button class="btn-success loginForm">ADD USER</button>
+                </form>
+                <h1 class="playerName" ng-repeat="player in allPlayers">{{player.name}}</h1>
+                <h1 ng-show="roomReady">ROOM READY</h1>
+                <button class="btn-success" ng-click="joinRoom" ng-show="roomReady">ENTER!!</button>
+
+            </p>
+       </div>
+    </div>
+
+</section>

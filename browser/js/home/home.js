@@ -16,7 +16,8 @@ app.config(function ($stateProvider) {
     });
 });
 
-app.controller('QuestionController', function($scope, $window, UserFactory, QuestionFactory, allqCards, allUsers) {
+app.controller('QuestionController', function($scope, $window, UserFactory, QuestionFactory, allqCards, allUsers, $stateParams) {
+       console.log("STATE PARAMS", $stateParams)
        console.log("qcards", allqCards)
        console.log("users", allUsers)
        $scope.users = _.shuffle(allUsers)
@@ -26,8 +27,8 @@ app.controller('QuestionController', function($scope, $window, UserFactory, Ques
 
        $scope.dealerIndex = 0
        $scope.users[$scope.dealerIndex].currentStatus = "DEALER"
-       var currentUserIndex = Math.floor(Math.random() * $scope.users.length)
-       $scope.currentUser = $scope.users[currentUserIndex]
+      var currentUserIndex = Math.floor(Math.random() * $scope.users.length)
+      $scope.currentUser = $scope.users[currentUserIndex]
 
         $scope.newDealer = function(){
             $scope.users[$scope.dealerIndex].currentStatus = "PLAYER"
