@@ -14,6 +14,10 @@ module.exports = function (server) {
     socket.on('newPlayer', function(allPlayers, userCount){
       console.log("adding player!!!")
       io.emit('newPlayerFromServer', allPlayers, userCount )
+    });
+
+    socket.on('joinRoom', function(){
+        io.emit('gameStart');
     })
 
     });

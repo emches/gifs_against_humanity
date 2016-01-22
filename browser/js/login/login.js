@@ -8,16 +8,12 @@ app.config(function ($stateProvider) {
 
 });
 
-app.controller('LoginCtrl', function($scope, Socket, $window, AuthService, $state, UserFactory) {
+app.controller('LoginCtrl', function($scope, Socket, $window, AuthService, $state, UserFactory, GifFactory, QuestionFactory) {
 
     Socket.on('connect', function(){
         console.log("I HAVE CONNECTED")
 
-
-
-
-
-    })
+    });
 
     $scope.login = {};
     $scope.error = null;
@@ -63,12 +59,28 @@ app.controller('LoginCtrl', function($scope, Socket, $window, AuthService, $stat
 
             })
 
-   }
+   };
 
       $scope.joinRoom = function(){
-        console.log("current me", me)
-        $state.go('home', { allPlayers: $scope.allPlayers, me: me });
-      }
+          Socket.emit('joinRoom')
+      };
+
+      Socket.on('gameStart', function(){
+          console.log("current me", me);
+          var gifDeck
+          GifFactory.constructApiDeck()
+              .then(deck => gifDeck = deck)
+              .then(() => QuestionFactory.constructQuestionDeck())
+              .then(questionDeck => {
+                  console.log("NEW VARS", questionDeck, gifDeck);
+                  $state.go('home', {
+                      allPlayers: $scope.allPlayers,
+                      me: me,
+                      gifDeck: gifDeck,
+                      questionDeck: questionDeck
+                  })
+              });
+      });
 
       Socket.on('newPlayerFromServer', function(allPlayers, userCount){
             $scope.allPlayers = allPlayers;

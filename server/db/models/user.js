@@ -16,6 +16,7 @@ var schema = new mongoose.Schema({
     email: {
         type: String,
         required: false,
+        unique: false,
         default: "guest_user"
     },
     password: {
