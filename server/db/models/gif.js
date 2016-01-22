@@ -18,4 +18,4 @@ var schema = new mongoose.Schema({
 
 
 mongoose.model('Gif', schema);
-module.exports = schema
+module.exports = schema;
