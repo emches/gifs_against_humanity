@@ -56,7 +56,7 @@ img {
     width: 130px;
     height: 165px;
     display: inline-block;
-    margin: 5px 8px 5px 0px;
+    margin: 5px 2px;
 }
 .whitecard:hover {
     box-shadow:0px 0px 30px gray; /*CSS3 shadow: 30px blurred shadow all around image*/
@@ -108,17 +108,19 @@ img {
     width: 100%;
     display: table;
     list-style: none;
+    position: relative;
 
 }
 
 #vert {
     -webkit-transform:rotate(270deg);
     font-size: 50px;
- // position: absolute;
-  top: 0%;
-  left: 0%;
-  background: #DDD;
-  margin: 40;
+ // position: relative;
+  top: 900px;
+  left:15px;
+  //background: blue;
+  color: white
+
 }
 
 
@@ -157,4 +159,33 @@ img {
     color: green;
     font-size: 30;
     font-style: bold;
+}
+
+
+
+#blackcard2 {
+    position: absolute;
+    border: 2px solid black;
+    background: black;
+    width: 192px;
+    height: 215px;
+    margin: 20px;
+   // float: left;
+   // left: 34%;                        /* align them to the center of the screen */
+
+}
+
+.cardRow > .col-xs-1 {
+    padding: 0;
+    width: 5.5%;
+
+
+
+}
+
+.cardRow > .col-xs-11 {
+    padding: 0;
+
+
+
 }
