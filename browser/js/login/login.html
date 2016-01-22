@@ -29,7 +29,7 @@
                 </form>
                 <h1 class="playerName" ng-repeat="player in allPlayers">{{player.name}}</h1>
                 <h1 ng-show="roomReady">ROOM READY</h1>
-                <button class="btn-success" ng-click="joinRoom" ng-show="roomReady">ENTER!!</button>
+                <button class="btn-success" ng-click="joinRoom()" ng-show="roomReady">ENTER!!</button>
 
             </p>
        </div>

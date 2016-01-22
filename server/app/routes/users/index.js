@@ -24,8 +24,16 @@ router.post('/', function(req, res, next) {
     Avatar.findOne({'used': false}).exec()
         .then(function(avatar) {
             console.log("FOUND Avatars", avatar)
-            avatar.used = true;
-            avatar.save();
+
+           if (!avatar){
+             avatar = {}
+             avatar.avatarUrl = "http://www.avatarsdb.com/avatars/prittiest_kitten.jpg"
+             avatar.status="My Deck is Amazing!"
+           } else{
+                    avatar.used = true;
+                    avatar.save();
+             }
+
 
             var newUser = { name: req.body.username,
              imageURL: avatar.avatarUrl,

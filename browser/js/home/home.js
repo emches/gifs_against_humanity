@@ -3,6 +3,9 @@ app.config(function ($stateProvider) {
         url: '/',
         templateUrl: 'js/home/home.html',
         controller: 'QuestionController',
+          params: {
+             allPlayers: null
+           },
         resolve: {
             allqCards: function(QuestionFactory) {
                 return QuestionFactory.fetchAll();
@@ -16,11 +19,11 @@ app.config(function ($stateProvider) {
     });
 });
 
-app.controller('QuestionController', function($scope, $window, UserFactory, QuestionFactory, allqCards, allUsers, $stateParams) {
-       console.log("STATE PARAMS", $stateParams)
+app.controller('QuestionController', function($scope, $window, UserFactory, QuestionFactory, allqCards, allUsers, $state) {
+       console.log("STATE PARAMS", $state.params)
        console.log("qcards", allqCards)
        console.log("users", allUsers)
-       $scope.users = _.shuffle(allUsers)
+       $scope.users = _.shuffle($state.params.allPlayers)
        $scope.users.forEach(function(user){
         user.currentStatus = "PLAYER"
        })
