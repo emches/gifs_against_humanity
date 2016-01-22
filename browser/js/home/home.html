@@ -6,29 +6,13 @@
         </div>
         </div>
         <div class="row">
-             <div ng-repeat="playerInfo in users" class="col-xs-2 avatar">
+             <div ng-repeat="playerInfo in allPlayers" class="col-xs-2 avatar">
             <player player-info="playerInfo"></player>
             </div>
         </div>
         <div class="row">
-            <div class="col-md-6">
-                <form ng-submit="addUser()">
-                    <input placeholder="enter username" ng-model="newUser" />
-                    <button>ADD USER</button>
-                </form>
-            </div>
-        </div>
-        <div class="row">
             <div class="col-xs-6">
-                <form onSubmit={this.handleSubmit}>
-                    <input placeholder="submit gif" ref="gif" />
-                    <button>Add</button>
-                </form>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-xs-6">
-                <button onClick={this.newQCard}>Pick New Question</button>
+                <button ng-click="newQuestion()">Pick New Question</button>
                 <hr />
             </div>
         </div>
@@ -36,12 +20,42 @@
             <div class="col-xs-6">
                 <div id="blackcard">
                     <div class="cardText black">
-                        <h3>QUESTION CARD</h3>
+                        <h3>{{currentQ.title}}</h3>
                     </div>
                 </div>
             </div>
+            <div class="col-xs-6 cardholder">
+                <div ng-click="shuffle($event)" ng-repeat="card in qCards" id="blackcard2">
+                    <div class="cardText black">
+                        <h3>{{card.title}}</h3>
+                    </div>
+                </div>
 
     </div>
+
+<!-- <div class="row">
+                <div ng-repeat="card in qCards" id="blackcard2"class="testCard">
+                    <div class="cardText black">
+                        <h3>{{card.title}}</h3>
+                    </div>
+                </div>
+</div> -->
+<div class="row">
+
+    <div class="col-xs-1">
+        <button ng-click="dealToPlayer(primaryPlayerIndex, 1)">Deal Single</button>
+    </div>
+    <div class="col-xs-1">
+        <button ng-click="dealToPlayer(primaryPlayerIndex, 8)">Deal Hand</button>
+    </div>
+    <div class="col-xs-1">
+        <p>hand:</p><br>
+    </div>
+
+<!--     <div class="col-xs-2" ng-repeat="card in primaryPlayer.hand">
+        <gif-card the-card="card"></gif-card>
+    </div> -->
+</div>
 
     <div class="row cardRow" >
          <div class="col-xs-1">
@@ -49,16 +63,17 @@
                  HAND
             </div>
         </div>
+
+
         <div class="col-xs-11">
-            <div id="whitecard" ng-repeat="test in testCards" class="col-xs-1.5">
-                <div >
-                    <h5>USERNAME</h5>
-                    <div class="cardText white">
-                        <img class="cardgif" height="100%" width="100%" src="http://static.mybs.com/wp-content/uploads/2013/06/Ui526.gif" />
-                    </div>
-                </div>
-            </div>
+    <div ng-repeat="card in primaryPlayer.hand">
+        <gif-card the-card="card"></gif-card>
+    </div>
         </div>
+
+
+
+
     </div>
 </div>
 </section>
