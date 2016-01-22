@@ -59,17 +59,3 @@ app.controller('QuestionController', function($scope, $window, UserFactory, Ques
 
 
 });
-
-app.factory('QuestionFactory', function($http) {
-    var QuestionFactory = {}
-    QuestionFactory.fetchAll = function() {
-        return $http.get('/api/qcards')
-        .then(function(response){
-            return response.data;
-        })
-    };
-
-
-    return QuestionFactory;
-})
-
