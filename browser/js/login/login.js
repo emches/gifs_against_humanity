@@ -8,12 +8,21 @@ app.config(function ($stateProvider) {
 
 });
 
-app.controller('LoginCtrl', function($scope, $window, AuthService, $state, UserFactory) {
+app.controller('LoginCtrl', function($scope, Socket, $window, AuthService, $state, UserFactory) {
+
+    Socket.on('connect', function(){
+        console.log("I HAVE CONNECTED")
+
+
+
+
+
+    })
 
     $scope.login = {};
     $scope.error = null;
     $scope.userCount = 0
-    $scope.roomReady = false;
+
 
     $scope.sendLogin = function (loginInfo) {
 
@@ -28,6 +37,7 @@ app.controller('LoginCtrl', function($scope, $window, AuthService, $state, UserF
     };
 
     $scope.allPlayers = [];
+    var me;
 
     $scope.addUser = function(){
        // $state.go('home', { newUser: $scope.newUser});
@@ -43,16 +53,31 @@ app.controller('LoginCtrl', function($scope, $window, AuthService, $state, UserF
                 //$scope.currentUser = user
                // console.log("new current", $scope.currentUser)
                 $scope.userCount+=1;
-                $scope.allPlayers.push(user)
-                console.log("new count", $scope.userCount)
-                if ($scope.userCount===6){ $scope.roomReady= true}
+                $scope.allPlayers.push(user);
+                me = user;
+                console.log("new count", $scope.userCount);
+               // if ($scope.userCount===6){ $scope.roomReady= true}
+
+                Socket.emit('newPlayer', $scope.allPlayers, $scope.userCount);
+
+
             })
 
    }
 
       $scope.joinRoom = function(){
-
-        $state.go('home', { allPlayers: $scope.allPlayers});
+        console.log("current me", me)
+        $state.go('home', { allPlayers: $scope.allPlayers, me: me });
       }
+
+      Socket.on('newPlayerFromServer', function(allPlayers, userCount){
+            $scope.allPlayers = allPlayers;
+            $scope.userCount = userCount
+            console.log("allPlayers", allPlayers)
+            console.log("count", userCount)
+            $scope.$digest()
+
+      })
+
 
 });

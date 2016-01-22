@@ -6,7 +6,7 @@
         </div>
         </div>
         <div class="row">
-             <div ng-repeat="playerInfo in users" class="col-xs-2 avatar">
+             <div ng-repeat="playerInfo in allPlayers" class="col-xs-2 avatar">
             <player player-info="playerInfo"></player>
             </div>
         </div>
@@ -43,7 +43,10 @@
 <div class="row">
 
     <div class="col-xs-1">
-        <button ng-click="dealToSeat(0)">Deal</button>
+        <button ng-click="dealToPlayer(primaryPlayerIndex, 1)">Deal Single</button>
+    </div>
+    <div class="col-xs-1">
+        <button ng-click="dealToPlayer(primaryPlayerIndex, 8)">Deal Hand</button>
     </div>
     <div class="col-xs-1">
         <p>hand:</p><br>
