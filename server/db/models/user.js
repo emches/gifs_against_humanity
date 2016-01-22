@@ -15,8 +15,7 @@ var schema = new mongoose.Schema({
     },
     email: {
         type: String,
-        unique: true,
-        required: true,
+        required: false,
         default: "guest_user"
     },
     password: {
@@ -41,7 +40,13 @@ var schema = new mongoose.Schema({
     },
     hand: {
         type: [cardSchema],
-        default: []    }
+        default: []
+    },
+    status: {
+        type: String,
+        required: false,
+        default: "YASSSS GIFS!!"
+    }
 });
 
 // method to remove sensitive information from user objects before sending them out

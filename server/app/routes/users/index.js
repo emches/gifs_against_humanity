@@ -3,7 +3,7 @@ var mongoose = require('mongoose');
 var Promise = require('bluebird');
 
 var User = mongoose.model('User');
-var Avatar = mongoose.model('User');
+var Avatar = mongoose.model('Avatar');
 
 
 var bodyParser = require('body-parser');
@@ -20,13 +20,29 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/', function(req, res, next) {
-    Avatar.findOne({used: false}).exec()
+    console.log("body", req.body)
+    Avatar.findOne({'used': false}).exec()
         .then(function(avatar) {
             console.log("FOUND Avatars", avatar)
             avatar.used = true;
-            avatar.save
-          //  User.create
-            res.json(users);
+            avatar.save();
+
+            var newUser = { name: req.body.username,
+             imageURL: avatar.avatarUrl,
+             status:  avatar.status,
+             "password": "secretpassword",
+             "salt": "testuser",
+             "admin": false,
+             "myturn": false,
+             "hand": []
+            }
+            console.log("created this", newUser)
+            User.create(newUser)
+                .then(function(user){
+            console.log("crasdfs", user)
+                    res.json(user);
+                })
+                .then(null, next);
         })
         .then(null, next);
 });
