@@ -17,4 +17,11 @@ router.get('/', function (req, res, next) {
         .then(null, next);
 });
 
+router.get('/shuffle', function(req, res, next){
+        Question.find({})
+            .then(function(questions){
+                    res.status(200).send(_.shuffle(questions))
+                });
+    });
+
 module.exports = router;
