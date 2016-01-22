@@ -10,7 +10,7 @@ app.controller('GameController', function ($scope, GifFactory, QuestionFactory) 
 
     //construct Gif deck
     $scope.gifDeck = [];
-    GifFactory.constructGifDeck()
+    GifFactory.constructApiDeck()
         .then(deck => $scope.gifDeck = deck);
     $scope.dealToSeat = function (n) {
         var theHand = $scope.seats[n].hand;
