@@ -1,5 +1,5 @@
 
-app.factory('QuestionFactoy', function($http){
+app.factory('QuestionFactory', function($http){
     return {
         constructQuestionDeck: function() {
             return $http.get('api/qcards/shuffle')
