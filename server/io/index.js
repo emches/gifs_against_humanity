@@ -38,12 +38,19 @@ module.exports = function (server) {
     socket.on('updateGifDeck', function(deck){
         io.emit('updateGifDeck')
     });
+
     socket.on('readyForNextRound', function(){
         io.emit('readyForNextRound');
     })
+
     socket.on('cleanupPhase', function(){
         io.emit('cleanupPhase');
     });
+
+    socket.on('revealReady', function(){
+        io.emit('revealReady');
+    });
+
     });
 
     return io;

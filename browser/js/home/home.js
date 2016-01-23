@@ -31,6 +31,14 @@ app.controller('QuestionController', function($scope, $window, Socket, UserFacto
        $scope.newRound = false;
        var numReadyForNextRound = 0;
 
+        //QUESTION PHASE
+       //Chosen GIFs
+       $scope.myPick = null;
+       $scope.showPicks = false;
+       $scope.pickedCards = [];
+       $scope.revealReady = false;
+       $scope.chosenGifs = 0;
+
     // initialize players
        $scope.allPlayers.forEach(function(user){
         user.currentStatus = "PLAYER"
@@ -58,11 +66,9 @@ app.controller('QuestionController', function($scope, $window, Socket, UserFacto
        $scope.isDealer = $scope.primaryPlayer.currentStatus === "DEALER";
 
 
-        //QUESTION PHASE
-       //Chosen GIFs
-       $scope.myPick = null;
-       $scope.showPicks = false;
-       $scope.pickedCards = [];
+
+
+
 
 
        $scope.revealPicks = function(){
@@ -72,6 +78,7 @@ app.controller('QuestionController', function($scope, $window, Socket, UserFacto
 
        Socket.on('revealPicks', function(){
         console.log("changing showPicks");
+           $scope.pickedCards = _.shuffle($scope.pickedCards);
            $scope.showPicks = true;
            $scope.$digest()
        });
@@ -104,9 +111,12 @@ app.controller('QuestionController', function($scope, $window, Socket, UserFacto
        $scope.allPlayers.forEach(function(p, i){
            $scope.dealToPlayer(i, 8);
        });
-    console.log("GIF DECK ", deck.gifs);
+       console.log("GIF DECK ", deck.gifs);
 
         $scope.chooseGif = function(card){
+          console.log("myPick", $scope.myPick)
+          console.log("dealer", $scope.isDealer)
+
           if (!$scope.myPick && !$scope.isDealer){
             console.log("choosing!!!", card);
             $scope.myPick = card;
@@ -117,9 +127,19 @@ app.controller('QuestionController', function($scope, $window, Socket, UserFacto
         };
 
         Socket.on('updateChosenGifs', function(card){
+          //$scope.chosenGifs++
           $scope.pickedCards.push(card)
           console.log("picked cards new", $scope.pickedCards)
+         // console.log("chosenGifs", $scope.chosenGifs)
+          if($scope.pickedCards.length === $scope.allPlayers.length - 1){
+                Socket.emit('revealReady')
+            }
           $scope.$digest();
+        })
+
+        Socket.on('revealReady', function(){
+          $scope.revealReady = true;
+          $scope.$digest()
         })
 
         //dealer to choose card
