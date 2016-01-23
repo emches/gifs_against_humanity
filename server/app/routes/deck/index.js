@@ -11,6 +11,13 @@ router.get('/:id', function(req, res, next){
     });
 });
 
+router.get('/:id/gif/new-card', function(req, res, next) {
+    console.log("new card route hit");
+    Deck.findOne({_id: req.params.id})
+        .then(deck => deck.dealGifCard())
+        .then(newCard => res.status(200).send(newCard))
+        .then(null, next)
+});
 // router.put('/:id', function(req, res, next){
 //     Deck.findOne({ _id: req.params.id })
 //     .then(

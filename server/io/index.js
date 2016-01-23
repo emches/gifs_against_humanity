@@ -21,20 +21,29 @@ module.exports = function (server) {
     });
 
     socket.on('newQuestion', function(questionDeck){
-        console.log("new question at back end", questionDeck)
+        console.log("new question at back end", questionDeck);
         io.emit('changeQuestion', questionDeck);
-    })
+    });
 
     socket.on('chooseGif', function(card){
-        console.log("pickedGif", card)
+        console.log("pickedGif", card);
         io.emit('updateChosenGifs', card);
-    })
+    });
 
    socket.on('revealPicks', function(){
-        console.log("got picks")
-        io.emit('revealPicks'   );
-    })
+        console.log("got picks");
+        io.emit('revealPicks');
+    });
 
+    socket.on('updateGifDeck', function(deck){
+        io.emit('updateGifDeck')
+    });
+    socket.on('readyForNextRound', function(){
+        io.emit('readyForNextRound');
+    })
+    socket.on('cleanupPhase', function(){
+        io.emit('cleanupPhase');
+    });
     });
 
     return io;

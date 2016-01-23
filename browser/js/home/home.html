@@ -9,7 +9,7 @@
         </div>
 
         <div class="row">
-            <div ng-repeat="playerInfo in allPlayers" class="col-xs-2 avatar">
+            <div ng-repeat="playerInfo in allPlayers" class="avatar player-frame">
                 <player player-info="playerInfo"></player>
             </div>
         </div>
@@ -17,6 +17,7 @@
         <div class="row">
             <div class="col-xs-6">
                 <button ng-click="newQuestion()">Pick New Question</button>
+              <button class="btn" ng-click="toQuestionPhase()">To next Roundd!!!</button>
                 <hr />
             </div>
         </div>

@@ -1,3 +1,7 @@
+body {
+    background-image: url("/footer_lodyas.png");
+}
+
 #home {
   fullstack-logo {
     padding-top: 30px;
@@ -72,8 +76,9 @@ img {
 
 #player-score {
     text-align: center;
-    color: blue;
-    font-size: 30px;
+    font-size: 20px;
+    color: white;
+    font-family: 'Oswald', sans-serif;
     display: block;
     min-width: 20px;
     padding: 3px 7px;
@@ -188,14 +193,12 @@ img {
 .cardRow > .col-xs-1 {
     padding: 0;
     width: 5.5%;
-
-
-
 }
 
 .cardRow > .col-xs-11 {
     padding: 0;
 
-
+}
+.avatar.player-frame {
 
 }

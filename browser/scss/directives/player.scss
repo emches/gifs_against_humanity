@@ -1,0 +1,39 @@
+.status-text {
+  font-family: 'Source Sans Pro', sans-serif;
+  font-size: 10px;
+}
+.row.row-condensed {
+  height: 100%;
+}
+#status {
+  margin: 2px 0;
+}
+.profile-name > h4 {
+  font-family: 'Oswald', sans-serif;
+  margin: 3px 0;
+}
+.col-xs-6.img-frame {
+  height: 70px;
+
+}
+.avatar.player-img {
+  height:70px;
+  width: 70px;
+  overflow: hidden;
+  border-radius: 4px;
+}
+.current-dealer {
+  background-color: #bcdd75 !important;
+}
+.surrounding-frame {
+  padding-left: 0;
+  padding-right: 0;
+  margin: 0 2px;
+  border: 2px solid black;
+  padding: 10px;
+  border-radius: 4px;
+  width: 128px; //LATER: width to change depending on player #'s
+  height: 200px;
+  float: left;
+  background: #fff;
+}

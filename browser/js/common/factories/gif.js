@@ -35,6 +35,11 @@ app.factory('GifFactory', function ($http) {
                     console.log(cards);
                     return cards.data;
                 });
+        },
+        dealGifCard: function(id){
+            console.log("Call to factory");
+            return $http.get('/api/deck/'+id+'/gif/new-card')
+                .then(cardObj => cardObj.data);
         }
     }
 });
