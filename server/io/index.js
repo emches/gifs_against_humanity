@@ -51,6 +51,14 @@ module.exports = function (server) {
         io.emit('revealReady');
     });
 
+    socket.on('newDealer', function(){
+        io.emit('newDealer');
+    });
+
+   socket.on('toQuestionPhase', function(){
+       io.emit('toQuestionPhase');
+   })
+
     });
 
     return io;

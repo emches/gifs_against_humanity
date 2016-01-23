@@ -1,6 +1,6 @@
 <section id="home">
     <div class="container">
-
+        <h3>Primary Player: {{primaryPlayer.name}}</h3>
         <div class="row">
             <div class="col-xs-3">
                 <h2 ng-show="isDealer">I'm The Dealer!!</h2>
@@ -48,7 +48,7 @@
 <!--                     <div id="vert">
                         SELECTED
                     </div> -->
-                    <button ng-show="isDealer && revealReady" ng-click="revealPicks()">REVEAL!!</button>
+                    <button ng-show="isDealer() && revealReady" ng-click="revealPicks()">REVEAL!!</button>
                 </div>
 
                 <div class="col-xs-11">
@@ -56,7 +56,6 @@
                         <gif-card is-dealer="isDealer" the-card="card"></gif-card>
                     </div> -->
                 <div ng-repeat="card in pickedCards track by $index" class="whitecard">
-    Hello World!">
                   <div class="cardText white">
                      <h3 ng-show="!showPicks">GIF CARD</h3>
                     <img ng-show="showPicks" class="cardgif" height="100%" width="100%"

@@ -1,6 +1,6 @@
 <!--WARNING!!: Modifying the bootstrap classes here will affect custom CSS. Check
             the `player.scss` for corresponing class rules -->
-<div ng-class="{'current-dealer': playerInfo.currentStatus === 'DEALER'}" class="surrounding-frame">
+<div ng-class="{'current-dealer': primaryPlayerIndex === dealerIndex}" class="surrounding-frame">
 <div class="row">
     <div class="col-xs-6 img-frame">
         <img class="avatar player-img" ng-src="{{playerInfo.imageURL}}" />

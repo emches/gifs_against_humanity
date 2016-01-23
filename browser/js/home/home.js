@@ -19,16 +19,20 @@ app.config(function ($stateProvider) {
 
 app.controller('QuestionController', function($scope, $window, Socket, UserFactory,
                                               GifFactory, QuestionFactory, $state, deck) {
-   // console.log("backend deck:", deck);
+    //phases = 'initialization', 'question', 'selection', 'cleanup'
+
+    // console.log("backend deck:", deck);
     Socket.on('connect', function(){
         console.log("I HAVE CONNECTED");
     });
+        $scope.phase = 'initialization';
        // INITIALIZATION
        $scope.questionDeck= deck.questions;
        $scope.gifDeck = deck.gifs;
        $scope.allPlayers = $state.params.allPlayers;
        $scope.gameDecksId = $state.params.deckId;
        $scope.newRound = false;
+        $scope._changedDealer = false;
        var numReadyForNextRound = 0;
 
         //QUESTION PHASE
@@ -53,7 +57,7 @@ app.controller('QuestionController', function($scope, $window, Socket, UserFacto
                break;
            }
        }
-        //initialize game functions
+        //initialize game function
     $scope.newQuestion = function(){
         console.log("new question request from front");
         deck.questions.shift();
@@ -63,38 +67,46 @@ app.controller('QuestionController', function($scope, $window, Socket, UserFacto
 
        // sets primary player
        $scope.primaryPlayer = $scope.allPlayers[$scope.primaryPlayerIndex];
-       $scope.isDealer = $scope.primaryPlayer.currentStatus === "DEALER";
+       //$scope.isDealer() = $scope.primaryPlayer.currentStatus === "DEALER";
+        $scope.isDealer = function(){
+            return $scope.primaryPlayerIndex === $scope.dealerIndex;
+        };
 
+        //QUESTION PHASE
 
-
-
-
+        Socket.on('changeQuestion', function(questionDeck){
+            deck.questions = questionDeck;
+            $scope.questionDeck= deck.questions;
+            $scope.$digest()
+        });
 
 
        $scope.revealPicks = function(){
-         console.log("emitting picks");
          Socket.emit('revealPicks')
        };
 
        Socket.on('revealPicks', function(){
-        console.log("changing showPicks");
            $scope.pickedCards = _.shuffle($scope.pickedCards);
            $scope.showPicks = true;
            $scope.$digest()
        });
 
-       Socket.on('changeQuestion', function(questionDeck){
-          console.log("registered newQuestion", questionDeck);
-          deck.questions = questionDeck;
-          $scope.questionDeck= deck.questions;
-          $scope.$digest()
-       });
-
         $scope.newDealer = function(){
-            $scope.allPlayers[$scope.dealerIndex].currentStatus = "PLAYER";
-            $scope.dealerIndex = $scope.dealerIndex < $scope.allPlayers.length-1 ?  $scope.dealerIndex+1 : 0;
-            $scope.allPlayers[$scope.dealerIndex ].currentStatus = "DEALER"
+            console.log("new dealer recieved. old dealer", $scope.allPlayers[$scope.dealerIndex]);
+            Socket.emit('newDealer');
         };
+        Socket.on('newDealer', function(){
+            if(!$scope._changedDealer){
+                console.log("new dealer recieved. old dealer", $scope.allPlayers[$scope.dealerIndex]);
+                $scope.allPlayers[$scope.dealerIndex].currentStatus = "PLAYER";
+                $scope.dealerIndex = $scope.dealerIndex < $scope.allPlayers.length-1 ?  $scope.dealerIndex+1 : 0;
+                $scope.allPlayers[$scope.dealerIndex].currentStatus = "DEALERR";
+                $scope._changedDealer = true;
+                $scope.$digest();
+                console.log("new dealer", $scope.allPlayers[$scope.dealerIndex]);
+            }
+
+        });
 
         //GAME PLAY HELPER FUNCTIONs
         $scope.dealToPlayer = function (n, cards) {
@@ -115,9 +127,9 @@ app.controller('QuestionController', function($scope, $window, Socket, UserFacto
 
         $scope.chooseGif = function(card){
           console.log("myPick", $scope.myPick)
-          console.log("dealer", $scope.isDealer)
+          console.log("dealer", $scope.isDealer())
 
-          if (!$scope.myPick && !$scope.isDealer){
+          if (!$scope.myPick && !$scope.isDealer()){
             console.log("choosing!!!", card);
             $scope.myPick = card;
             _.remove($scope.allPlayers[$scope.primaryPlayerIndex].hand, { imageUrl: card.imageUrl });
@@ -128,19 +140,19 @@ app.controller('QuestionController', function($scope, $window, Socket, UserFacto
 
         Socket.on('updateChosenGifs', function(card){
           //$scope.chosenGifs++
-          $scope.pickedCards.push(card)
-          console.log("picked cards new", $scope.pickedCards)
+          $scope.pickedCards.push(card);
+          console.log("picked cards new", $scope.pickedCards);
          // console.log("chosenGifs", $scope.chosenGifs)
           if($scope.pickedCards.length === $scope.allPlayers.length - 1){
                 Socket.emit('revealReady')
             }
           $scope.$digest();
-        })
+        });
 
         Socket.on('revealReady', function(){
           $scope.revealReady = true;
           $scope.$digest()
-        })
+        });
 
         //dealer to choose card
 
@@ -149,7 +161,11 @@ app.controller('QuestionController', function($scope, $window, Socket, UserFacto
         //point to selected card
         //all sans dealer new card
     $scope.toQuestionPhase = function() {
-        if(!$scope.isDealer) {
+        Socket.emit('toQuestionPhase');
+        //wait for all players to be ready
+    };
+    Socket.on('toQuestionPhase', function(){
+        if(!$scope.isDealer()) {
             console.log("STARt");
             GifFactory.dealGifCard($scope.gameDecksId)
                 .then(newCard => {
@@ -158,18 +174,17 @@ app.controller('QuestionController', function($scope, $window, Socket, UserFacto
                     Socket.emit('readyForNextRound');
                 })
         }
-        //wait for all players to be ready
-        Socket.on('readyForNextRound', function(){
-            console.log("ready for next round recieved")
-            numReadyForNextRound++;
-            if(numReadyForNextRound === $scope.allPlayers.length - 1){
-                Socket.emit('cleanupPhase')
+    });
+    Socket.on('readyForNextRound', function(){
+        console.log("ready for next round recieved")
+        numReadyForNextRound++;
+        if(numReadyForNextRound === $scope.allPlayers.length - 1){
+            Socket.emit('cleanupPhase')
 
-            }
-        });
-
-    };
+        }
+    });
     Socket.on('cleanupPhase', function(){
+        console.log("CLEANUP PHASE")
         $scope.newRound = true;
         //next dealer iterated
         $scope.newDealer();
