@@ -28,8 +28,8 @@
                     <button class="btn-success loginForm">ADD USER</button>
                 </form>
                 <h1 class="playerName" ng-repeat="player in allPlayers track by player._id">{{player.name}}</h1>
-                <h1 ng-show="userCount===6">ROOM READY</h1>
-                <button ng-show="userCount===6" class="btn-success" ng-click="joinRoom()" ng-show="roomReady">ENTER!!</button>
+                <h1 ng-show="userCount>5">ROOM READY</h1>
+                <button ng-show="userCount>5" class="btn-success" ng-click="joinRoom()" ng-show="roomReady">ENTER!!</button>
 
             </p>
        </div>

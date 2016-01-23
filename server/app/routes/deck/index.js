@@ -11,6 +11,12 @@ router.get('/:id', function(req, res, next){
     });
 });
 
+// router.put('/:id', function(req, res, next){
+//     Deck.findOne({ _id: req.params.id })
+//     .then(
+//     });
+// });
+
 router.post('/', function(req, res, next){
     //console.log("gifs", req.body.gifs);
     console.log("[routes/deck] questions", req.body.questions);

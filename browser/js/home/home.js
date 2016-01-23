@@ -19,25 +19,32 @@ app.config(function ($stateProvider) {
 
 app.controller('QuestionController', function($scope, $window, Socket, UserFactory,
                                               GifFactory, QuestionFactory, $state, deck) {
-    console.log("backend deck:", deck);
+   // console.log("backend deck:", deck);
     Socket.on('connect', function(){
-        console.log("I HAVE CONNECTED")
+        console.log("I HAVE CONNECTED");
     });
 
-       $scope.questionDeck=$state.params.questionDeck;
-       $scope.gifDeck = $state.params.gifDeck;
+       $scope.questionDeck= deck.questions;
+       $scope.gifDeck = deck.gifs;
+       console.log("questionDeck", $scope.questionDeck)
 
 
-       $scope.allPlayers = _.shuffle($state.params.allPlayers);
+       $scope.allPlayers = $state.params.allPlayers;
 
-       $scope.currentQ = $scope.questionDeck[$scope.qIndex];
+     //  $scope.currentQ = $scope.questionDeck[$scope.qIndex];
 
        $scope.newQuestion = function(){
-          $scope.questionDeck.shift();
-          Socket.emit('newQuestion', $scope.questionDeck)
+          console.log("new question request from front")
+          deck.questions.shift();
+          console.log("new questions", deck.questions)
+          Socket.emit('newQuestion', deck.questions)
        };
+
        Socket.on('changeQuestion', function(questionDeck){
-           $scope.questionDeck = questionDeck
+          console.log("registered newQuestion", questionDeck)
+          deck.questions = questionDeck
+          $scope.questionDeck= deck.questions;
+          $scope.$digest()
        });
 
        $scope.allPlayers.forEach(function(user){
@@ -86,6 +93,6 @@ app.controller('QuestionController', function($scope, $window, Socket, UserFacto
     $scope.gamePhase = 0;
 
     //the "Table"
-    $scope.currentQuestion = null;
+    //$scope.currentQuestion = null;
     $scope.submittedGifs = [];
 });

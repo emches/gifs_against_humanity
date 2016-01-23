@@ -21,6 +21,7 @@ module.exports = function (server) {
     });
 
     socket.on('newQuestion', function(questionDeck){
+        console.log("new question at back end", questionDeck)
         io.emit('changeQuestion', questionDeck);
     })
 
