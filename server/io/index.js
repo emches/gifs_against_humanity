@@ -25,6 +25,16 @@ module.exports = function (server) {
         io.emit('changeQuestion', questionDeck);
     })
 
+    socket.on('chooseGif', function(card){
+        console.log("pickedGif", card)
+        io.emit('updateChosenGifs', card);
+    })
+
+   socket.on('revealPicks', function(){
+        console.log("got picks")
+        io.emit('revealPicks'   );
+    })
+
     });
 
     return io;

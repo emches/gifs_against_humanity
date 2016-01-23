@@ -37,7 +37,7 @@ app.controller('LoginCtrl', function($scope, Socket, $window, AuthService, $stat
     $scope.addUser = function(){
        // $state.go('home', { newUser: $scope.newUser});
        console.log("all", $scope.allPlayers);
-       if ($scope.allPlayers.length >5){ return $window.alert("ROOM FULL SORRY!!!"); }
+       if ($scope.allPlayers.length >2){ return $window.alert("ROOM FULL SORRY!!!"); }
        if ($scope.allPlayers.indexOf($scope.newUser) > -1) { return $window.alert("USER ALREADY EXISTS"); }
 
         UserFactory.addUser($scope.newUser)

@@ -23,15 +23,49 @@ app.controller('QuestionController', function($scope, $window, Socket, UserFacto
     Socket.on('connect', function(){
         console.log("I HAVE CONNECTED");
     });
-
+       // initializing
        $scope.questionDeck= deck.questions;
        $scope.gifDeck = deck.gifs;
-       console.log("questionDeck", $scope.questionDeck)
-
-
        $scope.allPlayers = $state.params.allPlayers;
+       // initialize players
+       $scope.allPlayers.forEach(function(user){
+        user.currentStatus = "PLAYER"
+       });
+       // initialize dealer
+       $scope.dealerIndex = 0;
+       $scope.allPlayers[$scope.dealerIndex].currentStatus = "DEALER";
 
-     //  $scope.currentQ = $scope.questionDeck[$scope.qIndex];
+      // console.log("questionDeck", $scope.questionDeck)
+
+
+
+       //get index of primary player
+       for(var i = 0; i < $scope.allPlayers.length; i++){
+           if($scope.allPlayers[i]._id === $state.params.me._id){
+               $scope.primaryPlayerIndex = i;
+               break;
+           }
+       }
+       // sets primary player
+       $scope.primaryPlayer = $scope.allPlayers[$scope.primaryPlayerIndex];
+       $scope.isDealer = $scope.primaryPlayer.currentStatus === "DEALER"
+
+       //Chosen GIFs
+       $scope.myPick = null;
+       $scope.showPicks = false;
+       $scope.pickedCards = []
+
+
+       $scope.revealPicks = function(){
+         console.log("emitting picks")
+         Socket.emit('revealPicks')
+       }
+
+       Socket.on('revealPicks', function(){
+        console.log("changing showPicks")
+           $scope.showPicks = true;
+           $scope.$digest()
+       })
 
        $scope.newQuestion = function(){
           console.log("new question request from front")
@@ -47,15 +81,6 @@ app.controller('QuestionController', function($scope, $window, Socket, UserFacto
           $scope.$digest()
        });
 
-       $scope.allPlayers.forEach(function(user){
-        user.currentStatus = "PLAYER"
-       });
-
-        //assign dealer
-       $scope.dealerIndex = 0;
-       $scope.allPlayers[$scope.dealerIndex].currentStatus = "DEALER";
-       var currentUserIndex = Math.floor(Math.random() * $scope.allPlayers.length);
-       $scope.currentUser = $scope.allPlayers[currentUserIndex];
 
         $scope.newDealer = function(){
             $scope.allPlayers[$scope.dealerIndex].currentStatus = "PLAYER";
@@ -63,36 +88,37 @@ app.controller('QuestionController', function($scope, $window, Socket, UserFacto
             $scope.allPlayers[$scope.dealerIndex ].currentStatus = "DEALER"
         };
 
-//GAME PLAY HELPER FUNCTIONs
-    $scope.dealToPlayer = function (n, cards) {
-        var theHand = $scope.allPlayers[n].hand;
-        while (cards >0){
-            theHand.push($scope.gifDeck.shift());
-            cards--
+        //GAME PLAY HELPER FUNCTIONs
+        $scope.dealToPlayer = function (n, cards) {
+            var theHand = $scope.allPlayers[n].hand;
+            while (cards >0){
+                theHand.push($scope.gifDeck.shift());
+                cards--
+            }
+        };
+
+      //deal to all players
+       $scope.allPlayers.forEach(function(p, i){
+           $scope.dealToPlayer(i, 8);
+       });
+
+        $scope.chooseGif = function(card){
+          if (!$scope.myPick && !$scope.isDealer){
+            console.log("choosing!!!", card)
+            $scope.myPick = card;
+            _.remove($scope.allPlayers[$scope.primaryPlayerIndex].hand, { imageUrl: card.imageUrl })
+            console.log("new gif deck", $scope.allPlayers[$scope.primaryPlayerIndex].hand  )
+            Socket.emit('chooseGif', card)
+          }
         }
 
-    };
+        Socket.on('updateChosenGifs', function(card){
+          $scope.pickedCards.push(card)
+          console.log("picked cards new", $scope.pickedCards)
+          $scope.$digest();
+        })
 
-// START OF GAME CONTROLLER
 
-    //deal to all players
-    $scope.allPlayers.forEach(function(p, i){
-        $scope.dealToPlayer(i, 8);
-    });
+        $scope.gamePhase = 0;
 
-    //get index of primary player
-    for(var i = 0; i < $scope.allPlayers.length; i++){
-        if($scope.allPlayers[i]._id === $state.params.me._id){
-            $scope.primaryPlayerIndex = i;
-            break;
-        }
-    }
-    $scope.primaryPlayer = $scope.allPlayers[$scope.primaryPlayerIndex];
-
-    //game variables.
-    $scope.gamePhase = 0;
-
-    //the "Table"
-    //$scope.currentQuestion = null;
-    $scope.submittedGifs = [];
 });
