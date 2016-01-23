@@ -1,5 +1,12 @@
 app.factory('GifFactory', function ($http) {
     return {
+        getConstructedDeck: function(id){
+            return $http.get('/api/deck/'+id)
+                .then(deckObj => {
+                    console.log("DECKRES", deckObj);
+                   return deckObj.data;
+                });
+        },
         constructApiDeck: function() {
           return $http.get('http://api.giphy.com/v1/gifs/search?q=reaction&api_key=dc6zaTOxFJmzC&limit=400&offset=0&rating=r')
             .then(res => {
@@ -11,7 +18,18 @@ app.factory('GifFactory', function ($http) {
                 return theDeck;
             })
         },
+        saveConstructedDecks: function(questionDeck, gifDeck) {
+            return $http.post('/api/deck/', {
+                questions: questionDeck,
+                gifs: gifDeck
+            })
+            .then(deckRes => {
+                console.log("GOT baCK FROM DECK psost", deckRes);
+                return deckRes.data;
+            });
+        },
         constructSeedDeck: function () {
+            //LEGACYYYYYY
             return $http.get('/api/gifs')
                 .then(function (cards) {
                     console.log(cards);
