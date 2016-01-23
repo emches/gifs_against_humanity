@@ -63,6 +63,12 @@ img {
     margin: 5px 2px;
 }
 
+.whitecard:active {
+    box-shadow: 0px 0px 30px gray;
+    z-index: 1;
+    border: 2px solid green;
+}
+
 .whitecard:hover {
     box-shadow:0px 0px 30px gray; /*CSS3 shadow: 30px blurred shadow all around image*/
     z-index: 1;

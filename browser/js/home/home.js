@@ -34,6 +34,8 @@ app.controller('QuestionController', function($scope, $window, Socket, UserFacto
        $scope.newRound = false;
         $scope._changedDealer = false;
        var numReadyForNextRound = 0;
+       $scope.isWinner = false;
+       $scope.winningCard = null;
 
         //QUESTION PHASE
        //Chosen GIFs
@@ -54,6 +56,7 @@ app.controller('QuestionController', function($scope, $window, Socket, UserFacto
        for(var i = 0; i < $scope.allPlayers.length; i++){
            if($scope.allPlayers[i]._id === $state.params.me._id){
                $scope.primaryPlayerIndex = i;
+               console.log("primaryPlayerIndex", $scope.primaryPlayerIndex)
                break;
            }
        }
@@ -69,6 +72,7 @@ app.controller('QuestionController', function($scope, $window, Socket, UserFacto
        $scope.primaryPlayer = $scope.allPlayers[$scope.primaryPlayerIndex];
        //$scope.isDealer() = $scope.primaryPlayer.currentStatus === "DEALER";
         $scope.isDealer = function(){
+          console.log("am i the dealer", $scope.primaryPlayerIndex === $scope.dealerIndex)
             return $scope.primaryPlayerIndex === $scope.dealerIndex;
         };
 
@@ -134,6 +138,8 @@ app.controller('QuestionController', function($scope, $window, Socket, UserFacto
             $scope.myPick = card;
             _.remove($scope.allPlayers[$scope.primaryPlayerIndex].hand, { imageUrl: card.imageUrl });
             console.log("new gif deck", $scope.allPlayers[$scope.primaryPlayerIndex].hand  )
+            card.player = $scope.primaryPlayer
+            console.log("CARD", card)
             Socket.emit('chooseGif', card)
           }
         };
@@ -141,6 +147,7 @@ app.controller('QuestionController', function($scope, $window, Socket, UserFacto
         Socket.on('updateChosenGifs', function(card){
           //$scope.chosenGifs++
           $scope.pickedCards.push(card);
+          console.log("pickedCards", $scope.pickedCards)
           console.log("picked cards new", $scope.pickedCards);
          // console.log("chosenGifs", $scope.chosenGifs)
           if($scope.pickedCards.length === $scope.allPlayers.length - 1){
@@ -148,6 +155,24 @@ app.controller('QuestionController', function($scope, $window, Socket, UserFacto
             }
           $scope.$digest();
         });
+
+        $scope.selectWinner = function(card){
+          if (!$scope.winningCard){
+           Socket.emit('winningCard', card)
+          }
+
+        }
+
+        Socket.on('winningCard', function(card){
+          var winnerIndex = _.findIndex($scope.allPlayers, { _id: card.player._id});
+          console.log("winnerIndex", winnerIndex)
+          $scope.allPlayers[winnerIndex].score+=1
+          if ($scope.primaryPlayerIndex===$scope.winnerIndex){ $scope.isWinner=true}
+            $scope.winningCard = card;
+          $scope.$digest()
+
+
+        })
 
         Socket.on('revealReady', function(){
           $scope.revealReady = true;

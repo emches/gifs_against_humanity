@@ -59,6 +59,10 @@ module.exports = function (server) {
        io.emit('toQuestionPhase');
    })
 
+   socket.on('winningCard', function(card){
+       io.emit('winningCard', card);
+   })
+
     });
 
     return io;

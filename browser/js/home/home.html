@@ -55,9 +55,10 @@
 <!--                     <div ng-repeat="card in pickedCards track by $index">
                         <gif-card is-dealer="isDealer" the-card="card"></gif-card>
                     </div> -->
-                <div ng-repeat="card in pickedCards track by $index" class="whitecard">
+                <div ng-click="selectWinner(card)" ng-repeat="card in pickedCards track by $index" class="whitecard">
                   <div class="cardText white">
                      <h3 ng-show="!showPicks">GIF CARD</h3>
+                     <h3> {{card.player.name}}</h3>
                     <img ng-show="showPicks" class="cardgif" height="100%" width="100%"
                          src="{{card.imageUrl}}"/>
                   </div>
