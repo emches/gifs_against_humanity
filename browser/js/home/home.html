@@ -33,7 +33,7 @@
         </div>
       </div>
       <div class="col-xs-9 picksRow">
-        <div ng-click="selectWinner(card)" ng-repeat="card in pickedCards track by $index" class="whitecard">
+        <div ng-click="dealerSelection(card)" ng-repeat="card in pickedCards track by $index" class="whitecard">
           <div class="cardText white">
             <h3 ng-show="!showPicks">GIF CARD</h3>
             <h3> {{card.player.name}}</h3>

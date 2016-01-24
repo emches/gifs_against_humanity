@@ -48,8 +48,8 @@ module.exports = function (server) {
         io.emit('revealReady');
     });
 
-    socket.on('doCleanupPhase', function(){
-        io.emit('doCleanupPhase');
+    socket.on('doCleanupPhase', function(card){
+        io.emit('doCleanupPhase', card);
     });
 
     socket.on('newDealer', function(){
@@ -64,6 +64,7 @@ module.exports = function (server) {
     });
 
    socket.on('winningCard', function(card){
+       //Depricted: This is merged with `doCleanupPhase`
        io.emit('winningCard', card);
    })
 
