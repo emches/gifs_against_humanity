@@ -1,27 +1,34 @@
-            <div class="row">
-                <div class="col-xs-6 img-frame">
-                    <img class="avatar" ng-src="{{playerInfo.imageURL}}" />
-                </div>
-                <div class="col-xs-6">
-                    <div class="row">
-                        <div class="profile-name col-xs-12">
-                            <h6>{{playerInfo.name}}</h6>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="profile-status col-xs-12">
-                           <h5>{{playerInfo.status}}</h5>
-                        </div>
-                    </div>
-                </div>
+<!--WARNING!!: Modifying the bootstrap classes here will affect custom CSS. Check
+            the `player.scss` for corresponing class rules -->
+<div ng-class="{'current-dealer': playerInfo.currentStatus === 'DEALER'}" class="surrounding-frame">
+<div class="row">
+    <div class="col-xs-6 img-frame">
+        <img class="avatar player-img" ng-src="{{playerInfo.imageURL}}" />
+    </div>
+    <div class="col-xs-12">
+        <div class="row">
+            <div class="profile-name col-xs-12">
+                <h4>{{playerInfo.name}}<span ng-show="playerInfo._id === myId"> (YOU) </span></h4>
             </div>
-            <div class="row">
-                <div class="col-xs-12">
-                    <span  id="player-score">{{playerInfo.score}}</span>
-                </div>
+        </div>
+        <div class="row">
+            <div class="profile-status col-xs-12">
+               <span class="status-text">{{playerInfo.status}}</span>
             </div>
-            <div class="row current-status">
-                <div class="col-xs-12">
-                    <h3>{{playerInfo.currentStatus}}</h3>
-                </div>
-            </div>
+        </div>
+    </div>
+</div>
+<div class="row row-condensed">
+    <div class="col-xs-12" id="status">
+        <span  id="player-score">{{playerInfo.score}}</span>
+    </div>
+    <div class="col-xs-12">
+        <h3 class="status-text">{{playerInfo.currentStatus}}</h3>
+    </div>
+</div>
+<!--<div class="row current-status">-->
+    <!--<div class="col-xs-12">-->
+        <!--<h3>{{playerInfo.currentStatus}}</h3>-->
+    <!--</div>-->
+<!--</div>-->
+</div>

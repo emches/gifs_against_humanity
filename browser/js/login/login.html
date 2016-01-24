@@ -24,12 +24,12 @@
  -->        <p class="text-center">
             <br>
                 <form  ng-submit="addUser()">
-                    <input class="loginForm entry" placeholder="enter username" ng-model="newUser" />
+                    <input class="loginForm entry" placeholder="enter username" ng-model="newUser" maxlength="18"/>
                     <button class="btn-success loginForm">ADD USER</button>
                 </form>
                 <h1 class="playerName" ng-repeat="player in allPlayers track by player._id">{{player.name}}</h1>
-                <h1 ng-show="userCount===6">ROOM READY</h1>
-                <button ng-show="userCount===6" class="btn-success" ng-click="joinRoom()" ng-show="roomReady">ENTER!!</button>
+                <h1 ng-show="userCount>2">ROOM READY</h1>
+                <button ng-show="userCount>2" class="btn-success" ng-click="joinRoom()" ng-show="roomReady">ENTER!!</button>
 
             </p>
        </div>
