@@ -33,13 +33,22 @@
         </div>
       </div>
       <div class="col-xs-9 picksRow">
-        <div ng-repeat="card in pickedCards track by $index" class="whitecard">
-          <div class="cardText white" ng-click="dealerSelection(card)">
-            <h3 ng-show="!showPicks">GIFS AGAINST HUMANITY</h3>
+        <div ng-click="selectWinner(card)" ng-repeat="card in pickedCards track by $index" class="whitecard">
+          <div class="cardText white">
+            <h3 ng-show="!showPicks">GIF CARD</h3>
+            <h3> {{card.player.name}}</h3>
             <img ng-show="showPicks" class="cardgif" height="100%" width="100%"
                  src="{{card.imageUrl}}"/>
           </div>
         </div>
+      <!--This is the OLD card selection-->
+        <!--<div ng-repeat="card in pickedCards track by $index" class="whitecard">-->
+          <!--<div class="cardText white" ng-click="dealerSelection(card)">-->
+            <!--<h3 ng-show="!showPicks">GIFS AGAINST HUMANITY</h3>-->
+            <!--<img ng-show="showPicks" class="cardgif" height="100%" width="100%"-->
+                 <!--src="{{card.imageUrl}}"/>-->
+          <!--</div>-->
+        <!--</div>-->
       </div>
     </div>
     <div class="row" ng-show="_developer">
@@ -56,10 +65,10 @@
     </div>
     <br>
       <button ng-show="isDealer() && revealReady" ng-click="revealPicks()" class="btn btn-success">REVEAL!!</button>
-
-
-    <div class="row cardRow">
-      <div class="col-xs-1">
+                <div class="col-xs-11">
+<!--                     <div ng-repeat="card in pickedCards track by $index">
+                        <gif-card is-dealer="isDealer" the-card="card"></gif-card>
+                    </div> -->
         <!--                     <div id="vert">
                                 HAND
                             </div> -->

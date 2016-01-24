@@ -36,7 +36,8 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
     $scope.allPlayers = $state.params.allPlayers;
     $scope.gameDecksId = $state.params.deckId;
     $scope._changedDealer = false;
-
+    $scope.isWinner = false;
+    $scope.winningCard = null;
     var numReadyForNextRound = 0;
 
     //QUESTION PHASE
@@ -50,6 +51,7 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
     // initialize players
     $scope.allPlayers.forEach(function (user) {
         user.currentStatus = "PLAYER"
+<<<<<<< HEAD
     });
     // initialize dealer
     $scope.dealerIndex = 0;
@@ -66,10 +68,28 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
     };
     //initialize game function
     $scope.newQuestion = function () {
+=======
+       });
+       // initialize dealer
+       $scope.dealerIndex = 0;
+       $scope.allPlayers[$scope.dealerIndex].currentStatus = "DEALER";
+       //get index of primary player
+       for(var i = 0; i < $scope.allPlayers.length; i++){
+           if($scope.allPlayers[i]._id === $state.params.me._id){
+               $scope.primaryPlayerIndex = i;
+               console.log("primaryPlayerIndex", $scope.primaryPlayerIndex)
+               break;
+           }
+       }
+        //initialize game function
+    $scope.newQuestion = function(){
+        console.log("new question request from front");
+>>>>>>> score_branch
         deck.questions.shift();
         Socket.emit('newQuestion', deck.questions)
     };
 
+<<<<<<< HEAD
     // sets primary player
     // this will soon be depricated
     $scope.primaryPlayer = $scope.allPlayers[$scope.primaryPlayerIndex];
@@ -77,6 +97,15 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
     $scope.isDealer = function () {
         return $scope.primaryPlayerIndex === $scope.dealerIndex;
     };
+=======
+       // sets primary player
+       $scope.primaryPlayer = $scope.allPlayers[$scope.primaryPlayerIndex];
+       //$scope.isDealer() = $scope.primaryPlayer.currentStatus === "DEALER";
+        $scope.isDealer = function(){
+          console.log("am i the dealer", $scope.primaryPlayerIndex === $scope.dealerIndex)
+            return $scope.primaryPlayerIndex === $scope.dealerIndex;
+        };
+>>>>>>> score_branch
 
     //deal to all players
     $scope.dealToPlayer = function (n, cards, shouldUpdate) {
@@ -150,6 +179,7 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
         if (!$scope.myPick && !$scope.isDealer() && $scope.phase === 'question') {
             console.log("choosing!!!", card);
             $scope.myPick = card;
+<<<<<<< HEAD
             _.remove($scope.allPlayers[$scope.primaryPlayerIndex].hand, {imageUrl: card.imageUrl});
             console.log("new gif deck", $scope.allPlayers[$scope.primaryPlayerIndex].hand);
             Socket.emit('chooseGif', card)
@@ -187,6 +217,50 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
             //$scope.toQuestionPhase();
         }
         //TODO: point system goes here.
+=======
+            _.remove($scope.allPlayers[$scope.primaryPlayerIndex].hand, { imageUrl: card.imageUrl });
+            console.log("new gif deck", $scope.allPlayers[$scope.primaryPlayerIndex].hand  )
+            card.player = $scope.primaryPlayer
+            console.log("CARD", card)
+            Socket.emit('chooseGif', card)
+          }
+        };
+
+        Socket.on('updateChosenGifs', function(card){
+          //$scope.chosenGifs++
+          $scope.pickedCards.push(card);
+          console.log("pickedCards", $scope.pickedCards)
+          console.log("picked cards new", $scope.pickedCards);
+         // console.log("chosenGifs", $scope.chosenGifs)
+          if($scope.pickedCards.length === $scope.allPlayers.length - 1){
+                Socket.emit('revealReady')
+            }
+          $scope.$digest();
+        });
+
+        $scope.selectWinner = function(card){
+          if (!$scope.winningCard){
+           Socket.emit('winningCard', card)
+          }
+
+        }
+
+        Socket.on('winningCard', function(card){
+          var winnerIndex = _.findIndex($scope.allPlayers, { _id: card.player._id});
+          console.log("winnerIndex", winnerIndex)
+          $scope.allPlayers[winnerIndex].score+=1
+          if ($scope.primaryPlayerIndex===$scope.winnerIndex){ $scope.isWinner=true}
+            $scope.winningCard = card;
+          $scope.$digest()
+
+
+        })
+
+        Socket.on('revealReady', function(){
+          $scope.revealReady = true;
+          $scope.$digest()
+        });
+>>>>>>> score_branch
 
     }
 

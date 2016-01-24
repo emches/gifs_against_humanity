@@ -50,7 +50,7 @@ module.exports = function (server) {
 
     socket.on('doCleanupPhase', function(){
         io.emit('doCleanupPhase');
-    })
+    });
 
     socket.on('newDealer', function(){
         io.emit('newDealer');
@@ -58,12 +58,14 @@ module.exports = function (server) {
 
    socket.on('toQuestionPhase', function(){
        io.emit('toQuestionPhase');
-   })
-
+   });
     socket.on('updateOnePlayerStats', function(stats, ind){
         io.emit('updateOnePlayerStats', stats, ind);
-    })
+    });
 
+   socket.on('winningCard', function(card){
+       io.emit('winningCard', card);
+   })
 
     });
 
