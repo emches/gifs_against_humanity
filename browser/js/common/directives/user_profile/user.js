@@ -3,12 +3,13 @@ app.directive('player', function ($rootScope, AuthService, AUTH_EVENTS, $state) 
     return {
         restrict: 'E',
         scope: {
-            playerInfo: '='
+            playerInfo: '=',
+            myId: '='
         },
         templateUrl: 'js/common/directives/user_profile/user.html',
         link: function(scope){
             console.log("SCOPE", scope);
-            console.log("PLAYER INFO", scope.playerInfo)
+            console.log("PLAYER INFO", scope.playerInfo);
         }
 
     };

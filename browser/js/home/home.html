@@ -1,82 +1,75 @@
 <section id="home">
-    <div class="container">
-        <h3>Primary Player: {{primaryPlayer.name}}</h3>
-        <div class="row">
-            <div class="col-xs-3">
-                <h2 ng-show="isDealer">I'm The Dealer!!</h2>
-                <button ng-click="newDealer()">NEW DEALER</button>
-            </div>
+  <div class="container">
+    <div style="color:white" ng-show="_developer">
+      <div class="row">
+        <div class="col-xs-3">
+          <h5 ng-show="isDealer">I'm The Dealer!!</h5>
+          <button ng-click="newDealer()">NEW DEALER</button>
         </div>
+      </div>
+    </div>
 
-        <div class="row">
-            <div ng-repeat="playerInfo in allPlayers" class="avatar player-frame">
-                <player player-info="playerInfo"></player>
-            </div>
+    <div class="row">
+      <div ng-repeat="playerInfo in allPlayers" class="avatar player-frame">
+        <player player-info="playerInfo" my-id="localId"></player>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-6" ng-show="_developer">
+        <button ng-click="newQuestion()">Pick New Question</button>
+        <button class="btn" ng-click="toQuestionPhase()">To next Roundd!!!</button>
+        <hr/>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-3">
+        <div id="blackcard">
+          <div class="cardText black">
+            <h3>{{questionDeck[0].title}}</h3>
+            <h3 ng-show="!questionDeck[0]">DECK EMPTY!!</h3>
+          </div>
         </div>
-
-        <div class="row">
-            <div class="col-xs-6">
-                <button ng-click="newQuestion()">Pick New Question</button>
-              <button class="btn" ng-click="toQuestionPhase()">To next Roundd!!!</button>
-                <hr />
-            </div>
+      </div>
+      <div class="col-xs-9">
+        <div ng-repeat="card in pickedCards track by $index" class="whitecard">
+          <div class="cardText white" ng-click="dealerSelection(card)">
+            <h3 ng-show="!showPicks">GIFS AGAINST HUMANITY</h3>
+            <img ng-show="showPicks" class="cardgif" height="100%" width="100%"
+                 src="{{card.imageUrl}}"/>
+          </div>
         </div>
+      </div>
+    </div>
+    <div class="row" ng-show="_developer">
+      <div class="col-xs-1">
+        <button ng-click="dealToPlayer(primaryPlayerIndex, 1)">Deal Single</button>
+      </div>
+      <div class="col-xs-1">
+        <button ng-click="dealToPlayer(primaryPlayerIndex, 8)">Deal Hand</button>
+      </div>
+      <div class="col-xs-1">
+        <p>hand:</p>
+        <br>
+      </div>
+    </div>
+    <br>
+    <div class="row picksRow">
+      <button ng-show="isDealer() && revealReady" ng-click="revealPicks()" class="btn btn-success">REVEAL!!</button>
+    </div>
 
-        <div class="row">
-            <div class="col-xs-6">
-                <div id="blackcard">
-                    <div class="cardText black">
-                        <h3>{{questionDeck[0].title}}</h3>
-                        <h3 ng-show="!questionDeck[0]">DECK EMPTY!!</h3>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xs-1">
-                    <button ng-click="dealToPlayer(primaryPlayerIndex, 1)">Deal Single</button>
-                </div>
-                <div class="col-xs-1">
-                    <button ng-click="dealToPlayer(primaryPlayerIndex, 8)">Deal Hand</button>
-                </div>
-                <div class="col-xs-1">
-                    <p>hand:</p>
-                    <br>
-                </div>
-            </div>
-            <div class="row picksRow">
-               <div class="col-xs-1">
-<!--                     <div id="vert">
-                        SELECTED
-                    </div> -->
-                    <button ng-show="isDealer() && revealReady" ng-click="revealPicks()">REVEAL!!</button>
-                </div>
-
-                <div class="col-xs-11">
-<!--                     <div ng-repeat="card in pickedCards track by $index">
-                        <gif-card is-dealer="isDealer" the-card="card"></gif-card>
-                    </div> -->
-                <div ng-repeat="card in pickedCards track by $index" class="whitecard">
-                  <div class="cardText white">
-                     <h3 ng-show="!showPicks">GIF CARD</h3>
-                    <img ng-show="showPicks" class="cardgif" height="100%" width="100%"
-                         src="{{card.imageUrl}}"/>
-                  </div>
-                </div>
-
-                </div>
-            </div>
-<br>
-            <div class="row cardRow">
-                <div class="col-xs-1">
-<!--                     <div id="vert">
-                        HAND
-                    </div> -->
-                </div>
-                <div class="col-xs-11">
-                    <div ng-click="chooseGif(card)" ng-repeat="card in primaryPlayer.hand">
-                        <gif-card is-dealer="true" the-card="card"></gif-card>
-                    </div>
-                </div>
-            </div>
+    <div class="row cardRow">
+      <div class="col-xs-1">
+        <!--                     <div id="vert">
+                                HAND
+                            </div> -->
+      </div>
+      <div class="col-xs-11">
+        <div ng-click="chooseGif(card)" ng-repeat="card in allPlayers[primaryPlayerIndex].hand">
+          <gif-card is-dealer="true" the-card="card"></gif-card>
         </div>
+      </div>
+    </div>
+  </div>
 </section>

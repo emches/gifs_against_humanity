@@ -26,8 +26,8 @@ module.exports = function (server) {
     });
 
     socket.on('chooseGif', function(card){
-        console.log("pickedGif", card);
-        io.emit('updateChosenGifs', card);
+        console.log("chooseGif", card);
+        io.emit('chooseGif', card);
     });
 
    socket.on('revealPicks', function(){
@@ -39,9 +39,6 @@ module.exports = function (server) {
         io.emit('updateGifDeck')
     });
 
-    socket.on('readyForNextRound', function(){
-        io.emit('readyForNextRound');
-    })
 
     socket.on('cleanupPhase', function(){
         io.emit('cleanupPhase');
@@ -51,6 +48,10 @@ module.exports = function (server) {
         io.emit('revealReady');
     });
 
+    socket.on('doCleanupPhase', function(){
+        io.emit('doCleanupPhase');
+    })
+
     socket.on('newDealer', function(){
         io.emit('newDealer');
     });
@@ -58,6 +59,11 @@ module.exports = function (server) {
    socket.on('toQuestionPhase', function(){
        io.emit('toQuestionPhase');
    })
+
+    socket.on('updateOnePlayerStats', function(stats, ind){
+        io.emit('updateOnePlayerStats', stats, ind);
+    })
+
 
     });
 
