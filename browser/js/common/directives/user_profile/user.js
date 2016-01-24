@@ -8,8 +8,6 @@ app.directive('player', function ($rootScope, AuthService, AUTH_EVENTS, $state) 
         },
         templateUrl: 'js/common/directives/user_profile/user.html',
         link: function(scope){
-            console.log("SCOPE", scope);
-            console.log("PLAYER INFO", scope.playerInfo);
         }
 
     };

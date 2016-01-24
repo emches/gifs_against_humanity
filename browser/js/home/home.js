@@ -62,6 +62,8 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
             break;
         }
     }
+    console.log("PLAYER D", $scope.primaryPlayerIndex);
+
     $scope.getLocalPlayer = function () {
         return $scope.allPlayers[$scope.primaryPlayerIndex];
     };
@@ -82,6 +84,13 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
         deck.questions.shift();
         Socket.emit('newQuestion', deck.questions)
     };
+    $scope.newDealer = function () {
+        console.log("new dealer recieved. old dealer", $scope.allPlayers[$scope.dealerIndex]);
+        //BEGINS TEST
+        $scope.allPlayers[$scope.dealerIndex].currentStatus = "PLAYER";
+        $scope.dealerIndex = $scope.dealerIndex < $scope.allPlayers.length - 1 ? $scope.dealerIndex + 1 : 0;
+        $scope.allPlayers[$scope.dealerIndex].currentStatus = "DEALER";
+    }
     // sets primary player
     // this will soon be depricated
     $scope.primaryPlayer = $scope.allPlayers[$scope.primaryPlayerIndex];
@@ -89,6 +98,7 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
     $scope.isDealer = function () {
         return $scope.primaryPlayerIndex === $scope.dealerIndex;
     };
+
 
     //deal to all players
     $scope.dealToPlayer = function (n, cards, shouldUpdate) {
@@ -106,14 +116,16 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
         }
     };
     Socket.on('updateOnePlayerStats', function (stats, ind) {
-        console.log("updateOnePlayerStats socket: updating...", $scope.allPlayers[idn], stats[idn]);
+        console.log("updateOnePlayerStats socket: updating...", $scope.allPlayers[ind], stats[ind]);
         $scope.allPlayers[ind] = stats[ind];
         console.log("new player info", $scope.allPlayers);
     });
     Socket.on('updateGifDeck', function (newDeck) {
         deck.gif = newDeck;
     });
+
     $scope.allPlayers.forEach(function (p, i) {
+        console.log("deal to player: ", deck);
         $scope.dealToPlayer(i, 8);
     });
     console.log("GIF DECK ", deck.gifs);
@@ -131,6 +143,7 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
             $scope.dealToPlayer(i, (8 - p.hand.length));
         });
         //Assign point (FROM CHES)
+        console.log("BEFORE find by index (card: ", card);
         var winnerIndex = _.findIndex($scope.allPlayers, {_id: card.player._id});
         console.log("winnerIndex", winnerIndex);
         $scope.allPlayers[winnerIndex].score += 1;
@@ -144,6 +157,7 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
         $scope.newDealer();
         $scope.newQuestion();
         $scope.pickedCards = [];
+        console.log("Picked cards???", $scope.pickedCards);
         $scope.myPick = null;
         $scope.showPicks = false;
         $scope.revealReady = false;
@@ -184,7 +198,6 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
     Socket.on('chooseGif', function (card) {
         //$scope.chosenGifs++
         $scope.pickedCards.push(card);
-        console.log("picked cards new", $scope.pickedCards);
         // console.log("chosenGifs", $scope.chosenGifs)
         if ($scope.pickedCards.length === $scope.allPlayers.length - 1) {
             Socket.emit('revealReady')
@@ -202,8 +215,7 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
     //here the dealer is able to click on a card he/she likes and it is recorded for
     //point awards in cleanup.
     $scope.dealerSelection = function (card) {
-        console.log("dealer selection invoked, showPics", $scope.showPicks);
-        if ($scope.phase === 'selection' && $scope.showPicks) {
+        if ($scope.phase === 'selection' && $scope.showPicks && $scope.isDealer()) {
             alert("You selected a card!");
             $scope.phase = 'cleanup';
             Socket.emit('doCleanupPhase', card);
@@ -223,6 +235,7 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
             //wait for all players to be ready
         };
         Socket.on('toQuestionPhase', function () {
+            alert("to question phase emitted, why???")
             if ($scope.isDealer()) {
                 $scope.allPlayers.forEach((player, i, a) => {
                     if ($scope.dealerIndex !== i) $scope.dealToPlayer(i, 1, (i === a.length - 1));
@@ -231,29 +244,21 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
             }
         });
 
-
-        $scope.newDealer = function () {
+        //END TEST
+        //Socket.emit('newDealer');
+    };
+    Socket.on('newDealer', function () {
+        //change scope.phase to selection instaed of _changeDealer
+        if (!$scope.phase === 'cleanup') {
             console.log("new dealer recieved. old dealer", $scope.allPlayers[$scope.dealerIndex]);
-            //BEGINS TEST
             $scope.allPlayers[$scope.dealerIndex].currentStatus = "PLAYER";
             $scope.dealerIndex = $scope.dealerIndex < $scope.allPlayers.length - 1 ? $scope.dealerIndex + 1 : 0;
             $scope.allPlayers[$scope.dealerIndex].currentStatus = "DEALER";
-            //END TEST
-            //Socket.emit('newDealer');
-        };
-        Socket.on('newDealer', function () {
-            //change scope.phase to selection instaed of _changeDealer
-            if (!$scope.phase === 'cleanup') {
-                console.log("new dealer recieved. old dealer", $scope.allPlayers[$scope.dealerIndex]);
-                $scope.allPlayers[$scope.dealerIndex].currentStatus = "PLAYER";
-                $scope.dealerIndex = $scope.dealerIndex < $scope.allPlayers.length - 1 ? $scope.dealerIndex + 1 : 0;
-                $scope.allPlayers[$scope.dealerIndex].currentStatus = "DEALER";
-                $scope._changedDealer = true;
-                $scope.$digest();
-                console.log("new dealer", $scope.allPlayers[$scope.dealerIndex]);
-                $scope.phase = 'question'
-            }
+            $scope._changedDealer = true;
+            $scope.$digest();
+            console.log("new dealer", $scope.allPlayers[$scope.dealerIndex]);
+            $scope.phase = 'question'
+        }
 
-        });
-    }
+    });
 });
