@@ -196,7 +196,10 @@ img {
    // left: 34%;                        /* align them to the center of the screen */
 
 }
-
+.cardText.white > h3 {
+    font-size: 15px;
+    font-weight: 600;
+}
 .cardRow > .col-xs-1 {
     padding: 0;
     width: 5.5%;
