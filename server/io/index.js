@@ -13,7 +13,7 @@ module.exports = function (server) {
 
     socket.on('newPlayer', function(allPlayers, userCount){
       console.log("adding player!!!");
-      io.emit('newPlayerFromServer', allPlayers, userCount )
+      io.emit('newPlayer', allPlayers, userCount )
     });
 
     socket.on('joinRoom', function(deckId){
