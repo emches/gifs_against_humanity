@@ -1,0 +1,37 @@
+{
+  "name": "ngFitText",
+  "version": "4.1.0",
+  "main": [
+    "dist/ng-FitText.min.js"
+  ],
+  "keywords": [
+    "angular",
+    "javascript",
+    "typography"
+  ],
+  "ignore": [
+    "demo",
+    "lib",
+    "node_modules",
+    "src",
+    "test",
+    ".bowerrc",
+    "gulpfile.js",
+    "package.json",
+    "index.html"
+  ],
+  "dependencies": {
+    "angular": "1.x"
+  },
+  "homepage": "https://github.com/patrickmarabeas/ng-FitText.js",
+  "_release": "4.1.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "v4.1.0",
+    "commit": "c21f1a1171854cf5c524372d84b6aeae3181adec"
+  },
+  "_source": "git://github.com/patrickmarabeas/ng-FitText.js.git",
+  "_target": "~4.1.0",
+  "_originalSource": "ngFitText",
+  "_direct": true
+}

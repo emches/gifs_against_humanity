@@ -26,7 +26,7 @@ app.controller('LoginCtrl', function ($scope, Socket, $window, AuthService, $sta
     $scope.error = null;
     $scope.userCount = 0;
     $scope.userConnections = 0;
-    $scope.playerMinimum = 5;
+    $scope.playerMinimum = 3;
     $scope.submitted = false;
     $scope.submitBtnText = "ADD USER";
     $scope.getRemaining = function () {

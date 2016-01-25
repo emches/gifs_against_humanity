@@ -1,0 +1,21 @@
+{
+  "name": "GifsAgainstHumanity",
+  "description": "A generated project at Fullstack Academy",
+  "main": "server/start.js",
+  "authors": [
+    "emilyches <emilychesler@gmail.com>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/emches/gifs_against_humanity",
+  "moduleType": [],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "ngFitText": "~4.1.0"
+  }
+}
