@@ -19,18 +19,18 @@
 <section  >
     <div class="container fill" id="section1">
         <div class = "loginForm col-xs-12">
-        <h1 class="text-center">GIFS AGAINST HUMANITY</h1>
+        <h1 class="text-center">{{header}}</h1>
 <!--         <h2 class="text-center lato animate slideInDown">Change It To Say <b>Something</b> Unique</h2>
  -->        <p class="text-center">
             <br>
                 <form  ng-submit="addUser()">
-                    <input class="loginForm entry" placeholder="enter username" ng-model="newUser" maxlength="18"/>
-                    <button class="btn-success loginForm">ADD USER</button>
+                    <input class="loginForm entry" placeholder="Enter Username (a-z,0-9)" ng-model="newUser" maxlength="18" ng-disabled="submitted"/>
+                    <button ng-class="{'btn-success': newUser.length && !submitted}"
+                            class="loginForm" ng-disabled='!newUser.length || submitted'
+                            ng-hide="userCount >= playerMinimum">{{submitBtnText}}</button>
+                    <button type="button" ng-show="userCount>= playerMinimum" class="btn-warning loginForm" ng-click="joinRoom()">ENTER!!</button>
                 </form>
-                <h1 class="playerName" ng-repeat="player in allPlayers track by player._id">{{player.name}}</h1>
-                <h1 ng-show="userCount>2">ROOM READY</h1>
-                <button ng-show="userCount>2" class="btn-success" ng-click="joinRoom()" ng-show="roomReady">ENTER!!</button>
-
+            <h1 class="playerName" ng-repeat="player in allPlayers track by player._id">{{player.name}}</h1>
             </p>
        </div>
     </div>
