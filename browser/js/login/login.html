@@ -23,6 +23,8 @@
 <!--         <h2 class="text-center lato animate slideInDown">Change It To Say <b>Something</b> Unique</h2>
  -->        <p class="text-center">
             <br>
+            <div ng-show="!readyForUsername"><h3>WAITING FOR PLAYERS</h3></div>
+            <div ng-show="readyForUsername">
                 <form  ng-submit="addUser()">
                     <input class="loginForm entry" placeholder="Enter Username (a-z,0-9)" ng-model="newUser" maxlength="18" ng-disabled="submitted"/>
                     <button ng-class="{'btn-success': newUser.length && !submitted}"
@@ -30,6 +32,7 @@
                             ng-hide="userCount >= playerMinimum">{{submitBtnText}}</button>
                     <button type="button" ng-show="userCount>= playerMinimum" class="btn-warning loginForm" ng-click="joinRoom()">ENTER!!</button>
                 </form>
+            </div>
             <h1 class="playerName" ng-repeat="player in allPlayers track by player._id">{{player.name}}</h1>
             </p>
        </div>

@@ -68,6 +68,13 @@ module.exports = function (server) {
        io.emit('winningCard', card);
    })
 
+   socket.on('newConnection', function(){
+       console.log("fsdafsadf");
+       io.emit('newConnection');
+   })
+        socket.on('readyForUsername', function(){
+            io.emit('readyForUsername');
+        })
     });
 
     return io;
