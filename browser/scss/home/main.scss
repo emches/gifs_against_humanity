@@ -46,7 +46,7 @@ body {
 img {
     height: 100%;
     width: 100%;
-
+    z-index: 10;
 }
 
 .white {
@@ -98,9 +98,10 @@ img {
     lint-height: 1;
     white-space: no-wrap;
     vertical-align: middle;
-    background-color: #777;
-    border-radius: 10px;
-    margin: auto;
+    background-color: #101008;
+    color: #e1cd00;
+    border-radius: 30px;
+    margin: -28px -8px 0 0;
 
 }
 
@@ -216,5 +217,4 @@ img {
 
 }
 .avatar.player-frame {
-
 }
