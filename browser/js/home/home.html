@@ -35,8 +35,8 @@
       <div class="col-xs-9 picksRow">
         <div ng-click="dealerSelection(card)" ng-repeat="card in pickedCards track by $index" class="whitecard">
           <div class="cardText white">
-            <h3 ng-show="!showPicks">GIF CARD</h3>
-            <h3> {{card.player.name}}</h3>
+            <h3 ng-show="!showPicks">GIFS AGAINST HUMANITY</h3>
+            <h3 ng-show="_developer"> {{card.player.name}}</h3>
             <img ng-show="showPicks" class="cardgif" height="100%" width="100%"
                  src="{{card.imageUrl}}"/>
           </div>
