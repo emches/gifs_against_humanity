@@ -192,6 +192,30 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
             Socket.emit('chooseGif', card)
         }
     };
+    $scope.endHover = function(){
+      var myEl = angular.element( document.querySelector('#preview') )
+      while (myEl.length>0){
+        myEl.remove();
+        myEl = angular.element( document.querySelector('#preview'))
+     }
+    }
+    $scope.hoverImage = function($event){
+      var e = $event
+      console.log("event", $event)
+      var xOffset = 10;
+      var yOffset = 30;
+      console.log("trying to hoverImage", this)
+      console.log("e.pageY", e.y)
+      this.t = this.title;
+      this.title = "";
+      var c = (this.t != "") ? "<br/>" + this.t : "";
+      console.log("gif", this.card.imageUrl)
+      $("body").append("<p id='preview'><img src='"+ this.card.imageUrl +"' alt='Image preview' /></p>");
+      $("#preview")
+        .css("top",(e.y - xOffset) + "px")
+        .css("left",(e.x + yOffset) + "px")
+        .fadeIn("fast");
+    }
     Socket.on('updatePlayerStats', function (stats) {
         $scope.allPlayers[$scope.primaryPlayerIndex] = stats[$scope.primaryPlayerIndex];
     });
