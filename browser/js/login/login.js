@@ -11,21 +11,32 @@ app.config(function ($stateProvider) {
 app.controller('LoginCtrl', function ($scope, Socket, $window, AuthService, $state, UserFactory, GifFactory, QuestionFactory) {
 
     Socket.on('connect', function () {
-        console.log("I HAVE CONNECTED")
-
+        console.log("I HAVE CONNECTED");
+        Socket.emit('newConnection');
     });
-    $scope.header = "GIFS AGAINST HUMANITY"
+    Socket.on('newConnection', function(){
+        $scope.userConnections++;
+        console.log("USER CONNET", $scope.userConnections, $scope.playerMinimum);
+        if($scope.userConnections === $scope.playerMinimum) Socket.emit('readyForUsername');
+    });
+
+    $scope.readyForUsername = false;
+    $scope.header = "GIFS AGAINST HUMANITY";
     $scope.login = {};
     $scope.error = null;
     $scope.userCount = 0;
+    $scope.userConnections = 0;
     $scope.playerMinimum = 3;
     $scope.submitted = false;
     $scope.submitBtnText = "ADD USER";
     $scope.getRemaining = function () {
         return $scope.playerMinimum - $scope.userCount - 1;
     };
-
-
+    Socket.on('readyForUsername', function(){
+        $scope.readyForUsername = true;
+        console.log("READY??", $scope.readyForUsername);
+        $scope.$digest();
+    });
     $scope.sendLogin = function (loginInfo) {
 
         $scope.error = null;
@@ -106,5 +117,5 @@ app.controller('LoginCtrl', function ($scope, Socket, $window, AuthService, $sta
         $scope.newUser = "";
         $scope.$digest()
 
-    })
+    });
 });
