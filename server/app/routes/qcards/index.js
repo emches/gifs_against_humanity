@@ -20,7 +20,9 @@ router.get('/', function (req, res, next) {
 router.get('/shuffle', function(req, res, next){
         Question.find({})
             .then(function(questions){
-                    res.status(200).send(_.shuffle(questions))
+                    res.status(200).send(questions)
+
+                   // res.status(200).send(_.shuffle(questions))
                 });
     });
 
