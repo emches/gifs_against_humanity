@@ -64,19 +64,11 @@
     </div>
     <br>
       <button ng-show="isDealer() && revealReady" ng-click="revealPicks()" class="btn btn-success">REVEAL!!</button>
-                <div class="col-xs-11">
-<!--                     <div ng-repeat="card in pickedCards track by $index">
-                        <gif-card is-dealer="isDealer" the-card="card"></gif-card>
-                    </div> -->
-        <!--                     <div id="vert">
-                                HAND
-                            </div> -->
-      </div>
       <div class="col-xs-11">
-        <div ng-click="chooseGif(card)" ng-repeat="card in allPlayers[primaryPlayerIndex].hand">
+        <div ng-mouseover="hoverImage($event)" ng-mouseleave="endHover()" ng-click="chooseGif(card)" ng-repeat="card in allPlayers[primaryPlayerIndex].hand">
           <gif-card is-dealer="true" the-card="card"></gif-card>
         </div>
       </div>
     </div>
-  </div>
+
 </section>
