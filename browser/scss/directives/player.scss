@@ -10,10 +10,13 @@
 }
 .profile-name > h4 {
   font-family: 'Oswald', sans-serif;
-  margin: 3px 0;
+  margin: 0 0 0 5px;
+  width: 300px;
 }
 .col-xs-6.img-frame {
+  padding-right: 0;
   height: 70px;
+  width: 70px;
 
 }
 .avatar.player-img {
@@ -26,14 +29,30 @@
   background-color: #bcdd75 !important;
 }
 .surrounding-frame {
-  padding-left: 0;
-  padding-right: 0;
+  //padding-left: 0;
+  //padding-right: 0;
   margin: 0 2px;
   border: 2px solid black;
   padding: 10px;
   border-radius: 4px;
-  width: 128px; //LATER: width to change depending on player #'s
-  height: 200px;
+  width: 200px; //LATER: width to change depending on player #'s
+  height: 90px;
   float: left;
   background: #fff;
+}
+.profile-status{
+  width: 400px;
+}
+.profile-status > span.status-text {
+  margin: 0 0 0 5px;
+  width: 300px !important;
+}
+
+.float {
+  //float: left;
+}
+#player-score{
+  float: right;
+  height: 34px;
+  width: 34px;
 }

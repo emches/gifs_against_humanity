@@ -5,27 +5,24 @@
     <div class="col-xs-6 img-frame">
         <img class="avatar player-img" ng-src="{{playerInfo.imageURL}}" />
     </div>
-    <div class="col-xs-12">
-        <div class="row">
-            <div class="profile-name col-xs-12">
+    <div class="col-xs-6" id="player-info">
+            <div class="profile-name">
                 <h4>{{playerInfo.name}}<span ng-show="playerInfo._id === myId"> (YOU) </span></h4>
             </div>
-        </div>
-        <div class="row">
-            <div class="profile-status col-xs-12">
+            <div class="profile-status">
                <span class="status-text">{{playerInfo.status}}</span>
             </div>
-        </div>
     </div>
 </div>
-<div class="row row-condensed">
-    <div class="col-xs-12" id="status">
-        <span  id="player-score">{{playerInfo.score}}</span>
-    </div>
-    <div class="col-xs-12">
-        <h3 class="status-text">{{playerInfo.currentStatus}}</h3>
-    </div>
-</div>
+    <div id="player-score">{{playerInfo.score}}</div>
+    <!--<div class="row row-condensed">-->
+    <!--<div class="col-xs-12" id="status">-->
+        <!--&lt;!&ndash;<div id="player-score">{{playerInfo.score}}</div>&ndash;&gt;-->
+    <!--</div>-->
+    <!--<div class="col-xs-12">-->
+        <!--<h3 class="status-text">{{playerInfo.currentStatus}}</h3>-->
+    <!--</div>-->
+<!--</div>-->
 <!--<div class="row current-status">-->
     <!--<div class="col-xs-12">-->
         <!--<h3>{{playerInfo.currentStatus}}</h3>-->
