@@ -7,4 +7,6 @@ var questions = [{"title": "When angular throws an error but only tells you it\'
 {"title": "When you\'re at Fullstack and your friends ask if you can hang midweek", "used": false},
 {"title": "When spend an hour debugging and realize it was just a spelling error", "used": false},
 {"title": "When Sean hear\'s someone say \"for loop\"", "used": false},
-{"title": "When Andrew overhears someone say \"Well at least Taylor Swift writes her own songs\"", "used": false}]
+{"title": "When Andrew overhears someone say \"Well at least Taylor Swift writes her own songs\"", "used": false},
+{"title": "When you have to present after Ches and Nick's presentation", "used": false}]
+
