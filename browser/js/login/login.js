@@ -26,7 +26,7 @@ app.controller('LoginCtrl', function ($scope, Socket, $window, AuthService, $sta
     $scope.error = null;
     $scope.userCount = 0;
     $scope.userConnections = 0;
-    $scope.playerMinimum = 3;
+    $scope.playerMinimum = 5;
     $scope.submitted = false;
     $scope.submitBtnText = "ADD USER";
     $scope.getRemaining = function () {
@@ -56,7 +56,7 @@ app.controller('LoginCtrl', function ($scope, Socket, $window, AuthService, $sta
             $scope.newUser = "";
             return $window.alert("ALPHA-NUMERIC-SPACE CHARACTERS ONLY!");
         }
-        if ($scope.allPlayers.length > 2) {
+        if ($scope.allPlayers.length > 5) {
             return $window.alert("ROOM FULL SORRY!!!");
         }
         if ($scope.allPlayers.indexOf($scope.newUser) > -1) {
