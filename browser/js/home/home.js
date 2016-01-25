@@ -90,7 +90,7 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
         $scope.allPlayers[$scope.dealerIndex].currentStatus = "PLAYER";
         $scope.dealerIndex = $scope.dealerIndex < $scope.allPlayers.length - 1 ? $scope.dealerIndex + 1 : 0;
         $scope.allPlayers[$scope.dealerIndex].currentStatus = "DEALER";
-    }
+    };
     // sets primary player
     // this will soon be depricated
     $scope.primaryPlayer = $scope.allPlayers[$scope.primaryPlayerIndex];
