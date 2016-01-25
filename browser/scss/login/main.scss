@@ -1,8 +1,7 @@
 h1 {
   font-weight: 500;
 }
-#login-form {
-  width: 60%;
+.loginForm {
   margin: 0 auto;
 }
 button {
@@ -14,9 +13,13 @@ input{
 .intense{
   color: #eb2c12;
 }
-.playerName{
-  margin: 5px 0;
-}
 form{
   padding: 0 0 10px 0;
+}
+.playerName {
+  font-family: 'Oswald', sans-serif;
+  margin: 5px 0;
+}
+.container.fill {
+  padding: 20px 0 0;
 }

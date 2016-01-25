@@ -15,8 +15,12 @@ body {
 }
 
 #main {
-  padding-top: 60px;
   margin: 0 auto;
+}
+.shadow {
+  //-moz-box-shadow:    3px 3px 5px 6px #ccc;
+  //-webkit-box-shadow: 3px 3px 5px 6px #ccc;
+  //box-shadow:         4px 4px 4px 0px #6d6d6d;
 }
 
 @import 'directives/main';
