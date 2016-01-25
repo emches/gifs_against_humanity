@@ -84,6 +84,7 @@ app.controller('LoginCtrl', function ($scope, Socket, $window, AuthService, $sta
     };
 
     $scope.joinRoom = function () {
+        $scope.newUser = "";
         console.log("current me", me);
         var gifDeck;
         GifFactory.constructApiDeck()
@@ -114,7 +115,6 @@ app.controller('LoginCtrl', function ($scope, Socket, $window, AuthService, $sta
         if ($scope.userCount >= $scope.playerMinimum) $scope.header = "READY TO PLAY";
         console.log("allPlayers", allPlayers);
         console.log("count", userCount);
-        $scope.newUser = "";
         $scope.$digest()
 
     });
