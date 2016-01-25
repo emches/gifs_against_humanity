@@ -20,7 +20,11 @@ app.config(function ($stateProvider) {
 app.controller('QuestionController', function ($scope, $window, Socket, UserFactory,
                                                GifFactory, QuestionFactory, $state, deck) {
     //phases = 'initialization', ['question', 'selection', 'cleanup'] <-- circular
-
+    var roundWinMsgs = ["You rock!", "GIF Game Strong!", "Wow! You seem like someone who definitely knows how to pronounce \"Gif\" correctly", "I love you.", "And I bet that's not even your final form", "Way to go!!", "Mad 1337 skillz there br0", "I'd buy you a drink! But I'm just a function on the window object", "You must have all the friends!", "I'm more than amazed!", "It's like you were born to play this game!", "You might just be \"The One\"", "All will know your name."];
+    var roundLooseMsgs = ["","","","","This means war", "Shot's fired", "This doesn't mean you're not good, it just means that someone is better than you right now", "Okay, buddy. Gloves off.", "There's still time for redemption"];
+    var randomItem = function(arr){
+        return arr[Math.floor(Math.random() * arr.length)];
+    };
     //Use this to hide dev buttons and info -- when testing/presenting
     $scope._developer = false;
     // console.log("backend deck:", deck);
@@ -142,10 +146,13 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
         $scope.allPlayers.forEach(function (p, i) {
             $scope.dealToPlayer(i, (8 - p.hand.length));
         });
-        //Assign point (FROM CHES)
         console.log("BEFORE find by index (card: ", card);
         var winnerIndex = _.findIndex($scope.allPlayers, {_id: card.player._id});
-        console.log("winnerIndex", winnerIndex);
+
+        if($scope.primaryPlayerIndex === winnerIndex) alert("Your card was selected!\n" + randomItem(roundWinMsgs));
+        else if($scope.primaryPlayerIndex !== $scope.dealerIndex) alert("The dealer has chosen " +$scope.allPlayers[winnerIndex].name + "'s card.\n"+
+                    randomItem(roundLooseMsgs));
+
         $scope.allPlayers[winnerIndex].score += 1;
         if ($scope.primaryPlayerIndex === $scope.winnerIndex) {
             $scope.isWinner = true
@@ -182,6 +189,7 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
     $scope.chooseGif = function (card) {
         console.log("myPick", $scope.myPick);
         console.log("dealer", $scope.isDealer());
+        $scope.endHover();
 
         if (!$scope.myPick && !$scope.isDealer() && $scope.phase === 'question') {
             console.log("choosing!!!", card);
@@ -192,30 +200,37 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
             Socket.emit('chooseGif', card)
         }
     };
-    $scope.endHover = function(){
-      var myEl = angular.element( document.querySelector('#preview') )
-      while (myEl.length>0){
-        myEl.remove();
-        myEl = angular.element( document.querySelector('#preview'))
-     }
-    }
-    $scope.hoverImage = function($event){
-      var e = $event
-      console.log("event", $event)
-      var xOffset = 10;
-      var yOffset = 30;
-      console.log("trying to hoverImage", this)
-      console.log("e.pageY", e.y)
-      this.t = this.title;
-      this.title = "";
-      var c = (this.t != "") ? "<br/>" + this.t : "";
-      console.log("gif", this.card.imageUrl)
-      $("body").append("<p id='preview'><img src='"+ this.card.imageUrl +"' alt='Image preview' /></p>");
-      $("#preview")
-        .css("top",(e.y - xOffset) + "px")
-        .css("left",(e.x + yOffset) + "px")
-        .fadeIn("fast");
-    }
+    var hoverDelay;
+    var stillHere = true;
+    $scope.endHover = function () {
+        clearTimeout(hoverDelay);
+        stillHere = false;
+        var myEl = angular.element(document.querySelector('#preview'));
+        while (myEl.length > 0) {
+            myEl.remove();
+            myEl = angular.element(document.querySelector('#preview'))
+        }
+    };
+    $scope.hoverImage = function ($event, xoff, yoff) {
+        stillHere = this;
+        hoverDelay = setTimeout( () => {
+            if(stillHere !== this) return;
+            var e = $event;
+            console.log("event", $event);
+            var xOffset = xoff;
+            var yOffset = yoff;
+            this.t = this.title;
+            this.title = "";
+            var c = (this.t != "") ? "<br/>" + this.t : "";
+            console.log("gif", this.card.imageUrl);
+            $("body").append("<p id='preview'><img src='" + this.card.imageUrl + "' alt='Image preview' /></p>");
+            $("#preview")
+                .css("top", (e.y - xOffset) + "px")
+                .css("left", (e.x + yOffset) + "px")
+                .fadeIn("fast");
+
+        }, 300);
+    };
     Socket.on('updatePlayerStats', function (stats) {
         $scope.allPlayers[$scope.primaryPlayerIndex] = stats[$scope.primaryPlayerIndex];
     });
@@ -240,26 +255,17 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
     //point awards in cleanup.
     $scope.dealerSelection = function (card) {
         if ($scope.phase === 'selection' && $scope.showPicks && $scope.isDealer()) {
-            alert("You selected a card!");
             $scope.phase = 'cleanup';
             Socket.emit('doCleanupPhase', card);
             //$scope.toQuestionPhase();
         }
-        //FROM CHES - this logic is taken care of when checking the $scope.phase now
-        if (!$scope.winningCard) {
-            //    Socket.emit('winningCard', card)
-            //}
-            //TODO: point system goes here.
-
-        }
-
         //CLEANUP PHASE
         $scope.toQuestionPhase = function () {
             Socket.emit('toQuestionPhase');
             //wait for all players to be ready
         };
         Socket.on('toQuestionPhase', function () {
-            alert("to question phase emitted, why???")
+            //---DEPRICATED--- this Socket should be removed in the future.
             if ($scope.isDealer()) {
                 $scope.allPlayers.forEach((player, i, a) => {
                     if ($scope.dealerIndex !== i) $scope.dealToPlayer(i, 1, (i === a.length - 1));
@@ -267,9 +273,6 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
                 Socket.emit('readyForNextRound');
             }
         });
-
-        //END TEST
-        //Socket.emit('newDealer');
     };
     Socket.on('newDealer', function () {
         //change scope.phase to selection instaed of _changeDealer
