@@ -36,7 +36,7 @@
           <div class="cardText white">
             <h3 ng-show="!showPicks">GIFS AGAINST HUMANITY</h3>
             <h3 ng-show="_developer"> {{card.player.name}}</h3>
-            <img ng-show="showPicks" class="cardgif" height="100%" width="100%"
+            <img ng-mouseover="hoverImage($event, -40, 30)" ng-mouseleave="endHover()" ng-show="showPicks" class="cardgif" height="100%" width="100%"
                  src="{{card.imageUrl}}"/>
           </div>
         </div>
@@ -65,8 +65,8 @@
     <br>
       <button ng-show="isDealer() && revealReady" ng-click="revealPicks()" class="btn btn-success">REVEAL!!</button>
       <div class="col-xs-11">
-        <div ng-mouseover="hoverImage($event)" ng-mouseleave="endHover()" ng-click="chooseGif(card)" ng-repeat="card in allPlayers[primaryPlayerIndex].hand">
-          <gif-card is-dealer="true" the-card="card"></gif-card>
+        <div ng-click="chooseGif(card)" ng-repeat="card in allPlayers[primaryPlayerIndex].hand">
+          <gif-card ng-mouseover="hoverImage($event, 200, 30)" ng-mouseleave="endHover()" is-dealer="true" the-card="card"></gif-card>
         </div>
       </div>
     </div>
