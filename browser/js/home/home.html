@@ -36,18 +36,11 @@
           <div class="cardText white">
             <h3 ng-show="!showPicks">GIFS AGAINST HUMANITY</h3>
             <h3 ng-show="_developer"> {{card.player.name}}</h3>
-            <img ng-mouseover="hoverImage($event, -40, 30)" ng-mouseleave="endHover()" ng-show="showPicks" class="cardgif" height="100%" width="100%"
+            <img ng-mouseover="hoverImage($event, -40, 30)" ng-mouseleave="endHover()" ng-show="showPicks"
+                 class="cardgif" height="100%" width="100%"
                  src="{{card.imageUrl}}"/>
           </div>
         </div>
-      <!--This is the OLD card selection-->
-        <!--<div ng-repeat="card in pickedCards track by $index" class="whitecard">-->
-          <!--<div class="cardText white" ng-click="dealerSelection(card)">-->
-            <!--<h3 ng-show="!showPicks">GIFS AGAINST HUMANITY</h3>-->
-            <!--<img ng-show="showPicks" class="cardgif" height="100%" width="100%"-->
-                 <!--src="{{card.imageUrl}}"/>-->
-          <!--</div>-->
-        <!--</div>-->
       </div>
     </div>
     <div class="row" ng-show="_developer">
@@ -63,12 +56,24 @@
       </div>
     </div>
     <br>
-      <button ng-show="isDealer() && revealReady" ng-click="revealPicks()" class="btn btn-success">REVEAL!!</button>
-      <div class="col-xs-11">
-        <div ng-click="chooseGif(card)" ng-repeat="card in allPlayers[primaryPlayerIndex].hand">
-          <gif-card ng-mouseover="hoverImage($event, 200, 30)" ng-mouseleave="endHover()" is-dealer="true" the-card="card"></gif-card>
-        </div>
+    <button ng-show="isDealer() && revealReady" ng-click="revealPicks()" class="btn btn-success">REVEAL!!</button>
+    <div class="col-xs-11">
+      <div ng-click="chooseGif(card)" ng-repeat="card in allPlayers[primaryPlayerIndex].hand">
+        <gif-card ng-mouseover="hoverImage($event, 200, 30)" ng-mouseleave="endHover()" is-dealer="true"
+                  the-card="card"></gif-card>
       </div>
     </div>
-
+  </div>
+  <div id="game-bar">
+    <div id="left">
+      <div id="menu"><i class="glyphicon glyphicon-menu-hamburger"></i>
+      </div><div id="logo">GIFS<br/>AGAINST<br/>HUMANITY.</div>
+    </div><div id="center">{{stats.message}}</div><div id="right">
+      <div id="round">Round: {{stats.round}}</div>
+      <div id="goal">
+        <div>{{stats.goal}}</div>
+        <div id="goal-text">to win</div>
+      </div>
+    </div>
+  </div>
 </section>
