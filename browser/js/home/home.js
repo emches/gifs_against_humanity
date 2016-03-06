@@ -29,7 +29,7 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
     $scope._developer = false;
     // console.log("backend deck:", deck);
     Socket.on('connect', function () {
-        console.log("I HAVE CONNECTED");
+        // TODO: is this needed?
     });
     //for player profile directive
     $scope.localId = $state.params.me._id;
@@ -37,11 +37,16 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
     // INITIALIZATION
     $scope.questionDeck = deck.questions;
     $scope.gifDeck = deck.gifs;
-    $scope.allPlayers = $state.params.allPlayers;
+    $scope.allPlayers = $state.params.allPlayers; // for accessing up-to-date data
     $scope.gameDecksId = $state.params.deckId;
     $scope._changedDealer = false;
     $scope.isWinner = false;
     $scope.winningCard = null;
+    $scope.stats = {
+        message: "Message goes here",
+        round: 1,
+        goal: 5,
+    };
     var numReadyForNextRound = 0;
 
     //QUESTION PHASE
