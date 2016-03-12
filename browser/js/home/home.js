@@ -71,7 +71,6 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
             break;
         }
     }
-    console.log("PLAYER D", $scope.primaryPlayerIndex);
 
     $scope.getLocalPlayer = function () {
         return $scope.allPlayers[$scope.primaryPlayerIndex];
@@ -178,7 +177,9 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
     });
 
     $scope.revealPicks = function () {
-        Socket.emit('revealPicks')
+        if($scope.revealReady) {
+            Socket.emit('revealPicks');
+        }
     };
 
     Socket.on('revealPicks', function () {
@@ -254,7 +255,16 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
         $scope.$digest();
         Socket.emit('updateOnePlayerStats', $scope.allPlayers, $scope.primaryPlayerIndex);
     });
-
+    $scope.dealerButtonText = function() {
+        console.log($scope.pickedCards, $scope.allPlayers);
+        if($scope.revealReady) { return "REVEAL!" }
+        else {
+            var remaining = ($scope.allPlayers.length - $scope.pickedCards.length - 1);
+            return "waiting on " +
+             remaining +
+            " submission" + (remaining === 1 ? "" : "s") + ".";
+        }
+    };
     //SELECTION PHASE
     //here the dealer is able to click on a card he/she likes and it is recorded for
     //point awards in cleanup.

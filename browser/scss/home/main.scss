@@ -14,25 +14,29 @@ body {
   }
 }
 
+.container#game-container {
+    width: 100%;
+}
+
 #blackcard {
     border: 2px solid black;
     background: black;
-    width: 180px;
+    width: 160px;
     height: 215px;
     display: inline-block;
     margin: 20px;
-    border: 2px solid #444;
     border-radius: 2px;
 
 }
 
 .cardText {
-    font: 'Tahoma';
     font-weight: bold;
+    font-size: 24px;
 }
 .black {
     color: white;
-    font-size: 30px;
+    font-size: 24px;
+    font-weight: bold;
     margin-top: -2px;
     padding: 0 15px 0px 15px;
     line-height: 25px;
@@ -42,7 +46,64 @@ body {
     height: 100%;
     width: 100%;
 }
+.player-row {
 
+}
+.table {
+    display: block;
+    margin: 0 auto;
+}
+.blackcard-display {
+    display: inline-block;
+    float: left;
+}
+.picksRow {
+    background-color: rgba(61, 95, 110, 0.44);
+    border-radius: 10px;
+    display: inline-block;
+    width: 70%;
+    margin: 27px 10px 20px 0;
+    height: 200px;
+    padding: 0 10px;
+    float: left;
+    list-style: none;
+    position: relative;
+}
+.picksRow > .whitecard {
+    margin-top: 15px;
+}
+
+.player-hand {
+    //width: 100%;
+    height: 180px;
+    display: block;
+    align-content: center;
+    margin: 0 auto;
+    padding: 0 auto;
+    max-width: 1100px;
+    //overflow-y: hidden;
+    //overflow-x: hidden;
+}
+#hand-block {
+    float: left;
+    position: fixed;
+    background: rgba(235, 215, 240, 0.64);
+    height: 100%;
+    width: 100%;
+    max-height: 190px;
+    display: table-cell;
+    align-content: center;
+    button {
+        display: block;
+        margin: 0 auto;
+        &[disabled]{
+            background: grey;
+            border-color: black;
+            opacity: 1;
+        }
+    }
+
+}
 img {
     height: 100%;
     width: 100%;
@@ -55,14 +116,20 @@ img {
     padding: 5px 10px 0px 10px;
     line-height: 15px;
 }
-
+.whitecard-container {
+    display: inline-block;
+    float: left;
+    width: 12%;
+    max-width: 132px;
+    min-width: 30px;
+}
 .whitecard {
     border: 2px solid #000;
     background: #fff;
     float: left;
     width: 130px;
     height: 165px;
-    display: inline-block;
+    display: inline;
     margin: 5px 2px;
     border-radius: 2px;
 }
@@ -77,10 +144,9 @@ img {
     box-shadow:0px 0px 30px gray; /*CSS3 shadow: 30px blurred shadow all around image*/
     z-index: 1;
     border: 2px solid #ffef00;
+    margin-top: -10px;
 }
-.picksRow > .whitecard {
-    margin-top: 25px;
-}
+
 .img-frame {
     width: 110px;
     height: 100px;
@@ -129,18 +195,6 @@ img {
     list-style: none;
     position: relative;
 }
-
-.picksRow {
-    background-color: rgba(61, 95, 110, 0.44);
-    border-radius: 10px;
-    margin: 20px 0;
-    //width: 100%;
-    height: 218px;
-    display: table;
-    list-style: none;
-    position: relative;
-}
-
 #vert {
     -webkit-transform:rotate(270deg);
     font-size: 50px;
@@ -229,6 +283,7 @@ img {
     color:#fff;
     max-width: 400px;
     max-height: 400px;
+    overflow: hidden;
 }
 
 div#game-bar {
