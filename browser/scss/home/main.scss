@@ -46,7 +46,9 @@ body {
     height: 100%;
     width: 100%;
 }
+.player-row {
 
+}
 .table {
     display: block;
     margin: 0 auto;
@@ -81,6 +83,26 @@ body {
     max-width: 1100px;
     //overflow-y: hidden;
     //overflow-x: hidden;
+}
+#hand-block {
+    float: left;
+    position: fixed;
+    background: rgba(235, 215, 240, 0.64);
+    height: 100%;
+    width: 100%;
+    max-height: 190px;
+    display: table-cell;
+    align-content: center;
+    button {
+        display: block;
+        margin: 0 auto;
+        &[disabled]{
+            background: grey;
+            border-color: black;
+            opacity: 1;
+        }
+    }
+
 }
 img {
     height: 100%;
@@ -122,6 +144,7 @@ img {
     box-shadow:0px 0px 30px gray; /*CSS3 shadow: 30px blurred shadow all around image*/
     z-index: 1;
     border: 2px solid #ffef00;
+    margin-top: -10px;
 }
 
 .img-frame {

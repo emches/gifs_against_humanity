@@ -9,7 +9,7 @@
       </div>
     </div>
 
-    <div class="row">
+    <div class="player-row">
       <div ng-repeat="playerInfo in allPlayers" class="avatar player-frame">
         <player player-info="playerInfo" my-id="localId"></player>
       </div>
@@ -56,8 +56,12 @@
       </div>
     </div>
     <br>
-    <button ng-show="isDealer() && revealReady" ng-click="revealPicks()" class="btn btn-success">REVEAL!!</button>
+    <!--button ng-show="isDealer() && revealReady" ng-click="revealPicks()" class="btn btn-success">REVEAL!!</button-->
     <div class="player-hand clearfix">
+      <div id="hand-block" ng-show="isDealer()">
+        <h1>You're the Dealer</h1>
+        <button ng-click="revealPicks()" class="btn btn-success" ng-disabled="!revealReady">{{dealerButtonText()}}</button>
+      </div>
       <div ng-click="chooseGif(card)" ng-repeat="card in allPlayers[primaryPlayerIndex].hand" class="whitecard-container">
         <gif-card ng-mouseover="hoverImage($event, 200, 30)" ng-mouseleave="endHover()" is-dealer="true"
                   the-card="card"></gif-card>
