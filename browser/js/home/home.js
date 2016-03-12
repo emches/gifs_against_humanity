@@ -71,7 +71,6 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
             break;
         }
     }
-    console.log("PLAYER D", $scope.primaryPlayerIndex);
 
     $scope.getLocalPlayer = function () {
         return $scope.allPlayers[$scope.primaryPlayerIndex];

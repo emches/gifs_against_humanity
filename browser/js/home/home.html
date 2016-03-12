@@ -1,5 +1,5 @@
 <section id="home">
-  <div class="container">
+  <div class="container" id="game-container">
     <div style="color:white" ng-show="_developer">
       <div class="row">
         <div class="col-xs-3">
@@ -23,15 +23,15 @@
       </div>
     </div>
 
-    <div class="row">
-      <div class="col-xs-3">
+    <div class="table clearfix"><!--Table new!-->
+      <div class="blackcard-display"><!-- blackcard new!-->
         <div id="blackcard" class="shadow">
           <div class="cardText black"><h3 data-fittext-min="20">{{questionDeck[0].title}}</h3>
             <h3 ng-show="!questionDeck[0]">DECK EMPTY!!</h3>
           </div>
         </div>
       </div>
-      <div class="col-xs-9 picksRow">
+      <div class="picksRow">
         <div ng-click="dealerSelection(card)" ng-repeat="card in pickedCards track by $index" class="whitecard">
           <div class="cardText white">
             <h3 ng-show="!showPicks">GIFS AGAINST HUMANITY</h3>
@@ -57,8 +57,8 @@
     </div>
     <br>
     <button ng-show="isDealer() && revealReady" ng-click="revealPicks()" class="btn btn-success">REVEAL!!</button>
-    <div class="col-xs-11">
-      <div ng-click="chooseGif(card)" ng-repeat="card in allPlayers[primaryPlayerIndex].hand">
+    <div class="player-hand clearfix">
+      <div ng-click="chooseGif(card)" ng-repeat="card in allPlayers[primaryPlayerIndex].hand" class="whitecard-container">
         <gif-card ng-mouseover="hoverImage($event, 200, 30)" ng-mouseleave="endHover()" is-dealer="true"
                   the-card="card"></gif-card>
       </div>
