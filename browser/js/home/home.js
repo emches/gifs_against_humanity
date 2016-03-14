@@ -10,7 +10,6 @@ app.config(function ($stateProvider) {
         },
         resolve: {
             deck: function ($stateParams, GifFactory) {
-                console.log("[resolve] starting..", $stateParams);
                 return GifFactory.getConstructedDeck($stateParams.deckId);
             }
         }
@@ -27,10 +26,6 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
     };
     //Use this to hide dev buttons and info -- when testing/presenting
     $scope._developer = false;
-    // console.log("backend deck:", deck);
-    Socket.on('connect', function () {
-        // TODO: is this needed?
-    });
     //for player profile directive
     $scope.localId = $state.params.me._id;
     $scope.phase = 'initialization';
@@ -71,7 +66,6 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
             break;
         }
     }
-    console.log("PLAYER D", $scope.primaryPlayerIndex);
 
     $scope.getLocalPlayer = function () {
         return $scope.allPlayers[$scope.primaryPlayerIndex];
@@ -89,12 +83,10 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
 
     //initialize game functions
     $scope.newQuestion = function () {
-        console.log("new question request from front");
         deck.questions.shift();
         Socket.emit('newQuestion', deck.questions)
     };
     $scope.newDealer = function () {
-        console.log("new dealer recieved. old dealer", $scope.allPlayers[$scope.dealerIndex]);
         //BEGINS TEST
         $scope.allPlayers[$scope.dealerIndex].currentStatus = "PLAYER";
         $scope.dealerIndex = $scope.dealerIndex < $scope.allPlayers.length - 1 ? $scope.dealerIndex + 1 : 0;
@@ -117,15 +109,12 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
             cards--
         }
         Socket.emit('updateGifDeck', deck.gifs);
-        console.log("a new hand", $scope.getLocalPlayer().hand);
         //singular update of all hands (at the last loop call from cleanup phase
         if (shouldUpdate) {
-            console.log("UPDATING PLAYER STATS: ", $scope.allPlayers);
             Socket.emit('updateOnePlayerStats', $scope.allPlayers, $scope.primaryPlayerIndex);
         }
     };
     Socket.on('updateOnePlayerStats', function (stats, ind) {
-        console.log("updateOnePlayerStats socket: updating...", $scope.allPlayers[ind], stats[ind]);
         $scope.allPlayers[ind] = stats[ind];
         console.log("new player info", $scope.allPlayers);
     });
@@ -134,7 +123,6 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
     });
 
     $scope.allPlayers.forEach(function (p, i) {
-        console.log("deal to player: ", deck);
         $scope.dealToPlayer(i, 8);
     });
     console.log("GIF DECK ", deck.gifs);
@@ -151,7 +139,6 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
         $scope.allPlayers.forEach(function (p, i) {
             $scope.dealToPlayer(i, (8 - p.hand.length));
         });
-        console.log("BEFORE find by index (card: ", card);
         var winnerIndex = _.findIndex($scope.allPlayers, {_id: card.player._id});
 
         if($scope.primaryPlayerIndex === winnerIndex) alert("Your card was selected!\n" + randomItem(roundWinMsgs));
@@ -165,11 +152,9 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
         $scope.winningCard = card;
 
         //Continue cleanup (FROM NICK)
-        console.log("END OF DEAL NEW CARDS", $scope.allPlayers);
         $scope.newDealer();
         $scope.newQuestion();
         $scope.pickedCards = [];
-        console.log("Picked cards???", $scope.pickedCards);
         $scope.myPick = null;
         $scope.showPicks = false;
         $scope.revealReady = false;
@@ -192,15 +177,11 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
 
     //when player chooses a card during question phase
     $scope.chooseGif = function (card) {
-        console.log("myPick", $scope.myPick);
-        console.log("dealer", $scope.isDealer());
         $scope.endHover();
 
         if (!$scope.myPick && !$scope.isDealer() && $scope.phase === 'question') {
-            console.log("choosing!!!", card);
             $scope.myPick = card;
             _.remove($scope.allPlayers[$scope.primaryPlayerIndex].hand, {imageUrl: card.imageUrl});
-            console.log("new gif deck", $scope.allPlayers[$scope.primaryPlayerIndex].hand);
             card.player = $scope.primaryPlayer;
             Socket.emit('chooseGif', card)
         }
@@ -221,13 +202,11 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
         hoverDelay = setTimeout( () => {
             if(stillHere !== this) return;
             var e = $event;
-            console.log("event", $event);
             var xOffset = xoff;
             var yOffset = yoff;
             this.t = this.title;
             this.title = "";
             var c = (this.t != "") ? "<br/>" + this.t : "";
-            console.log("gif", this.card.imageUrl);
             $("body").append("<p id='preview'><img src='" + this.card.imageUrl + "' alt='Image preview' /></p>");
             $("#preview")
                 .css("top", (e.y - xOffset) + "px")
@@ -240,9 +219,7 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
         $scope.allPlayers[$scope.primaryPlayerIndex] = stats[$scope.primaryPlayerIndex];
     });
     Socket.on('chooseGif', function (card) {
-        //$scope.chosenGifs++
         $scope.pickedCards.push(card);
-        // console.log("chosenGifs", $scope.chosenGifs)
         if ($scope.pickedCards.length === $scope.allPlayers.length - 1) {
             Socket.emit('revealReady')
         }

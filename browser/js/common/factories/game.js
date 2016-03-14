@@ -6,7 +6,6 @@ app.factory('GameFactory', function ($http) {
                 gifs: gifDeck
             })
             .then(deckRes => {
-                console.log("GOT baCK FROM DECK psost", deckRes);
                 return deckRes.data;
             });
         }

@@ -11,12 +11,10 @@ app.config(function ($stateProvider) {
 app.controller('LoginCtrl', function ($scope, Socket, $window, AuthService, $state, UserFactory, GifFactory, QuestionFactory) {
 
     Socket.on('connect', function () {
-        console.log("I HAVE CONNECTED");
         Socket.emit('newConnection');
     });
     Socket.on('newConnection', function(){
         $scope.userConnections++;
-        console.log("USER CONNET", $scope.userConnections, $scope.playerMinimum);
         if($scope.userConnections === $scope.playerMinimum) Socket.emit('readyForUsername');
     });
 
@@ -34,11 +32,9 @@ app.controller('LoginCtrl', function ($scope, Socket, $window, AuthService, $sta
     };
     Socket.on('readyForUsername', function(){
         $scope.readyForUsername = true;
-        console.log("READY??", $scope.readyForUsername);
         $scope.$digest();
     });
     $scope.sendLogin = function (loginInfo) {
-
         $scope.error = null;
 
         AuthService.login(loginInfo).then(function () {
@@ -67,24 +63,14 @@ app.controller('LoginCtrl', function ($scope, Socket, $window, AuthService, $sta
         UserFactory.addUser($scope.newUser)
             .then(function (user) {
                 user.currentStatus = "PLAYER";
-                // $scope.allPlayers.push(user)
-                //$scope.currentUser = user
-                // console.log("new current", $scope.currentUser)
                 $scope.userCount += 1;
                 $scope.allPlayers.push(user);
                 me = user;
-                console.log("new count", $scope.userCount);
-                // if ($scope.userCount===6){ $scope.roomReady= true}
-
                 Socket.emit('newPlayer', $scope.allPlayers, $scope.userCount);
-
-
             })
-
     };
 
     $scope.joinRoom = function () {
-        console.log("current me", me);
         var gifDeck;
         GifFactory.constructApiDeck()
             .then(deck => gifDeck = deck)
@@ -94,9 +80,6 @@ app.controller('LoginCtrl', function ($scope, Socket, $window, AuthService, $sta
     };
 
     Socket.on('gameStart', function (deckId) {
-
-        console.log("NEW VARS", deckId);
-        console.log("PLAYERS", $scope.allPlayers);
         $state.go('home', {
             allPlayers: $scope.allPlayers,
             me: me,
@@ -112,10 +95,7 @@ app.controller('LoginCtrl', function ($scope, Socket, $window, AuthService, $sta
         $scope.allPlayers = allPlayers;
         $scope.userCount = userCount;
         if ($scope.userCount >= $scope.playerMinimum) $scope.header = "READY TO PLAY";
-        console.log("allPlayers", allPlayers);
-        console.log("count", userCount);
         $scope.newUser = "";
-        $scope.$digest()
-
+        $scope.$digest();
     });
 });

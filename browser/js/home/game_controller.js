@@ -21,8 +21,6 @@ app.controller('GameController', function ($scope, GifFactory, QuestionFactory) 
     $scope.questionDeck = [];
     QuestionFactory.constructQuestionDeck()
         .then(deck => $scope.questionDeck = deck);
-
-
     //the "Table"
     $scope.currentQuestion = null;
     $scope.submittedGifs = [];
