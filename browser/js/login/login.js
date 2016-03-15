@@ -8,7 +8,7 @@ app.config(function ($stateProvider) {
 
 });
 
-app.controller('LoginCtrl', function ($scope, Socket, $window, AuthService, $state, UserFactory, GifFactory, QuestionFactory) {
+app.controller('LoginCtrl', function ($scope, Socket, $window, AuthService, $state, GameFactory, UserFactory, GifFactory, QuestionFactory) {
 
     Socket.on('connect', function () {
         Socket.emit('newConnection');
@@ -24,7 +24,7 @@ app.controller('LoginCtrl', function ($scope, Socket, $window, AuthService, $sta
     $scope.error = null;
     $scope.userCount = 0;
     $scope.userConnections = 0;
-    $scope.playerMinimum = 3;
+    $scope.playerMinimum = 2;
     $scope.submitted = false;
     $scope.submitBtnText = "ADD USER";
     $scope.getRemaining = function () {
@@ -76,14 +76,23 @@ app.controller('LoginCtrl', function ($scope, Socket, $window, AuthService, $sta
             .then(deck => gifDeck = deck)
             .then(() => QuestionFactory.constructQuestionDeck())
             .then(questionDeck => GifFactory.saveConstructedDecks(questionDeck, gifDeck))
-            .then(savedDeck => Socket.emit('joinRoom', savedDeck._id));
+            .then(function(savedDeck) {
+                console.log("saved", savedDeck);
+                return GameFactory.createRoom(savedDeck, me)
+
+            })
+            .then(function(response){
+                console.log("passed saved", response.data)
+                Socket.emit('joinRoom', response.data);
+            });
     };
 
-    Socket.on('gameStart', function (deckId) {
+    Socket.on('gameStart', function (room) {
+        console.log("starting", room.deck)
         $state.go('home', {
             allPlayers: $scope.allPlayers,
             me: me,
-            deckId: deckId
+            deckId: room.deck
         });
     });
 

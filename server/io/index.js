@@ -13,8 +13,9 @@ module.exports = function (server) {
         io.emit('newPlayer', allPlayers, userCount )
       });
 
-      socket.on('joinRoom', function(deckId){
-          io.emit('gameStart', deckId);
+      socket.on('joinRoom', function(room){
+          console.log("starting", room)
+          io.emit('gameStart', room);
       });
 
       socket.on('newQuestion', function(questionDeck){

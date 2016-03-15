@@ -7,6 +7,7 @@ router.use('/qcards', require('./qcards'));
 router.use('/users', require('./users'));
 router.use('/gifs', require('./gifs'));
 router.use('/deck', require('./deck'));
+router.use('/games', require('./games'));
 
 // Make sure this is after all of
 // the registered routes!

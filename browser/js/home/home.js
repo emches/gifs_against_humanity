@@ -10,6 +10,7 @@ app.config(function ($stateProvider) {
         },
         resolve: {
             deck: function ($stateParams, GifFactory) {
+                console.log("trying to resolve", $stateParams)
                 return GifFactory.getConstructedDeck($stateParams.deckId);
             }
         }

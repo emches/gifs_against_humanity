@@ -5,3 +5,4 @@ require('./user');
 require('./question');
 require('./gif');
 require('./avatar');
+require('./game');

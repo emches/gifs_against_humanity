@@ -8,6 +8,13 @@ app.factory('GameFactory', function ($http) {
             .then(deckRes => {
                 return deckRes.data;
             });
+        },
+        createRoom: function(deck, player){
+            return $http.post('/api/games/', {
+                deck: deck,
+                player: player,
+                playerCount: 3
+            })
         }
     }
 });
