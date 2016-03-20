@@ -18,7 +18,7 @@ app.config(function ($stateProvider) {
 });
 
 app.controller('QuestionController', function ($scope, $window, Socket, UserFactory,
-                                               GifFactory, QuestionFactory, $state, deck) {
+                                               GifFactory, QuestionFactory, $state, deck, $timeout) {
     //phases = 'initialization', ['question', 'selection', 'cleanup'] <-- circular
     var roundWinMsgs = ["You rock!", "GIF Game Strong!", "Wow! You seem like someone who definitely knows how to pronounce \"Gif\" correctly", "I love you.", "And I bet that's not even your final form", "Way to go!!", "Mad 1337 skillz there br0", "I'd buy you a drink! But I'm just a function on the window object", "You must have all the friends!", "I'm more than amazed!", "It's like you were born to play this game!", "You might just be \"The One\"", "All will know your name."];
     var roundLooseMsgs = ["","","","","This means war", "Shot's fired", "This doesn't mean you're not good, it just means that someone is better than you right now", "Okay, buddy. Gloves off.", "There's still time for redemption"];
@@ -43,7 +43,7 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
     $scope.isWinner = false;
     $scope.winningCard = null;
     $scope.stats = {
-        message: "Message goes here",
+        message: "Chat Goes here!",
         round: 1,
         goal: 5,
     };
@@ -133,24 +133,29 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
     });
 
     $scope.allPlayers.forEach(function (p, i) {
-        console.log("deal to player: ", deck);
         $scope.dealToPlayer(i, 8);
     });
-    console.log("GIF DECK ", deck.gifs);
 
-    //QUESTION PHASE
+    //QUESTION PHASE BEGIN;
     $scope.phase = 'question';
+
     Socket.on('changeQuestion', function (questionDeck) {
         deck.questions = questionDeck;
         $scope.questionDeck = deck.questions;
-        $scope.$digest()
+        $scope.$digest();
     });
+    $timeout(function() {
+        if ($scope.primaryPlayerIndex !== $scope.dealerIndex) {
+            $scope.timer = new Timer(45, null, function () {
+                $scope.$digest();
+            });
+        }
+    },0);
 
     Socket.on('doCleanupPhase', function (card) {
         $scope.allPlayers.forEach(function (p, i) {
             $scope.dealToPlayer(i, (8 - p.hand.length));
         });
-        console.log("BEFORE find by index (card: ", card);
         var winnerIndex = _.findIndex($scope.allPlayers, {_id: card.player._id});
 
         if($scope.primaryPlayerIndex === winnerIndex) alert("Your card was selected!\n" + randomItem(roundWinMsgs));
@@ -164,11 +169,9 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
         $scope.winningCard = card;
 
         //Continue cleanup (FROM NICK)
-        console.log("END OF DEAL NEW CARDS", $scope.allPlayers);
         $scope.newDealer();
         $scope.newQuestion();
         $scope.pickedCards = [];
-        console.log("Picked cards???", $scope.pickedCards);
         $scope.myPick = null;
         $scope.showPicks = false;
         $scope.revealReady = false;
@@ -250,6 +253,14 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
         $scope.$digest();
     });
     Socket.on('revealReady', function () {
+
+        //dealer must click the button!
+        if($scope.isDealer()){
+            window.timer = $scope.timer = new Timer(10, $scope.revealPicks, function(){
+                $scope.$digest();
+            });
+        }
+
         $scope.revealReady = true;
         $scope.phase = 'selection';
         $scope.$digest();
