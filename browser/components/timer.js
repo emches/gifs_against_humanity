@@ -3,8 +3,8 @@
 var Timer = function (timer, fn, intervalFn) {
 
     this.mins = 0;
-    //this.secs = timer;
-    this.secs = 10;
+    this.secs = timer;
+    //this.secs = 10;
     this.running = true;
 
     while (this.secs > 59) {
