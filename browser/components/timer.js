@@ -3,7 +3,8 @@
 var Timer = function (timer, fn, intervalFn) {
 
     this.mins = 0;
-    this.secs = timer;
+    //this.secs = timer;
+    this.secs = 10;
     this.running = true;
 
     while (this.secs > 59) {
@@ -36,7 +37,10 @@ var Timer = function (timer, fn, intervalFn) {
         }).bind(this),
         1000);
 
-    this.stop = () => clearInterval(this.interval);
+    this.stop = () => {
+        clearInterval(this.interval);
+        this.running = false;
+    }
 };
 Timer.prototype.getSecs = function(){
     return this.secs < 10 ? '0' + this.secs : this.secs;

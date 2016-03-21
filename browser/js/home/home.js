@@ -87,7 +87,18 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
     //initialize game functions
     $scope.newQuestion = function () {
         deck.questions.shift();
-        Socket.emit('newQuestion', deck.questions)
+        Socket.emit('newQuestion', deck.questions);
+
+        if ($scope.primaryPlayerIndex !== $scope.dealerIndex) {
+            $scope.timer = new Timer(45, function(){
+                var random = Math.floor(Math.random() * $scope.allPlayers[$scope.primaryPlayerIndex].hand.length);
+                var randomCard = $scope.allPlayers[$scope.primaryPlayerIndex].hand[random];
+                console.log("random card", randomCard);
+                $scope.chooseGif(randomCard);
+            }, function () {
+                $scope.$digest();
+            });
+        }
     };
     $scope.newDealer = function () {
         //BEGINS TEST
@@ -141,27 +152,46 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
     });
     $timeout(function() {
         if ($scope.primaryPlayerIndex !== $scope.dealerIndex) {
-            $scope.timer = new Timer(45, null, function () {
+            $scope.timer = new Timer(45, function(){
+                var random = Math.floor(Math.random() * $scope.allPlayers[$scope.primaryPlayerIndex].hand.length);
+                var randomCard = $scope.allPlayers[$scope.primaryPlayerIndex].hand[random];
+                console.log("random card", randomCard);
+                $scope.chooseGif(randomCard);
+            }, function () {
                 $scope.$digest();
             });
         }
     },0);
 
     Socket.on('doCleanupPhase', function (card) {
+        $('#hand-block > h1').html("You're the Dealer");
         $scope.allPlayers.forEach(function (p, i) {
             $scope.dealToPlayer(i, (8 - p.hand.length));
         });
-        var winnerIndex = _.findIndex($scope.allPlayers, {_id: card.player._id});
 
-        if($scope.primaryPlayerIndex === winnerIndex) alert("Your card was selected!\n" + randomItem(roundWinMsgs));
-        else if($scope.primaryPlayerIndex !== $scope.dealerIndex) alert("The dealer has chosen " +$scope.allPlayers[winnerIndex].name + "'s card.\n"+
-                    randomItem(roundLooseMsgs));
-
-        $scope.allPlayers[winnerIndex].score += 1;
-        if ($scope.primaryPlayerIndex === $scope.winnerIndex) {
-            $scope.isWinner = true
+        if(card === null){
+            // Dealer did not select
+            // Dealer looses a point!
+            if($scope.isDealer()){
+                alert("You did not select a card! You lose a point, jackass!");
+                $scope.allPlayers[$scope.dealerIndex].score -= 1;
+            }else {
+                alert("The dealer didn't choose a card.\nDon't worry, (s)he was rightly punished");
+            }
+            $scope.winningCard = null;
         }
-        $scope.winningCard = card;
+        else {
+            var winnerIndex = _.findIndex($scope.allPlayers, {_id: card.player._id});
+
+            if($scope.primaryPlayerIndex === winnerIndex) alert("Your card was selected!\n" + randomItem(roundWinMsgs));
+            else if($scope.primaryPlayerIndex !== $scope.dealerIndex) alert("The dealer has chosen " +$scope.allPlayers[winnerIndex].name + "'s card.\n"+
+                randomItem(roundLooseMsgs));
+            $scope.allPlayers[winnerIndex].score += 1;
+            if ($scope.primaryPlayerIndex === $scope.winnerIndex) {
+                $scope.isWinner = true;
+            }
+            $scope.winningCard = card;
+        }
 
         //Continue cleanup (FROM NICK)
         $scope.newDealer();
@@ -179,10 +209,20 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
             Socket.emit('revealPicks');
         }
     };
-
     Socket.on('revealPicks', function () {
         $scope.pickedCards = _.shuffle($scope.pickedCards);
         $scope.showPicks = true;
+        if($scope.isDealer()){
+            $scope.revealReady = false;
+            $('#hand-block > h1').html('Select the champion.');
+
+            var timeUpFn = function(){
+                $scope.phase = 'cleanup';
+                Socket.emit('doCleanupPhase', null);
+            };
+            $scope.timer.stop();
+            $scope.timer = new Timer(60, timeUpFn, function(){$scope.$digest()});
+        }
         $scope.$digest()
     });
     //GAME PLAY HELPER FUNCTIONs
@@ -192,6 +232,7 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
     //when player chooses a card during question phase
     $scope.chooseGif = function (card) {
         $scope.endHover();
+        $scope.timer.stop();
 
         if (!$scope.myPick && !$scope.isDealer() && $scope.phase === 'question') {
             $scope.myPick = card;
@@ -245,7 +286,7 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
 
         //dealer must click the button!
         if($scope.isDealer()){
-            window.timer = $scope.timer = new Timer(10, $scope.revealPicks, function(){
+            window.timer = $scope.timer = new Timer(10, function(){$scope.revealPicks()}, function(){
                 $scope.$digest();
             });
         }
@@ -271,14 +312,15 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
     $scope.dealerSelection = function (card) {
         if ($scope.phase === 'selection' && $scope.showPicks && $scope.isDealer()) {
             $scope.phase = 'cleanup';
+            $scope.timer.stop();
             Socket.emit('doCleanupPhase', card);
             //$scope.toQuestionPhase();
         }
         //CLEANUP PHASE
-        $scope.toQuestionPhase = function () {
-            Socket.emit('toQuestionPhase');
-            //wait for all players to be ready
-        };
+        //$scope.toQuestionPhase = function () {
+        //    Socket.emit('toQuestionPhase');
+        //    //wait for all players to be ready
+        //};
         Socket.on('toQuestionPhase', function () {
             //---DEPRICATED--- this Socket should be removed in the future.
             if ($scope.isDealer()) {
