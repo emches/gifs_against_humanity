@@ -10,7 +10,10 @@ app.config(function ($stateProvider) {
 
 app.controller('LoginCtrl', function ($scope, Socket, $window, AuthService, $state, UserFactory, GifFactory, QuestionFactory) {
 
-    Socket.on('connect', function () {
+    var mySocketId;
+    var me;
+
+    Socket.on('connect', function (socket) {
         console.log("I HAVE CONNECTED");
         Socket.emit('newConnection');
     });
@@ -19,7 +22,11 @@ app.controller('LoginCtrl', function ($scope, Socket, $window, AuthService, $sta
         console.log("USER CONNET", $scope.userConnections, $scope.playerMinimum);
         if($scope.userConnections === $scope.playerMinimum) Socket.emit('readyForUsername');
     });
-
+    Socket.on('readyForUsername', function(){
+        $scope.readyForUsername = true;
+        console.log("READY??", $scope.readyForUsername);
+        $scope.$digest();
+    });
     $scope.readyForUsername = false;
     $scope.header = "GIFS AGAINST HUMANITY";
     $scope.login = {};
@@ -32,11 +39,6 @@ app.controller('LoginCtrl', function ($scope, Socket, $window, AuthService, $sta
     $scope.getRemaining = function () {
         return $scope.playerMinimum - $scope.userCount - 1;
     };
-    Socket.on('readyForUsername', function(){
-        $scope.readyForUsername = true;
-        console.log("READY??", $scope.readyForUsername);
-        $scope.$digest();
-    });
     $scope.sendLogin = function (loginInfo) {
 
         $scope.error = null;
@@ -49,7 +51,6 @@ app.controller('LoginCtrl', function ($scope, Socket, $window, AuthService, $sta
     };
 
     $scope.allPlayers = [];
-    var me;
 
     $scope.addUser = function () {
         if(/[^\w\d\s]+/g.test($scope.newUser)){
@@ -62,26 +63,27 @@ app.controller('LoginCtrl', function ($scope, Socket, $window, AuthService, $sta
         if ($scope.allPlayers.indexOf($scope.newUser) > -1) {
             return $window.alert("USER ALREADY EXISTS");
         }
-
         $scope.submitted = true;
         UserFactory.addUser($scope.newUser)
             .then(function (user) {
                 user.currentStatus = "PLAYER";
-                // $scope.allPlayers.push(user)
-                //$scope.currentUser = user
-                // console.log("new current", $scope.currentUser)
                 $scope.userCount += 1;
                 $scope.allPlayers.push(user);
                 me = user;
                 console.log("new count", $scope.userCount);
                 // if ($scope.userCount===6){ $scope.roomReady= true}
 
-                Socket.emit('newPlayer', $scope.allPlayers, $scope.userCount);
-
-
+                Socket.emit('newPlayer', $scope.allPlayers, $scope.userCount, me._id);
             })
-
     };
+    Socket.on('removePlayer', function(removedId){
+        console.log("REMVOED ID", removedId);
+        $scope.userCount--;
+        var split = _.findIndex($scope.allPlayers, {'_id': removedId});
+        $scope.allPlayers.splice(split, 1);
+        console.log("NEW PLAYERS", $scope.allPlayers);
+        $scope.$digest();
+    });
 
     $scope.joinRoom = function () {
         console.log("current me", me);
@@ -93,18 +95,19 @@ app.controller('LoginCtrl', function ($scope, Socket, $window, AuthService, $sta
             .then(savedDeck => Socket.emit('joinRoom', savedDeck._id));
     };
 
-    Socket.on('gameStart', function (deckId) {
+    Socket.on('gameStart', function (deckId, socketId) {
 
         console.log("NEW VARS", deckId);
         console.log("PLAYERS", $scope.allPlayers);
         $state.go('home', {
             allPlayers: $scope.allPlayers,
             me: me,
-            deckId: deckId
+            deckId: deckId,
+            socketId: socketId
         });
     });
 
-    Socket.on('newPlayer', function (allPlayers, userCount) {
+    Socket.on('newPlayer', function (allPlayers, userCount, socketId) {
         var plural = $scope.getRemaining() === 1 ? "s." : ".";
         if ($scope.submitted) {
             $scope.submitBtnText = "Waiting for others..."
@@ -116,6 +119,6 @@ app.controller('LoginCtrl', function ($scope, Socket, $window, AuthService, $sta
         console.log("count", userCount);
         $scope.newUser = "";
         $scope.$digest()
-
+        mySocketId = socketId;
     });
 });

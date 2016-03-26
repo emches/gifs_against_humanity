@@ -34,6 +34,10 @@ var schema = new mongoose.Schema({
         default: false,
         required: true
     },
+    cpu: {
+        type: Boolean,
+        default: false
+    },
     admin: {
         type: Boolean,
         default: false,

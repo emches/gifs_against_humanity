@@ -18,11 +18,6 @@ router.get('/:id/gif/new-card', function(req, res, next) {
         .then(newCard => res.status(200).send(newCard))
         .then(null, next)
 });
-// router.put('/:id', function(req, res, next){
-//     Deck.findOne({ _id: req.params.id })
-//     .then(
-//     });
-// });
 
 router.post('/', function(req, res, next){
     //console.log("gifs", req.body.gifs);
