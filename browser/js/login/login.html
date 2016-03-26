@@ -6,8 +6,24 @@
                 <br>
                 <div ng-show="!readyForUsername">
                     <h3>WAITING FOR PLAYERS</h3></div>
+                <div>
+                <form name="myRoomsForm">
+                    <label for="myRooms">Pick a Room:</label>
+                    <select ng-model="selectedRoom">
+                        <option ng-repeat="room in rooms" value="{{room}}">{{room}}</option>
+                    </select>
+                </form>
+                    <form ng-submit="createRoom()">
+                        <input class="loginForm entry" placeholder="Enter Username (a-z,0-9)" ng-model="newUser" maxlength="18" ng-disabled="submitted" />
+                        <input class="loginForm entry" placeholder="Add Room" ng-model="createdRoom.name" maxlength="18" ng-disabled="submitted" />
+                        <input class="loginForm entry" placeholder="Enter Player Count" ng-model="createdRoom.playerMax" maxlength="18" ng-disabled="submitted" />
+                        <input class="loginForm entry" placeholder="Enter Password" ng-model="createdRoom.password" maxlength="18" ng-disabled="submitted" />
+                        <button type="submit" class="btn-warning loginForm">CREATE!!</button>
+                    </form>
+                </div>
                 <div ng-show="readyForUsername">
                     <form ng-submit="addUser()">
+                        <input class="loginForm entry" placeholder="Enter Room" ng-model="newRoom" maxlength="18" ng-disabled="submitted" />
                         <input class="loginForm entry" placeholder="Enter Username (a-z,0-9)" ng-model="newUser" maxlength="18" ng-disabled="submitted" />
                         <button ng-class="{'btn-success': newUser.length && !submitted}" class="loginForm" ng-disabled='!newUser.length || submitted' ng-hide="userCount >= playerMinimum">{{submitBtnText}}</button>
                         <button type="button" ng-show="userCount>= playerMinimum" class="btn-warning loginForm" ng-click="joinRoom()">ENTER!!</button>

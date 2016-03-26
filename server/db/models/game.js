@@ -5,6 +5,14 @@ var _ = require('lodash');
 var Schema = mongoose.Schema
 
 var schema = new mongoose.Schema({
+    name: {
+        type: String,
+        required: true
+    },
+    password: {
+        type: String,
+        required: true
+    },
     playerCount: {
         type: Number,
         required: true

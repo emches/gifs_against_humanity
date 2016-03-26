@@ -9,11 +9,15 @@ app.factory('GameFactory', function ($http) {
                 return deckRes.data;
             });
         },
-        createRoom: function(deck, player){
+        createRoom: function(deck, player, room){
+            console.log("player", player)
             return $http.post('/api/games/', {
                 deck: deck,
                 player: player,
-                playerCount: 3
+                playerCount: room.playerMax,
+                name: room.name,
+                password: room.password,
+
             })
         }
     }

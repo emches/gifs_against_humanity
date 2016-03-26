@@ -16,8 +16,13 @@ router.get('/:id', function(req, res, next) {
 
 router.post('/', function(req, res, next) {
     var player = req.body.player._id;
-    console.log("player", player);
-    Game.create({playerCount: req.body.playerCount, players: [player], deck: req.body.deck._id})
+   // console.log("player", player);
+    Game.create({playerCount: req.body.playerCount,
+                players: [player],
+                deck: req.body.deck._id,
+                name: req.body.name,
+                password: req.body.password
+            })
         .then(function(game){
             console.log("created!!", game)
             res.json(game);

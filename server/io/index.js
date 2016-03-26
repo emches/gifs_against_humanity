@@ -14,16 +14,22 @@ module.exports = function (server) {
       });
 
       socket.on('joinRoom', function(room){
-          console.log("starting", room)
-          io.emit('gameStart', room);
+          console.log("starting", room.name)
+          socket.room = room.name
+          socket.join(room.name)
+          //io.emit('gameStart', room);
+          socket.broadcast.to(room.name).emit('gameStart', room)
+
+
       });
 
       socket.on('newQuestion', function(questionDeck){
           io.emit('changeQuestion', questionDeck);
       });
 
-      socket.on('chooseGif', function(card){
-          io.emit('chooseGif', card);
+      socket.on('chooseGif', function(card, room){
+        //socket.join(room)
+          socket.broadcast.to(room).emit('chooseGif', card);
       });
 
       socket.on('revealPicks', function(){

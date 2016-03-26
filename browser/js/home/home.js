@@ -6,7 +6,8 @@ app.config(function ($stateProvider) {
         params: {
             allPlayers: null,
             me: null,
-            deckId: null
+            deckId: null,
+            room: null
         },
         resolve: {
             deck: function ($stateParams, GifFactory) {
@@ -30,6 +31,7 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
     //for player profile directive
     $scope.localId = $state.params.me._id;
     $scope.phase = 'initialization';
+    var room = $state.params.room;
     // INITIALIZATION
     $scope.questionDeck = deck.questions;
     $scope.gifDeck = deck.gifs;
@@ -100,6 +102,8 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
     $scope.isDealer = function () {
         return $scope.primaryPlayerIndex === $scope.dealerIndex;
     };
+    console.log("dealer", $scope.isDealer(), $scope.primaryPlayer, $scope.allPlayers, $scope.dealerIndex)
+
 
 
     //deal to all players
@@ -186,7 +190,8 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
             $scope.myPick = card;
             _.remove($scope.allPlayers[$scope.primaryPlayerIndex].hand, {imageUrl: card.imageUrl});
             card.player = $scope.primaryPlayer;
-            Socket.emit('chooseGif', card)
+            console.log("roomname", room.name)
+            Socket.emit('chooseGif', card, room.name)
         }
     };
     var hoverDelay;
@@ -222,6 +227,7 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
         $scope.allPlayers[$scope.primaryPlayerIndex] = stats[$scope.primaryPlayerIndex];
     });
     Socket.on('chooseGif', function (card) {
+        console.log("CHOOSE", card)
         $scope.pickedCards.push(card);
         if ($scope.pickedCards.length === $scope.allPlayers.length - 1) {
             Socket.emit('revealReady')
