@@ -1,0 +1,30 @@
+<section>
+    <div class="container fill" id="section1">
+        <div class="loginForm col-xs-12">
+            <h1 class="text-center">{{header}}</h1>
+            <p class="text-center">
+                <br>
+                    <h3>Join A Room!</h3>
+        </div>
+
+            </p>
+                <div>
+                    <form ng-submit="joinRoom()">
+                    <form name="myRoomsForm">
+                        <p>{{rooms}}</p>
+                        <label for="myRooms">Pick a Room:</label>
+                        <select ng-model="selectedRoom"
+                             ng-options="room.name  for room in rooms"
+                        </select>
+                    </form>
+                        <input class="loginForm entry" placeholder="Enter Username (a-z,0-9)" ng-model="newUser" maxlength="18" ng-disabled="submitted" />
+                        <button type="button" class="btn-warning loginForm" ng-click="addUserToRoom()">Join Room!!</button>
+                    </form>
+                </div>
+                    <button type="button" ng-show="allPlayers.length>= playerMinimum" class="btn-warning loginForm" ng-click="joinRoom()">ENTER!!</button>
+
+                <h1 class="playerName" ng-repeat="player in allPlayers track by player._id">{{player.name}}</h1>
+            </p>
+        </div>
+    </div>
+</section>

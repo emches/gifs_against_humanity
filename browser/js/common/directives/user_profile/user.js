@@ -30,6 +30,7 @@ app.factory('UserFactory', function($http) {
         addUser: function(username) {
             return $http.post('/api/users', {username: username} )
                 .then(function(response) {
+                    console.log("created", response.data)
                     return response.data;
                 });
         },

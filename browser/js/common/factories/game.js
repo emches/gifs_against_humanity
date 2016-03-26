@@ -19,6 +19,18 @@ app.factory('GameFactory', function ($http) {
                 password: room.password,
 
             })
+        },
+        getGames: function(){
+            console.log("getting games")
+            return $http.get('/api/games')
+                .then(function(games){
+                    console.log("games", games)
+                    return games.data
+                })
+        },
+        addUserToRoom: function(user, room){
+            console.log("adding to room")
+            return $http.put('/api/games/' + room + '/user/', {user: user})
         }
     }
 });
