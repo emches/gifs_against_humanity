@@ -10,12 +10,24 @@ app.config(function ($stateProvider) {
 
 app.controller('LoginCtrl', function ($scope, Socket, $window, AuthService, $state, GameFactory, UserFactory, GifFactory, QuestionFactory) {
 
-    Socket.on('connect', function () {
+    var mySocketId;
+    var me;
+    var roomName;
+
+    Socket.on('connect', function (socket) {
+        console.log("I HAVE CONNECTED");
         Socket.emit('newConnection');
     });
+
     Socket.on('newConnection', function(){
         $scope.userConnections++;
         if($scope.userConnections === $scope.playerMinimum) Socket.emit('readyForUsername');
+    });
+
+    Socket.on('readyForUsername', function(){
+        $scope.readyForUsername = true;
+        console.log("READY??", $scope.readyForUsername);
+        $scope.$digest();
     });
 
     $scope.readyForUsername = false;
@@ -27,13 +39,11 @@ app.controller('LoginCtrl', function ($scope, Socket, $window, AuthService, $sta
     $scope.playerMinimum = 2;
     $scope.submitted = false;
     $scope.submitBtnText = "ADD USER";
+
     $scope.getRemaining = function () {
         return $scope.playerMinimum - $scope.userCount - 1;
     };
-    Socket.on('readyForUsername', function(){
-        $scope.readyForUsername = true;
-        $scope.$digest();
-    });
+
     $scope.sendLogin = function (loginInfo) {
         $scope.error = null;
 
@@ -45,11 +55,7 @@ app.controller('LoginCtrl', function ($scope, Socket, $window, AuthService, $sta
     };
 
     $scope.allPlayers = [];
-    var me;
-    var roomName;
-    $scope.myTest = function(){
-        console.log("ASDFASDFASD")
-    }
+
     $scope.addUser = function () {
         if(/[^\w\d\s]+/g.test($scope.newUser)){
             $scope.newUser = "";
@@ -61,7 +67,6 @@ app.controller('LoginCtrl', function ($scope, Socket, $window, AuthService, $sta
         if ($scope.allPlayers.indexOf($scope.newUser) > -1) {
             return $window.alert("USER ALREADY EXISTS");
         }
-
         $scope.submitted = true;
         roomName = $scope.newRoom
         UserFactory.addUser($scope.newUser)
@@ -70,9 +75,19 @@ app.controller('LoginCtrl', function ($scope, Socket, $window, AuthService, $sta
                 $scope.userCount += 1;
                 $scope.allPlayers.push(user);
                 me = user;
-                Socket.emit('newPlayer', $scope.allPlayers, $scope.userCount);
+                console.log("new count", $scope.userCount);
+                Socket.emit('newPlayer', $scope.allPlayers, $scope.userCount, me._id);
             })
     };
+
+    Socket.on('removePlayer', function(removedId){
+        console.log("REMVOED ID", removedId);
+        $scope.userCount--;
+        var split = _.findIndex($scope.allPlayers, {'_id': removedId});
+        $scope.allPlayers.splice(split, 1);
+        console.log("NEW PLAYERS", $scope.allPlayers);
+        $scope.$digest();
+    });
 
     $scope.joinRoom = function () {
         var gifDeck;
@@ -84,7 +99,6 @@ app.controller('LoginCtrl', function ($scope, Socket, $window, AuthService, $sta
                 console.log("saved", savedDeck);
                 console.log("roomName", roomName)
                 return GameFactory.createRoom(savedDeck, me, roomName)
-
             })
             .then(function(response){
                 console.log("passed saved", response.data)
@@ -129,12 +143,12 @@ app.controller('LoginCtrl', function ($scope, Socket, $window, AuthService, $sta
         $state.go('home', {
             allPlayers: $scope.allPlayers,
             me: me,
-            deckId: room.deck,
-            room: room
+            deckId: deckId,
+            socketId: socketId
         });
     });
 
-    Socket.on('newPlayer', function (allPlayers, userCount) {
+    Socket.on('newPlayer', function (allPlayers, userCount, socketId) {
         var plural = $scope.getRemaining() === 1 ? "s." : ".";
         if ($scope.submitted) {
             $scope.submitBtnText = "Waiting for others..."
@@ -144,6 +158,7 @@ app.controller('LoginCtrl', function ($scope, Socket, $window, AuthService, $sta
         console.log("users", $scope.userCount, "allPlayers", $scope.allPlayers)
         if ($scope.userCount >= $scope.playerMinimum) $scope.header = "READY TO PLAY";
         $scope.newUser = "";
-        $scope.$digest();
+        $scope.$digest()
+        mySocketId = socketId;
     });
 });

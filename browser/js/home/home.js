@@ -8,6 +8,7 @@ app.config(function ($stateProvider) {
             me: null,
             deckId: null,
             room: null
+            socketId: null
         },
         resolve: {
             deck: function ($stateParams, GifFactory) {
@@ -26,8 +27,16 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
     var randomItem = function(arr){
         return arr[Math.floor(Math.random() * arr.length)];
     };
+
     //Use this to hide dev buttons and info -- when testing/presenting
     $scope._developer = false;
+    // console.log("backend deck:", deck);
+    Socket.on('connect', function () {
+        // TODO: is this needed?
+    });
+    Socket.on('disconnect', function(){
+        console.log("DISCONNECTED");
+    });
     //for player profile directive
     $scope.localId = $state.params.me._id;
     $scope.phase = 'initialization';
@@ -36,6 +45,7 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
     $scope.questionDeck = deck.questions;
     $scope.gifDeck = deck.gifs;
     $scope.allPlayers = $state.params.allPlayers; // for accessing up-to-date data
+    console.log("ALL PLAYERS", $scope.allPlayers);
     $scope.gameDecksId = $state.params.deckId;
     $scope._changedDealer = false;
     $scope.isWinner = false;
@@ -46,6 +56,11 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
         goal: 5,
     };
     var numReadyForNextRound = 0;
+
+    // internals
+    var mySocketId = $state.params.socketId;
+    var me = $state.params.me;
+    console.log("MEEE", me);
 
     //QUESTION PHASE
     //Chosen GIFs
@@ -150,6 +165,7 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
         $scope.questionDeck = deck.questions;
         $scope.$digest();
     });
+    // frist time timer.
     $timeout(function() {
         if ($scope.primaryPlayerIndex !== $scope.dealerIndex) {
             $scope.timer = new Timer(45, function(){
