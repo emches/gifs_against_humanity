@@ -70,16 +70,22 @@ app.controller('LoginCtrl', function ($scope, Socket, $window, AuthService, $sta
         }
         $scope.submitted = true;
         roomName = $scope.newRoom
-        UserFactory.addUser($scope.newUser)
-            .then(function (user) {
-                user.currentStatus = "PLAYER";
-                $scope.userCount += 1;
-                $scope.allPlayers.push(user);
-                me = user;
-                console.log("new count", $scope.userCount);
-                // if ($scope.userCount===6){ $scope.roomReady= true}
-                Socket.emit('newPlayer', $scope.allPlayers, $scope.userCount, me._id);
-            })
+        var isCpu = /CPU/.test($scope.newUser);
+        me = UserFactory.createTempPlayer($scope.newUser, isCpu);
+        $scope.allPlayers.push(me);
+        $scope.userCount++;
+        Socket.emit('newPlayer', $scope.allPlayers, $scope.userCount, me._id);
+
+        //UserFactory.createUser($scope.newUser, true)
+        //    .then(function (user) {
+        //        user.currentStatus = "PLAYER";
+        //        $scope.userCount += 1;
+        //        $scope.allPlayers.push(user);
+        //        me = user;
+        //        console.log("new count", $scope.userCount);
+        //        // if ($scope.userCount===6){ $scope.roomReady= true}
+        //        Socket.emit('newPlayer', $scope.allPlayers, $scope.userCount, me._id);
+        //    })
     };
 
     Socket.on('removePlayer', function(removedId){

@@ -7,6 +7,5 @@ var avatars = [
 {"avatarUrl": "http://www.avatarsdb.com/avatars/angry_glance.jpg", "status": "Hi!!!", "used": false },
 {"avatarUrl": "http://www.avatarsdb.com/avatars/pink_hair_cat.jpg", "status": "Womp", "used": false },
 {"avatarUrl": "http://www.avatarsdb.com/avatars/beanie_cat.jpg", "status": "!#$%@%", "used": false },
-
 ];
 module.exports = avatars;
