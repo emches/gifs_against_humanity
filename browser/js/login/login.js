@@ -13,6 +13,7 @@ app.controller('LoginCtrl', function ($scope, Socket, $window, AuthService, $sta
     var mySocketId;
     var me;
     var roomName;
+    var gameStarted = false;
 
     Socket.on('connect', function (socket) {
         console.log("I HAVE CONNECTED");
@@ -76,13 +77,15 @@ app.controller('LoginCtrl', function ($scope, Socket, $window, AuthService, $sta
                 $scope.allPlayers.push(user);
                 me = user;
                 console.log("new count", $scope.userCount);
+                // if ($scope.userCount===6){ $scope.roomReady= true}
                 Socket.emit('newPlayer', $scope.allPlayers, $scope.userCount, me._id);
             })
     };
 
     Socket.on('removePlayer', function(removedId){
+        if(gameStarted) return;
+
         console.log("REMVOED ID", removedId);
-        $scope.userCount--;
         var split = _.findIndex($scope.allPlayers, {'_id': removedId});
         $scope.allPlayers.splice(split, 1);
         console.log("NEW PLAYERS", $scope.allPlayers);
@@ -138,8 +141,10 @@ app.controller('LoginCtrl', function ($scope, Socket, $window, AuthService, $sta
             });
     };
 
-    Socket.on('gameStart', function (room) {
-        console.log("starting", room.deck)
+    Socket.on('gameStart', function (deckId, socketId) {
+        gameStarted = true;
+        console.log("NEW VARS", deckId);
+        console.log("PLAYERS", $scope.allPlayers);
         $state.go('home', {
             allPlayers: $scope.allPlayers,
             me: me,

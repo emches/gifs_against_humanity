@@ -31,12 +31,6 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
     //Use this to hide dev buttons and info -- when testing/presenting
     $scope._developer = false;
     // console.log("backend deck:", deck);
-    Socket.on('connect', function () {
-        // TODO: is this needed?
-    });
-    Socket.on('disconnect', function(){
-        console.log("DISCONNECTED");
-    });
     //for player profile directive
     $scope.localId = $state.params.me._id;
     $scope.phase = 'initialization';
@@ -361,4 +355,10 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
         }
 
     });
+
+    Socket.on('removePlayer', function(mongooseId){
+        var targetPlayer = _.find($scope.allPlayers, {'_id': mongooseId});
+        targetPlayer.cpu = true;
+        console.log("PLAYER REMOVED, NEW ONES", $scope.allPlayers);
+    })
 });
