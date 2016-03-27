@@ -52,6 +52,8 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
     // internals
     var mySocketId = $state.params.socketId;
     var me = $state.params.me;
+    var cpu = me.cpu;
+
     console.log("MEEE", me);
 
     //QUESTION PHASE
@@ -67,7 +69,20 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
         user.currentStatus = "PLAYER"
     });
     // initialize dealer
-    $scope.dealerIndex = 0;
+    var foundHuman;
+    for($scope.dealerIndex = 0; $scope.dealerIndex < $scope.allPlayers.length; $scope.dealerIndex++){
+        console.log("LOokin at", $scope.allPlayers[$scope.dealerIndex]);
+        if($scope.allPlayers[$scope.dealerIndex].cpu === false) { //check for strict false!
+            console.log("ED dhuNam");
+            foundHuman = true;
+            break;
+        }
+    }
+    if(!foundHuman){
+        alert("No human players!! Bai....");
+        return;
+    }
+
     $scope.allPlayers[$scope.dealerIndex].currentStatus = "DEALER";
     //get index of primary player
     for (var i = 0; i < $scope.allPlayers.length; i++) {
@@ -80,16 +95,6 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
     $scope.getLocalPlayer = function () {
         return $scope.allPlayers[$scope.primaryPlayerIndex];
     };
-    // initialize dealer
-    $scope.dealerIndex = 0;
-    $scope.allPlayers[$scope.dealerIndex].currentStatus = "DEALER";
-    //get index of primary player
-    for (var i = 0; i < $scope.allPlayers.length; i++) {
-        if ($scope.allPlayers[i]._id === $state.params.me._id) {
-            $scope.primaryPlayerIndex = i;
-            break;
-        }
-    }
 
     //initialize game functions
     $scope.newQuestion = function () {
@@ -114,11 +119,11 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
         $scope.allPlayers[$scope.dealerIndex].currentStatus = "PLAYER";
         $scope.dealerIndex = $scope.dealerIndex < $scope.allPlayers.length - 1 ? $scope.dealerIndex + 1 : 0;
         $scope.allPlayers[$scope.dealerIndex].currentStatus = "DEALER";
+        if(isCpu && me.currentStatus === "DEALER") $scope.newDealer();
     };
     // sets primary player
     // this will soon be depricated
     $scope.primaryPlayer = $scope.allPlayers[$scope.primaryPlayerIndex];
-    //$scope.isDealer() = $scope.primaryPlayer.currentStatus === "DEALER";
     $scope.isDealer = function () {
         return $scope.primaryPlayerIndex === $scope.dealerIndex;
     };
@@ -155,6 +160,7 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
     //QUESTION PHASE BEGIN;
     $scope.phase = 'question';
 
+
     Socket.on('changeQuestion', function (questionDeck) {
         deck.questions = questionDeck;
         $scope.questionDeck = deck.questions;
@@ -163,7 +169,7 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
     // frist time timer.
     $timeout(function() {
         if ($scope.primaryPlayerIndex !== $scope.dealerIndex) {
-            $scope.timer = new Timer(45, function(){
+            $scope.timer = new Timer( (cpu ? 2 : 45), function(){
                 var random = Math.floor(Math.random() * $scope.allPlayers[$scope.primaryPlayerIndex].hand.length);
                 var randomCard = $scope.allPlayers[$scope.primaryPlayerIndex].hand[random];
                 console.log("random card", randomCard);
@@ -183,10 +189,16 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
         if(card === null){
             // Dealer did not select
             // Dealer looses a point!
+            var dealerWasCpu = $scope.allPlayers[$scope.dealerIndex].cpu;
             if($scope.isDealer()){
-                alert("You did not select a card! You lose a point, jackass!");
-                $scope.allPlayers[$scope.dealerIndex].score -= 1;
+                if(!dealerWasCpu) {
+                    alert("You did not select a card! You lose a point, jackass!");
+                    $scope.allPlayers[$scope.dealerIndex].score -= 1;
+                }
             }else {
+                if(dealerWasCpu){
+                    alert("The dealer has turned into a CPU, and robots have no business in human card-choosing matters...");
+                }
                 alert("The dealer didn't choose a card.\nDon't worry, (s)he was rightly punished");
             }
             $scope.winningCard = null;
@@ -241,7 +253,8 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
     Socket.on('up');
 
     //when player chooses a card during question phase
-    $scope.chooseGif = function (card) {
+    $scope.chooseGif = function (card, cpuInvoked) {
+        if(!cpuInvoked) me.cpu = false;
         console.log("myPick", $scope.myPick);
         console.log("dealer", $scope.isDealer());
         $scope.endHover();
@@ -366,6 +379,12 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
     Socket.on('removePlayer', function(mongooseId){
         var targetPlayer = _.find($scope.allPlayers, {'_id': mongooseId});
         targetPlayer.cpu = true;
-        console.log("PLAYER REMOVED, NEW ONES", $scope.allPlayers);
+        console.log("PLAYER NOW CPY", $scope.allPlayers);
+
+        if($scope.isDealer){
+            $scope.phase = 'cleanup';
+            Socket.emit('doCleanupPhase', null);
+        }
+
     })
 });
