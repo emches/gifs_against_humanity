@@ -19,7 +19,7 @@ module.exports = function (server) {
           socket.join(room.name)
           //io.emit('gameStart', room);
           socket.broadcast.to(room.name).emit('newPlayerTest', room)
-          io.emit('updateRooms');
+         // io.emit('updateRooms');
 
       });
 

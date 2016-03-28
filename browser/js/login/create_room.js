@@ -26,23 +26,6 @@ app.controller('CreateRoomCtrl', function ($scope, Socket, $window, AuthService,
     var me;
     var roomName;
 
-    $scope.addUser = function () {
-        if(/[^\w\d\s]+/g.test($scope.newUser)){
-            $scope.newUser = "";
-            return $window.alert("ALPHA-NUMERIC-SPACE CHARACTERS ONLY!");
-        }
-        if ($scope.allPlayers.length > 2) {
-            return $window.alert("ROOM FULL SORRY!!!");
-        }
-        if ($scope.allPlayers.indexOf($scope.newUser) > -1) {
-            return $window.alert("USER ALREADY EXISTS");
-        }
-
-        $scope.submitted = true;
-        roomName = $scope.newRoom
-
-    };
-
     $scope.createRoom = function () {
         var gifDeck;
         if(/[^\w\d\s]+/g.test($scope.newUser)){
@@ -76,7 +59,7 @@ app.controller('CreateRoomCtrl', function ($scope, Socket, $window, AuthService,
                      console.log("me", me)
                         console.log("all", $scope.allPlayers)
                         $scope.playerMinimum = response.data.playerCount
-               // Socket.emit('joinRoom', response.data);
+                      Socket.emit('joinRoom', response.data);
                     });
             });
     };
@@ -87,31 +70,6 @@ app.controller('CreateRoomCtrl', function ($scope, Socket, $window, AuthService,
         $scope.playerMinimum = room.playerCount;
         $scope.$digest();
     });
-
-
-    $scope.addUserToRoom = function () {
-        if(/[^\w\d\s]+/g.test($scope.newUser)){
-            $scope.newUser = "";
-            return $window.alert("ALPHA-NUMERIC-SPACE CHARACTERS ONLY!");
-        }
-        if ($scope.allPlayers.length > 2) {
-            return $window.alert("ROOM FULL SORRY!!!");
-        }
-        if ($scope.allPlayers.indexOf($scope.newUser) > -1) {
-            return $window.alert("USER ALREADY EXISTS");
-        }
-
-        $scope.submitted = true;
-        roomName = $scope.newRoom
-        UserFactory.addUser($scope.newUser)
-            .then(function (user) {
-                user.currentStatus = "PLAYER";
-                $scope.userCount += 1;
-                $scope.allPlayers.push(user);
-                me = user;
-                Socket.emit('newPlayer', $scope.allPlayers, $scope.userCount, $scope.room.name);
-            })
-    };
 
 
     Socket.on('gameStart', function (room) {

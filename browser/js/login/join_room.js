@@ -39,7 +39,7 @@ app.controller('JoinRoomCtrl', function ($scope, rooms, Socket, $window, AuthSer
             $scope.newUser = "";
             return $window.alert("ALPHA-NUMERIC-SPACE CHARACTERS ONLY!");
         }
-        if ($scope.selectedRoom.players.length == $scope.selectedRoom.playerCount) {
+        if ($scope.selectedRoom.players.length >= $scope.selectedRoom.playerCount) {
             return $window.alert("ROOM FULL SORRY!!!");
         }
         if ($scope.allPlayers.indexOf($scope.newUser) > -1) {
