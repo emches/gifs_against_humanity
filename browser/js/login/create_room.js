@@ -40,7 +40,7 @@ app.controller('CreateRoomCtrl', function ($scope, Socket, $window, AuthService,
                 $scope.allPlayers.push(user);
                 console.log("allPlayers1", $scope.allPlayers)
                 me = user;
-                debugger;
+               // debugger;
                // Socket.emit('newPlayer', $scope.allPlayers, $scope.userCount);
             })
             .then(function(){

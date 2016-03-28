@@ -33,6 +33,7 @@ app.controller('JoinRoomCtrl', function ($scope, rooms, Socket, $window, AuthSer
     $scope.selectedRoom = "Please Select a Room!"
 
     var me;
+    var myRoom;
 
     $scope.addUserToRoom = function () {
         if(/[^\w\d\s]+/g.test($scope.newUser)){
@@ -63,22 +64,46 @@ app.controller('JoinRoomCtrl', function ($scope, rooms, Socket, $window, AuthSer
                 $scope.allPlayers = room.data.players
                 console.log("allPlayers", $scope.allPlayers)
                 $scope.joinedRoom = true;
+                console.log("joinedRoom", $scope.joinedRoom)
+                myRoom = room.data
+               // debugger
                 Socket.emit('joinRoom', room.data);
+                //debugger
 
             })
     };
+
+    $scope.joinRoom = function(){
+        Socket.emit('gameStart', myRoom)
+        $state.go('home', {
+            allPlayers: $scope.allPlayers,
+            me: me,
+            deckId: myRoom.deck,
+            room: myRoom
+        });
+    }
      Socket.on('newPlayerTest', function (room) {
         console.log("GOT IT!!!", room)
+        //debugger;
         $scope.allPlayers = room.players;
         $scope.playerMinimum = room.playerCount;
-        $scope.$digest();
+
+        //$scope.$digest();
     });
 
      Socket.on('updateRooms', function () {
-        console.log("GOT IT UPDATING");
-        if ( !$scope.joinedRoom) {
-            $state.reload();
-        }
+        console.log("GOT IT UPDATING", $scope);
+        GameFactory.getGames()
+            .then(function(games){
+                $scope.rooms = games
+                //debugger;
+                //$scope.$digest();
+            });
+
+        // if ( !$scope.joinedRoom) {
+        //     console.log("updating state", $scope.joinedRoom)
+        //     $state.reload();
+        // }
     });
 
     Socket.on('gameStart', function (room) {
@@ -101,6 +126,6 @@ app.controller('JoinRoomCtrl', function ($scope, rooms, Socket, $window, AuthSer
         console.log("users", $scope.userCount, "allPlayers", $scope.allPlayers)
         if ($scope.userCount >= $scope.playerMinimum) $scope.header = "READY TO PLAY";
         $scope.newUser = "";
-        $scope.$digest();
+       // $scope.$digest();
     });
 });
