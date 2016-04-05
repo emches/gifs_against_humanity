@@ -51,7 +51,7 @@ app.factory('UserFactory', function($http) {
                 _id: "TEMP_" + username + Math.random().toString().replace(".",""),
                 name: username,
                 imageURL: isCpu ? "https://m1.behance.net/rendition/modules/37391421/disp/5aef99e766860cae8699633560a4a2ab.jpg"
-                    : stock[Math.floor(Math.random() * stock.length)].status,
+                    : stock[Math.floor(Math.random() * stock.length)].avatarUrl,
                 email: "null@undefined.nan",
                 score: 0,
                 myturn: false,
