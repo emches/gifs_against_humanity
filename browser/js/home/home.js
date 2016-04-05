@@ -53,6 +53,12 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
     var mySocketId = $state.params.socketId;
     var me = $state.params.me;
     var cpu = me.cpu;
+    let timerTime = {
+        round: 45,
+        revealReady: 8,
+        choose: 60,
+        cpu: 2,
+    };
 
     console.log("MEEE", me);
 
@@ -71,7 +77,6 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
     // initialize dealer
     var foundHuman;
     for($scope.dealerIndex = 0; $scope.dealerIndex < $scope.allPlayers.length; $scope.dealerIndex++){
-        console.log("LOokin at", $scope.allPlayers[$scope.dealerIndex]);
         if($scope.allPlayers[$scope.dealerIndex].cpu === false) { //check for strict false!
             console.log("ED dhuNam");
             foundHuman = true;
@@ -103,7 +108,9 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
         Socket.emit('newQuestion', deck.questions);
 
         if ($scope.primaryPlayerIndex !== $scope.dealerIndex) {
-            $scope.timer = new Timer(45, function(){
+
+            let time = cpu ? timerTime.cpu : timerTime.round;
+            $scope.timer = new Timer(time, function(){
                 var random = Math.floor(Math.random() * $scope.allPlayers[$scope.primaryPlayerIndex].hand.length);
                 var randomCard = $scope.allPlayers[$scope.primaryPlayerIndex].hand[random];
                 console.log("random card", randomCard);
@@ -119,7 +126,8 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
         $scope.allPlayers[$scope.dealerIndex].currentStatus = "PLAYER";
         $scope.dealerIndex = $scope.dealerIndex < $scope.allPlayers.length - 1 ? $scope.dealerIndex + 1 : 0;
         $scope.allPlayers[$scope.dealerIndex].currentStatus = "DEALER";
-        if(isCpu && me.currentStatus === "DEALER") $scope.newDealer();
+        console.log("cpu??", cpu, "\nstatus ", me.currentStatus);
+        if(cpu && me.currentStatus === "DEALER") $scope.newDealer();
     };
     // sets primary player
     // this will soon be depricated
@@ -169,6 +177,8 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
     // frist time timer.
     $timeout(function() {
         if ($scope.primaryPlayerIndex !== $scope.dealerIndex) {
+
+            let time = cpu ? timerTime.cpu : timerTime.round;
             $scope.timer = new Timer( (cpu ? 2 : 45), function(){
                 var random = Math.floor(Math.random() * $scope.allPlayers[$scope.primaryPlayerIndex].hand.length);
                 var randomCard = $scope.allPlayers[$scope.primaryPlayerIndex].hand[random];
@@ -244,6 +254,7 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
                 Socket.emit('doCleanupPhase', null);
             };
             $scope.timer.stop();
+            let time = cpu ? timerTime.cpu : timerTime.choose;
             $scope.timer = new Timer(60, timeUpFn, function(){$scope.$digest()});
         }
         $scope.$digest()
@@ -316,7 +327,9 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
 
         //dealer must click the button!
         if($scope.isDealer()){
-            window.timer = $scope.timer = new Timer(10, function(){$scope.revealPicks()}, function(){
+
+            let time = cpu ? timerTime.cpu : timerTime.revealReady;
+            window.timer = $scope.timer = new Timer(time, function(){$scope.revealPicks()}, function(){
                 $scope.$digest();
             });
         }
@@ -327,7 +340,6 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
         Socket.emit('updateOnePlayerStats', $scope.allPlayers, $scope.primaryPlayerIndex);
     });
     $scope.dealerButtonText = function() {
-        console.log($scope.pickedCards, $scope.allPlayers);
         if($scope.revealReady) { return "REVEAL!" }
         else {
             var remaining = ($scope.allPlayers.length - $scope.pickedCards.length - 1);
@@ -344,7 +356,6 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
             $scope.phase = 'cleanup';
             $scope.timer.stop();
             Socket.emit('doCleanupPhase', card);
-            //$scope.toQuestionPhase();
         }
         //CLEANUP PHASE
         //$scope.toQuestionPhase = function () {
@@ -363,7 +374,7 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
     };
     Socket.on('newDealer', function () {
         //change scope.phase to selection instaed of _changeDealer
-        if (!$scope.phase === 'cleanup') {
+        if ($scope.phase !== 'cleanup') {
             console.log("new dealer recieved. old dealer", $scope.allPlayers[$scope.dealerIndex]);
             $scope.allPlayers[$scope.dealerIndex].currentStatus = "PLAYER";
             $scope.dealerIndex = $scope.dealerIndex < $scope.allPlayers.length - 1 ? $scope.dealerIndex + 1 : 0;
