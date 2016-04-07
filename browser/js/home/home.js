@@ -263,14 +263,11 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
     Socket.on('up');
 
     //when player chooses a card during question phase
-<<<<<<< HEAD
-    $scope.chooseGif = function (card) {
-=======
+
     $scope.chooseGif = function (card, cpuInvoked) {
         if(!cpuInvoked) me.cpu = false;
         console.log("myPick", $scope.myPick);
         console.log("dealer", $scope.isDealer());
->>>>>>> need to incoporate disconnect -> cpu logic
         $scope.endHover();
         $scope.timer.stop();
 
