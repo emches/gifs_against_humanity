@@ -280,6 +280,16 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
             Socket.emit('chooseGif', card)
         }
     };
+    Socket.on('chooseGif', function (card) {
+        //$scope.chosenGifs++
+        $scope.pickedCards.push(card);
+        // console.log("chosenGifs", $scope.chosenGifs)
+        if ($scope.pickedCards.length === $scope.allPlayers.length - 1) {
+            Socket.emit('revealReady')
+        }
+        $scope.$digest();
+    });
+
     var hoverDelay;
     var stillHere = true;
     $scope.endHover = function () {
@@ -314,21 +324,15 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
     Socket.on('updatePlayerStats', function (stats) {
         $scope.allPlayers[$scope.primaryPlayerIndex] = stats[$scope.primaryPlayerIndex];
     });
-    Socket.on('chooseGif', function (card) {
-        //$scope.chosenGifs++
-        $scope.pickedCards.push(card);
-        // console.log("chosenGifs", $scope.chosenGifs)
-        if ($scope.pickedCards.length === $scope.allPlayers.length - 1) {
-            Socket.emit('revealReady')
-        }
-        $scope.$digest();
-    });
+
     Socket.on('revealReady', function () {
 
         //dealer must click the button!
         if($scope.isDealer()){
 
             let time = cpu ? timerTime.cpu : timerTime.revealReady;
+            //TODO remrve when cpu io implimented
+            time = timerTime.revealReady;
             window.timer = $scope.timer = new Timer(time, function(){$scope.revealPicks()}, function(){
                 $scope.$digest();
             });
@@ -388,14 +392,42 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
     });
 
     Socket.on('removePlayer', function(mongooseId){
-        var targetPlayer = _.find($scope.allPlayers, {'_id': mongooseId});
-        targetPlayer.cpu = true;
-        console.log("PLAYER NOW CPY", $scope.allPlayers);
+        //TODO this will be for when we have cpuz
+        //var targetPlayer = _.find($scope.allPlayers, {'_id': mongooseId});
+        //targetPlayer.cpu = true;
+        //let firstHumanIdx = _.findIndex($scope.allPlayers, {'cpu': false});
+        //if(firstHumanIdx === -1) {
+        //    Socket.emit('killGame');
+        //    return;
+        //}
+        //if($scope.primaryPlayerIndex === firstHumanIdx){
+        //    alert('ueouoehacuroh');
+        //    let firstHuman = true;
+        //}
 
-        if($scope.isDealer){
-            $scope.phase = 'cleanup';
-            Socket.emit('doCleanupPhase', null);
+        // remove disconnected players and make sure all
+        // local idxs still lines up with new array
+        let split = _.findIndex($scope.allPlayers, {'_id': mongooseId});
+        if ($scope.primaryPlayerIndex > split) $scope.primaryPlayerIndex--;
+        $scope.allPlayers.splice(split, 1);
+        //a player that has not submitted a card disconnects
+
+        console.log("NEW PLAYERS", $scope.allPlayers);
+
+        //if the disconnected user added a card, remove it
+        _.remove($scope.pickedCards, (c) => c.player._id === mongooseId);
+
+        // we have one less player
+        if ($scope.pickedCards.length === $scope.allPlayers.length - 1) {
+            Socket.emit('revealReady')
         }
 
+        $scope.$digest();
+
+        //if($scope.isDealer()){
+        //    alert('this is dealer!!');
+        //    $scope.phase = 'cleanup';
+        //    Socket.emit('doCleanupPhase', null);
+        //}
     })
 });

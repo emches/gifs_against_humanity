@@ -2,6 +2,14 @@
 
 var Timer = function (timer, fn, intervalFn) {
 
+    if(typeof timer === 'array'){
+        this.mins = timer[0];
+        this.secs = timer[1]
+    } else if (typeof timer === 'string'){
+        timer = timer.split(/\D/);
+        return new Timer(timer, fn, intervalFn);
+    }
+
     this.mins = 0;
     this.secs = timer;
     //this.secs = 10
@@ -47,4 +55,7 @@ Timer.prototype.getSecs = function(){
 };
 Timer.prototype.getMins = function(){
     return this.mins < 1 ? '' : this.mins;
+};
+Timer.prototype.getTotal = function(){
+    return this.mins * 60 + this.secs;
 };

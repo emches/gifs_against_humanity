@@ -76,15 +76,18 @@ module.exports = function (server) {
         socket.on('winningCard', function (card) {
             //Depricted: This is merged with `doCleanupPhase`
             io.emit('winningCard', card);
-        })
+        });
 
         socket.on('newConnection', function () {
             console.log("fsdafsadf");
             io.emit('newConnection');
-        })
+        });
         socket.on('readyForUsername', function () {
             io.emit('readyForUsername');
-        })
+        });
+        socket.on('killGame', function() {
+            //TODO kill the game
+        });
     });
 
     return io;
