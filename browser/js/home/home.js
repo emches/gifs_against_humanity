@@ -19,10 +19,12 @@ app.config(function ($stateProvider) {
 });
 
 app.controller('QuestionController', function ($scope, $window, Socket, UserFactory,
-                                               GifFactory, QuestionFactory, $state, deck, $timeout) {
+                                               GifFactory, QuestionFactory, $state, deck, $timeout, $uibModal,
+                                               GameModal) {
   //phases = 'initialization', ['question', 'selection', 'cleanup'] <-- circular
-  var roundWinMsgs = ["You rock!", "GIF Game Strong!", "Wow! You seem like someone who definitely knows how to pronounce \"Gif\" correctly", "I love you.", "And I bet that's not even your final form", "Way to go!!", "Mad 1337 skillz there br0", "I'd buy you a drink! But I'm just a function on the window object", "You must have all the friends!", "I'm more than amazed!", "It's like you were born to play this game!", "You might just be \"The One\"", "All will know your name."];
   var roundLooseMsgs = ["", "", "", "", "This means war", "Shot's fired", "This doesn't mean you're not good, it just means that someone is better than you right now", "Okay, buddy. Gloves off.", "There's still time for redemption"];
+  var roundWinMsgs = ["You rock!", "GIF Game Strong!", "Wow! You seem like someone who definitely knows how to pronounce \"Gif\" correctly", "I love you.", "And I bet that's not even your final form", "Way to go!!", "Mad 1337 skillz there br0", "I'd buy you a drink! But I'm just a function on the window object", "You must have all the friends!", "I'm more than amazed!", "It's like you were born to play this game!", "You might just be \"The One\"", "All will know your name."];
+
   var randomItem = function (arr) {
     return arr[Math.floor(Math.random() * arr.length)];
   };
@@ -57,7 +59,7 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
     round: 45,
     revealReady: 8,
     choose: 60,
-    cpu: 2,
+    cpu: 8,
   };
 
   console.log("MEEE", me);
@@ -145,7 +147,7 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
       cards--
     }
     Socket.emit('updateGifDeck', deck.gifs);
-    console.log("a new hand", $scope.getLocalPlayer().hand);
+    // console.log("a new hand", $scope.getLocalPlayer().hand);
     //singular update of all hands (at the last loop call from cleanup phase
     if (shouldUpdate) {
       console.log("UPDATING PLAYER STATS: ", $scope.allPlayers);
@@ -213,12 +215,20 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
       }
       $scope.winningCard = null;
     }
-    else {
+    else if (card !== 'dealerDisconnect') {
+      // if card does equal dealerDisconnect, we can just skip this block
       var winnerIndex = _.findIndex($scope.allPlayers, {_id: card.player._id});
 
-      if ($scope.primaryPlayerIndex === winnerIndex) alert("Your card was selected!\n" + randomItem(roundWinMsgs));
-      else if ($scope.primaryPlayerIndex !== $scope.dealerIndex) alert("The dealer has chosen " + $scope.allPlayers[winnerIndex].name + "'s card.\n" +
-        randomItem(roundLooseMsgs));
+      if ($scope.primaryPlayerIndex === winnerIndex) {
+        GameModal.open({ type: "plusOne" });
+      }
+
+      else if ($scope.primaryPlayerIndex !== $scope.dealerIndex) {
+        GameModal.open({ type: "miss", winner: $scope.allPlayers[winnerIndex].name })
+        $scope.$digest();
+        // alert("The dealer has chosen " + $scope.allPlayers[winnerIndex].name + "'s card.\n" +
+        //   randomItem(roundLooseMsgs));
+      }
       $scope.allPlayers[winnerIndex].score += 1;
       if ($scope.primaryPlayerIndex === $scope.winnerIndex) {
         $scope.isWinner = true;
@@ -239,6 +249,7 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
 
   $scope.revealPicks = function () {
     if ($scope.revealReady) {
+      $scope.timer.stop();
       Socket.emit('revealPicks');
     }
   };
@@ -331,12 +342,8 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
     //dealer must click the button!
     if ($scope.isDealer()) {
 
-      let time = cpu ? timerTime.cpu : timerTime.revealReady;
       //TODO remrve when cpu io implimented
-      time = timerTime.revealReady;
-      window.timer = $scope.timer = new Timer(time, function () {
-        $scope.revealPicks()
-      }, function () {
+      $scope.timer = new Timer(8, $scope.revealPicks, function () {
         $scope.$digest();
       });
     }
@@ -424,7 +431,7 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
 
     // we have one less player
     if ($scope.pickedCards.length === $scope.allPlayers.length - 1) {
-      Socket.emit('revealReady')
+      Socket.emit('revealReady');
     }
 
     // check to see if disconnected user is the dealer
@@ -433,15 +440,11 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
       let mySubmittedCard = _.find($scope.pickedCards, { "player._id": me._id});
       console.log('the card back', mySubmittedCard);
       $scope.allPlayers[$scope.primaryPlayerIndex].hand.push(mySubmittedCard);
-
+      $scope.phase = 'cleanUp';
+      Socket.emit('doCleanupPhase', 'dealerDisconnect')
     }
         
     $scope.$digest();
 
-    //if($scope.isDealer()){
-    //    alert('this is dealer!!');
-    //    $scope.phase = 'cleanup';
-    //    Socket.emit('doCleanupPhase', null);
-    //}
   })
 });

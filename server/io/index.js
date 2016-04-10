@@ -22,7 +22,6 @@ module.exports = function (server) {
 
         socket.on('newPlayer', function (allPlayers, userCount, userId) {
             players.push({_id: userId, socketId: socket.id});
-            console.log("THE PLAYERS", players);
             io.emit('newPlayer', allPlayers, userCount, socket.id);
         });
 
@@ -31,17 +30,14 @@ module.exports = function (server) {
         });
 
         socket.on('newQuestion', function (questionDeck) {
-            console.log("new question at back end", questionDeck);
             io.emit('changeQuestion', questionDeck);
         });
 
         socket.on('chooseGif', function (card) {
-            console.log("chooseGif", card);
             io.emit('chooseGif', card);
         });
 
         socket.on('revealPicks', function () {
-            console.log("got picks");
             io.emit('revealPicks');
         });
 
@@ -79,7 +75,6 @@ module.exports = function (server) {
         });
 
         socket.on('newConnection', function () {
-            console.log("fsdafsadf");
             io.emit('newConnection');
         });
         socket.on('readyForUsername', function () {
