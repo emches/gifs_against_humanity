@@ -30,7 +30,7 @@ app.controller('JoinRoomCtrl', function ($scope, rooms, Socket, $window, AuthSer
 
     $scope.submitted = false;
     $scope.submitBtnText = "ADD USER";
-    $scope.selectedRoom = "Please Select a Room!"
+    $scope.selectedRoom;
 
     var me;
     var myRoom;
@@ -87,9 +87,13 @@ app.controller('JoinRoomCtrl', function ($scope, rooms, Socket, $window, AuthSer
         //debugger;
         $scope.allPlayers = room.players;
         $scope.playerMinimum = room.playerCount;
-
-        //$scope.$digest();
     });
+
+    console.log("selectedRoom", $scope.selectedRoom)
+    $scope.dropboxitemselected = function (item) {
+        $scope.selectedRoom = item;
+       // alert($scope.selectedRoom);
+    }
 
      Socket.on('updateRooms', function () {
         console.log("GOT IT UPDATING", $scope);
