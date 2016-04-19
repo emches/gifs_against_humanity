@@ -7,6 +7,7 @@ app.factory('QuestionFactory', function($http){
         constructQuestionDeck: function() {
             return $http.get('api/qcards/shuffle')
                 .then(function(cards){
+                    console.log("qcards", cards)
                     return cards.data;
                 });
         }

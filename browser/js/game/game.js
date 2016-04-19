@@ -1,7 +1,7 @@
 app.config(function ($stateProvider) {
     $stateProvider.state('home', {
         url: '/play',
-        templateUrl: 'js/home/home.html',
+        templateUrl: 'js/game/game.html',
         controller: 'QuestionController',
         params: {
             allPlayers: null,
@@ -33,6 +33,7 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
     $scope.phase = 'initialization';
     var room = $state.params.room;
     // INITIALIZATION
+    console.log("deck", deck)
     $scope.questionDeck = deck.questions;
     $scope.gifDeck = deck.gifs;
     $scope.allPlayers = $state.params.allPlayers; // for accessing up-to-date data

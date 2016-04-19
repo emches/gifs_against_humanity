@@ -2,7 +2,7 @@ app.config(function ($stateProvider) {
 
     $stateProvider.state('create', {
         url: '/create',
-        templateUrl: 'js/login/create_room.html',
+        templateUrl: 'js/create_room/createRoom.html',
         controller: 'CreateRoomCtrl'
     });
 

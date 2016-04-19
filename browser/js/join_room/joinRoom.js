@@ -2,7 +2,7 @@ app.config(function ($stateProvider) {
 
     $stateProvider.state('join', {
         url: '/join',
-        templateUrl: 'js/login/join_room.html',
+        templateUrl: 'js/join_room/joinRoom.html',
         controller: 'JoinRoomCtrl',
         resolve: {
             rooms: function(GameFactory){

@@ -12,10 +12,11 @@
                         <input class="loginForm entry" placeholder="Add Room" ng-model="createdRoom.name" maxlength="18" ng-disabled="submitted" />
                         <input class="loginForm entry" placeholder="Enter Player Count" ng-model="createdRoom.playerMax" maxlength="18" ng-disabled="submitted" />
                         <input class="loginForm entry" placeholder="Enter Password" ng-model="createdRoom.password" maxlength="18" ng-disabled="submitted" />
-                        <button type="submit" class="join-room btn-warning loginForm">CREATE!!</button>
+                        <button ng-show="allPlayers.length<1" type="submit" class="join-room btn-warning loginForm">CREATE!!</button>
                     </form>
                 </div>
-                    <button type="button" ng-show="allPlayers.length>= playerMinimum" class="btn-warning loginForm" ng-click="joinRoom()">ENTER!!</button>
+          <button type="button" ng-show="allPlayers.length>= playerMinimum" class="join-room btn-warning loginForm" ng-click="joinRoom()">ENTER!!
+            </button>
 
                 <h1 class="playerName" ng-repeat="player in allPlayers track by player._id">{{player.name}}</h1>
 

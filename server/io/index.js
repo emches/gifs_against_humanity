@@ -35,7 +35,8 @@ module.exports = function (server) {
 
       socket.on('chooseGif', function(card, room){
         //socket.join(room)
-          socket.broadcast.to(room).emit('chooseGif', card);
+         // socket.broadcast.to(room).emit('chooseGif', card);
+        io.sockets.in(room).emit('chooseGif', card)
       });
 
       socket.on('revealPicks', function(){
