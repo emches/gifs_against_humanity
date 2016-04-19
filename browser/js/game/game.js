@@ -192,7 +192,7 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
             _.remove($scope.allPlayers[$scope.primaryPlayerIndex].hand, {imageUrl: card.imageUrl});
             card.player = $scope.primaryPlayer;
             console.log("roomname", room.name)
-            Socket.emit('chooseGif', card, room.name)
+            Socket.emit('chooseGif', card, room)
         }
     };
     var hoverDelay;
