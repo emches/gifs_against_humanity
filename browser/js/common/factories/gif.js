@@ -3,7 +3,6 @@ app.factory('GifFactory', function ($http) {
         getConstructedDeck: function(id){
             return $http.get('/api/deck/'+id)
                 .then(deckObj => {
-                    console.log("DECKRES", deckObj);
                    return deckObj.data;
                 });
         },
@@ -24,7 +23,6 @@ app.factory('GifFactory', function ($http) {
                 gifs: gifDeck
             })
             .then(deckRes => {
-                console.log("GOT baCK FROM DECK psost", deckRes);
                 return deckRes.data;
             });
         },
@@ -32,12 +30,10 @@ app.factory('GifFactory', function ($http) {
             //LEGACYYYYYY
             return $http.get('/api/gifs')
                 .then(function (cards) {
-                    console.log(cards);
                     return cards.data;
                 });
         },
         dealGifCard: function(id){
-            console.log("Call to factory");
             return $http.get('/api/deck/'+id+'/gif/new-card')
                 .then(cardObj => cardObj.data);
         }

@@ -13,18 +13,14 @@ var urlencodedParser = bodyParser.urlencoded({ extended: false })
 router.get('/', function(req, res, next) {
     User.find().exec()
         .then(function(users) {
-            // console.log("FOUND USERS", users)
             res.json(users);
         })
         .then(null, next);
 });
 
 router.post('/', function(req, res, next) {
-    console.log("body", req.body)
     Avatar.findOne({'used': false}).exec()
         .then(function(avatar) {
-            console.log("FOUND Avatars", avatar)
-
            if (!avatar){
              avatar = {}
              avatar.avatarUrl = "http://www.avatarsdb.com/avatars/prittiest_kitten.jpg"
@@ -33,7 +29,6 @@ router.post('/', function(req, res, next) {
                     avatar.used = true;
                     avatar.save();
              }
-
 
             var newUser = { name: req.body.username,
              imageURL: avatar.avatarUrl,

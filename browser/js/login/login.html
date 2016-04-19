@@ -1,23 +1,17 @@
-<section >
+<section>
     <div class="container fill" id="section1">
-        <div class = "loginForm col-xs-12">
-        <h1 class="text-center">{{header}}</h1>
-<!--         <h2 class="text-center lato animate slideInDown">Change It To Say <b>Something</b> Unique</h2>
- -->        <p class="text-center">
-            <br>
-            <div ng-show="!readyForUsername"><h3>WAITING FOR PLAYERS</h3></div>
-            <div ng-show="readyForUsername">
-                <form  ng-submit="addUser()">
-                    <input class="loginForm entry" placeholder="Enter Username (a-z,0-9)" ng-model="newUser" maxlength="18" ng-disabled="submitted"/>
-                    <button ng-class="{'btn-success': newUser.length && !submitted}"
-                            class="loginForm" ng-disabled='!newUser.length || submitted'
-                            ng-hide="userCount >= playerMinimum">{{submitBtnText}}</button>
-                    <button type="button" ng-show="userCount>= playerMinimum" class="btn-warning loginForm" ng-click="joinRoom()">ENTER!!</button>
-                </form>
-            </div>
-            <h1 class="playerName" ng-repeat="player in allPlayers track by player._id">{{player.name}}</h1>
-            </p>
-       </div>
+        <div class="loginForm col-xs-12">
+            <h1 class="text-center">{{header}}</h1>
+            <p class="text-center">
+                <br>
+                <div ng-show="!readyForUsername">
+                    <h3>JOIN OR ADD A ROOM??</h3></div>
+                <div>
+                        <a ui-sref="create">ADD ROOM</a>
+                        <a ui-sref="join">JOIN ROOM</a>
+
+                </div>
+
+        </div>
     </div>
 </section>
-

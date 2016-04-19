@@ -1,0 +1,36 @@
+<section>
+    <div class="container fill" id="section1">
+        <div class="loginForm col-xs-12">
+            <h1 class="text-center">{{header}}</h1>
+            <p class="text-center">
+                <br>
+                <h3>Join A Room!</h3>
+            </p>
+
+<!--             <form name="myRoomsForm">
+                <p>{{rooms}}</p>
+                <label for="myRooms">Pick a Room:
+                </label>
+                <select ng-model="selectedRoom" ng-options="room.name  for room in rooms"> </select>
+            </form> -->
+
+            <div class="btn-group join-room-dropdown" uib-dropdown>
+                <button type="button" class="btn btn-primary room-dropdown room-list-item" uib-dropdown-toggle>
+                    {{selectedRoom ? selectedRoom.name : "Pick Room"}} <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu room-dropdown" uib-dropdown-menu role="menu" aria-labelledby="simple-btn-keyboard-nav">
+                    <li role="menuitem" ng-repeat="room in rooms"><a class="room-list-item" ng-click="dropboxitemselected(room)">{{room.name}}</a></li>
+                </ul>
+            </div>
+
+            <input class="loginForm entry" placeholder="Enter Username (a-z,0-9)" ng-model="newUser" maxlength="18" ng-disabled="submitted" />
+            <button type="button" class="btn-warning loginForm join-room" ng-click="addUserToRoom()">Join Room!!
+            </button>
+
+            <button type="button" ng-show="allPlayers.length>= playerMinimum" class="join-room btn-warning loginForm" ng-click="joinRoom()">ENTER!!
+            </button>
+            <h1 class="playerName" ng-repeat="player in allPlayers track by player._id">{{player.name}}</h1>
+
+    </div>
+</div>
+</section>
