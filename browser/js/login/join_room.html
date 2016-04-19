@@ -27,7 +27,7 @@
             <button type="button" class="btn-warning loginForm join-room" ng-click="addUserToRoom()">Join Room!!
             </button>
 
-            <button type="button" ng-show="allPlayers.length>= playerMinimum" class="btn-warning loginForm" ng-click="joinRoom()">ENTER!!
+            <button type="button" ng-show="allPlayers.length>= playerMinimum" class="join-room btn-warning loginForm" ng-click="joinRoom()">ENTER!!
             </button>
             <h1 class="playerName" ng-repeat="player in allPlayers track by player._id">{{player.name}}</h1>
 
