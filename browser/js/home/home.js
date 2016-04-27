@@ -24,7 +24,8 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
   //phases = 'initialization', ['question', 'selection', 'cleanup'] <-- circular
   var roundLooseMsgs = ["", "", "", "", "This means war", "Shot's fired", "This doesn't mean you're not good, it just means that someone is better than you right now", "Okay, buddy. Gloves off.", "There's still time for redemption"];
   var roundWinMsgs = ["You rock!", "GIF Game Strong!", "Wow! You seem like someone who definitely knows how to pronounce \"Gif\" correctly", "I love you.", "And I bet that's not even your final form", "Way to go!!", "Mad 1337 skillz there br0", "I'd buy you a drink! But I'm just a function on the window object", "You must have all the friends!", "I'm more than amazed!", "It's like you were born to play this game!", "You might just be \"The One\"", "All will know your name."];
-
+  var plusOne = ["http://i1382.photobucket.com/albums/ah279/npalenchar/gah/Level_Up_Logo_zpsbkc8w5iv.gif"];
+  
   var randomItem = function (arr) {
     return arr[Math.floor(Math.random() * arr.length)];
   };
@@ -204,14 +205,14 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
       var dealerWasCpu = $scope.allPlayers[$scope.dealerIndex].cpu;
       if ($scope.isDealer()) {
         if (!dealerWasCpu) {
-          alert("You did not select a card! You lose a point, jackass!");
+          GameModal.open({icon: 'bomb', header: "You've lost a point!", message: "Next time choose a card!"});
           $scope.allPlayers[$scope.dealerIndex].score -= 1;
         }
       } else {
         if (dealerWasCpu) {
-          alert("The dealer has turned into a CPU, and robots have no business in human card-choosing matters...");
+          GameModal.open({message: "The dealer has turned into a CPU, and robots have no business in human card-choosing matters..."});
         }
-        alert("The dealer didn't choose a card.\nDon't worry, (s)he was rightly punished");
+        GameModal.open({header: "The dealer didn't choose a card.", message: "Don't worry, (s)he was rightly punished"});
       }
       $scope.winningCard = null;
     }
@@ -220,7 +221,7 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
       var winnerIndex = _.findIndex($scope.allPlayers, {_id: card.player._id});
 
       if ($scope.primaryPlayerIndex === winnerIndex) {
-        GameModal.open({ type: "plusOne" });
+        GameModal.open({type: 'plusOne'});
       }
 
       else if ($scope.primaryPlayerIndex !== $scope.dealerIndex) {

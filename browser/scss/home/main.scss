@@ -390,3 +390,28 @@ div#game-bar {
   width: 100%;
   display: block;
 }
+.modal-backdrop {
+  background: rgba(34, 34, 34, 0.67);
+}
+
+
+
+
+.game-modal{
+  display: none;
+  position: relative;
+  //float: left;
+  z-index: 999999;
+  top: 10px;
+  margin: 12% auto 0;
+  width: 500px;
+  //height: 200px;
+  background: white;
+  div.modal-header, div.modal-body, div.modal-footer {
+    width: inherit !important;
+    height: inherit;
+  }
+  p {
+    font-size: 14px;
+  }
+}
