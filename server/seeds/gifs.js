@@ -5,7 +5,12 @@ var gifCards = [
     { imageUrl: 'https://media.giphy.com/media/PlQFFxwdG7Icw/giphy.gif'},
     { imageUrl: 'https://media.giphy.com/media/5uJf9RHi1ESm4/giphy.gif'},
     { imageUrl: 'https://media.giphy.com/media/8bTmYiGgMGias/giphy.gif'},
-    { imageUrl: 'https://media.giphy.com/media/QgcQLZa6glP2w/giphy.gif'}
+    { imageUrl: 'https://media.giphy.com/media/QgcQLZa6glP2w/giphy.gif'},
+    { imageUrl: 'https://media.giphy.com/media/qZKWglaw5pR6M/giphy.gif'},
+    { imageUrl: ''},
+    { imageUrl: ''},
+    { imageUrl: ''},
+    { imageUrl: ''},
 ];
 
 module.exports = gifCards;

@@ -8,9 +8,9 @@
         </div>
       </div>
     </div>
-
+    <button ng-click="open()">uaeorcuhcraeouhrcoaehu</button>
     <div class="player-row">
-      <div ng-repeat="playerInfo in allPlayers" class="avatar player-frame">
+      <div ng-repeat="playerInfo in allPlayers track by $index" class="avatar player-frame">
         <player player-info="playerInfo" my-id="localId"></player>
       </div>
     </div>
