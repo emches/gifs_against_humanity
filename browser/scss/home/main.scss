@@ -1,5 +1,5 @@
 body {
-    background-image: url("/footer_lodyas.png");
+  background-image: url("/footer_lodyas.png");
 }
 
 #home {
@@ -15,352 +15,378 @@ body {
 }
 
 .container#game-container {
-    width: 100%;
+  width: 100%;
 }
 
 #blackcard {
-    border: 2px solid black;
-    background: black;
-    width: 160px;
-    height: 215px;
-    display: inline-block;
-    margin: 20px;
-    border-radius: 2px;
+  border: 2px solid black;
+  background: black;
+  width: 160px;
+  height: 215px;
+  display: inline-block;
+  margin: 20px;
+  border-radius: 2px;
 
 }
 
 .cardText {
-    font-weight: bold;
-    font-size: 24px;
+  font-weight: bold;
+  font-size: 24px;
 }
+
 .black {
-    color: white;
-    font-size: 24px;
-    font-weight: bold;
-    margin-top: -2px;
-    padding: 0 15px 0px 15px;
-    line-height: 25px;
+  color: white;
+  font-size: 24px;
+  font-weight: bold;
+  margin-top: -2px;
+  padding: 0 15px 0px 15px;
+  line-height: 25px;
 }
 
 #blackcard #cardgif {
-    height: 100%;
-    width: 100%;
+  height: 100%;
+  width: 100%;
 }
+
 .player-row {
 
 }
+
 .table {
-    display: block;
-    margin: 0 auto;
+  display: block;
+  margin: 0 auto;
 }
+
 .blackcard-display {
-    display: inline-block;
-    float: left;
+  display: inline-block;
+  float: left;
 }
+
 .picksRow {
-    background-color: rgba(61, 95, 110, 0.44);
-    border-radius: 10px;
-    display: inline-block;
-    width: 70%;
-    margin: 27px 10px 20px 0;
-    height: 200px;
-    padding: 0 10px;
-    float: left;
-    list-style: none;
-    position: relative;
+  background-color: rgba(61, 95, 110, 0.44);
+  border-radius: 10px;
+  display: inline-block;
+  width: 70%;
+  margin: 27px 10px 20px 0;
+  height: 200px;
+  padding: 0 10px;
+  float: left;
+  list-style: none;
+  position: relative;
 }
+
 .picksRow > .whitecard {
-    margin-top: 15px;
+  margin-top: 15px;
 }
 
 .player-hand {
-    //width: 100%;
-    height: 180px;
-    display: block;
-    align-content: center;
-    margin: 0 auto;
-    padding: 0 auto;
-    max-width: 1100px;
-    //overflow-y: hidden;
-    //overflow-x: hidden;
+  //width: 100%;
+  height: 180px;
+  display: block;
+  align-content: center;
+  margin: 0 auto;
+  padding: 0 auto;
+  max-width: 1100px;
+  //overflow-y: hidden;
+  //overflow-x: hidden;
 }
+
 #hand-block {
-    float: left;
-    position: fixed;
-    background: rgba(235, 215, 240, 0.64);
-    height: 100%;
-    width: 100%;
-    max-height: 190px;
-    display: table-cell;
-    align-content: center;
-    button {
-        display: block;
-        margin: 0 auto;
-        &[disabled]{
-            background: grey;
-            border-color: black;
-            opacity: 1;
-        }
+  float: left;
+  position: fixed;
+  background: rgba(235, 215, 240, 0.64);
+  height: 100%;
+  width: 100%;
+  max-height: 190px;
+  display: table-cell;
+  align-content: center;
+  button {
+    display: block;
+    margin: 0 auto;
+    &[disabled] {
+      background: grey;
+      border-color: black;
+      opacity: 1;
     }
+  }
 
 }
+
 img {
-    height: 100%;
-    width: 100%;
-    z-index: 10;
+  height: 100%;
+  width: 100%;
+  z-index: 10;
 }
 
 .white {
-    color: #000;
-    font-size: 40px;
-    padding: 5px 10px 0px 10px;
-    line-height: 15px;
+  color: #000;
+  font-size: 40px;
+  padding: 5px 10px 0px 10px;
+  line-height: 15px;
 }
+
 .whitecard-container {
-    display: inline-block;
-    float: left;
-    width: 12%;
-    max-width: 132px;
-    min-width: 30px;
+  display: inline-block;
+  float: left;
+  width: 12%;
+  max-width: 132px;
+  min-width: 30px;
 }
+
 .whitecard {
-    border: 2px solid #000;
-    background: #fff;
-    float: left;
-    width: 130px;
-    height: 165px;
-    display: inline;
-    margin: 5px 2px;
-    border-radius: 2px;
+  border: 2px solid #000;
+  background: #fff;
+  float: left;
+  width: 130px;
+  height: 165px;
+  display: inline;
+  margin: 5px 2px;
+  border-radius: 2px;
 }
 
 .whitecard:active {
-    box-shadow: 0px 0px 30px gray;
-    z-index: 1;
-    border: 2px solid green;
+  box-shadow: 0px 0px 30px gray;
+  z-index: 1;
+  border: 2px solid green;
 }
 
 .whitecard:hover {
-    box-shadow:0px 0px 30px gray; /*CSS3 shadow: 30px blurred shadow all around image*/
-    z-index: 1;
-    border: 2px solid #ffef00;
-    margin-top: -10px;
+  box-shadow: 0px 0px 30px gray; /*CSS3 shadow: 30px blurred shadow all around image*/
+  z-index: 1;
+  border: 2px solid #ffef00;
+  margin-top: -10px;
 }
 
 .img-frame {
-    width: 110px;
-    height: 100px;
+  width: 110px;
+  height: 100px;
 
 }
 
 #player-score {
-    text-align: center;
-    font-size: 20px;
-    color: white;
-    font-family: 'Oswald', sans-serif;
-    display: block;
-    min-width: 20px;
-    padding: 3px 7px;
-    lint-height: 1;
-    white-space: no-wrap;
-    vertical-align: middle;
-    background-color: #101008;
-    color: #e1cd00;
-    border-radius: 30px;
-    margin: -28px -8px 0 0;
+  text-align: center;
+  font-size: 20px;
+  color: white;
+  font-family: 'Oswald', sans-serif;
+  display: block;
+  min-width: 20px;
+  padding: 3px 7px;
+  lint-height: 1;
+  white-space: no-wrap;
+  vertical-align: middle;
+  background-color: #101008;
+  color: #e1cd00;
+  border-radius: 30px;
+  margin: -28px -8px 0 0;
 
 }
 
 .current-status {
-    text-align: center;
-    color: blue;
-    font-size: 30px;
-    display: block;
-    min-width: 20px;
-    padding: 3px 7px;
-    lint-height: 1;
-    white-space: no-wrap;
-    vertical-align: middle;
-    border-radius: 10px;
-    margin: auto;
+  text-align: center;
+  color: blue;
+  font-size: 30px;
+  display: block;
+  min-width: 20px;
+  padding: 3px 7px;
+  lint-height: 1;
+  white-space: no-wrap;
+  vertical-align: middle;
+  border-radius: 10px;
+  margin: auto;
 
 }
 
 .cardRow {
-    background-color: purple;
-    border-radius: 10px;
-    margin: auto;
-    width: 100%;
-    display: table;
-    list-style: none;
-    position: relative;
+  background-color: purple;
+  border-radius: 10px;
+  margin: auto;
+  width: 100%;
+  display: table;
+  list-style: none;
+  position: relative;
 }
+
 #vert {
-    -webkit-transform:rotate(270deg);
-    font-size: 50px;
- // position: relative;
+  -webkit-transform: rotate(270deg);
+  font-size: 50px;
+  // position: relative;
   top: 900px;
-  left:15px;
+  left: 15px;
   //background: blue;
   color: white
 
 }
 
-
-
 #section1, #section3 {
-    background-color: rgba(0,0,0,0.7);
-    color:#fff;
-    height: 900px;;
-    width: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  height: 900px;;
+  width: 100%;
 }
 
-@media (min-width:768px) {
-    .v-center {
-        display:table;
-        height:90%;
-        width:100%;
-        vertical-align:middle;
-    }
+@media (min-width: 768px) {
+  .v-center {
+    display: table;
+    height: 90%;
+    width: 100%;
+    vertical-align: middle;
+  }
 }
 
 .loginForm {
-    text-align: center;
-    display: block;
-    padding: 3px 7px;
-    lint-height: 1;
-    margin: auto;
+  text-align: center;
+  display: block;
+  padding: 3px 7px;
+  lint-height: 1;
+  margin: auto;
 }
 
 .entry {
-    color: green;
-    font-size: 18;
-    font-style: bold;
+  color: green;
+  font-size: 18;
+  font-style: bold;
 }
 
 .playerName {
-    color: green;
-    font-size: 30;
-    font-style: bold;
+  color: green;
+  font-size: 30;
+  font-style: bold;
 }
-
-
 
 #blackcard2 {
-    position: absolute;
-    border: 2px solid black;
-    background: black;
-    width: 192px;
-    height: 215px;
-    margin: 20px;
-   // float: left;
-   // left: 34%;                        /* align them to the center of the screen */
+  position: absolute;
+  border: 2px solid black;
+  background: black;
+  width: 192px;
+  height: 215px;
+  margin: 20px;
+  // float: left;
+  // left: 34%;                        /* align them to the center of the screen */
 
 }
+
 .cardText.white > h3 {
-    font-size: 15px;
-    font-weight: 600;
+  font-size: 15px;
+  font-weight: 600;
 }
+
 .cardRow > .col-xs-1 {
-    padding: 0;
-    width: 5.5%;
+  padding: 0;
+  width: 5.5%;
 }
 
 .cardRow > .col-xs-11 {
-    padding: 0;
+  padding: 0;
 
 }
+
 .avatar.player-frame {
 
 }
 
-#preview{
-    position:absolute;
-    border:1px solid #ccc;
-    background:#333;
-    padding:5px;
-    display:none;
-    color:#fff;
-    max-width: 400px;
-    max-height: 400px;
-    overflow: hidden;
+#preview {
+  position: absolute;
+  border: 1px solid #ccc;
+  background: #333;
+  padding: 5px;
+  display: none;
+  color: #fff;
+  max-width: 400px;
+  max-height: 400px;
+  overflow: hidden;
 }
 
 div#game-bar {
-    padding: 8px 0;
-    height: 60px;
-    margin: 0;
-    border: 0 none transparent;
-    color: white;
-    background: #080808;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    #left {
-        border-right: 1px solid #1c1c1c;
-        display: inline-block;
-        width: 20%;
-        div {
-            i {
-                font-size: 32px;
-            }
-            border: 0 none transparent;
-            box-sizing: border-box;
-            display: inline-block;
-            width: 50%;
-        }
-        #logo {
-            font-size: 10px;
-            float: left;
-            font-weight: bold;
-        }
-        #menu {
-            float: left;
-            padding: 0 6px;
-        }
+  padding: 8px 0;
+  height: 60px;
+  margin: 0;
+  border: 0 none transparent;
+  color: white;
+  background: #080808;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  #left {
+    border-right: 1px solid #1c1c1c;
+    display: inline-block;
+    width: 20%;
+    div {
+      i {
+        font-size: 32px;
+      }
+      border: 0 none transparent;
+      box-sizing: border-box;
+      display: inline-block;
+      width: 50%;
+    }
+    #logo {
+      font-size: 10px;
+      float: left;
+      font-weight: bold;
+    }
+    #menu {
+      float: left;
+      padding: 0 6px;
+    }
 
+  }
+  #center {
+    line-height: 50px; // change if game-bar width is adjusted
+    vertical-align: top;
+    text-align: center;
+    display: inline-block;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    width: 60%;
+  }
+  #right {
+    display: inline-block;
+    width: 20%;
+    text-align: center;
+    border-left: 1px solid #1c1c1c;
+    #round {
+      font-size: 11px;
     }
-    #center {
-        line-height: 50px; // change if game-bar width is adjusted
-        vertical-align: top;
-        text-align: center;
-        display: inline-block;
-        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-        font-size: 16px;
-        width: 60%;
+    #goal {
+      div {
+        font-family: 'Oswald', sans-serif;
+        font-size: 13px;
+      }
+      div#goal-text {
+        font-family: sans-serif;
+        font-size: 11px;
+      }
     }
-    #right {
-        display: inline-block;
-        width: 20%;
-        text-align: center;
-        border-left: 1px solid #1c1c1c;
-        #round {
-            font-size: 11px;
-        }
-        #goal {
-            div {
-                font-family: 'Oswald', sans-serif;
-                font-size: 13px;
-            }
-            div#goal-text {
-                font-family: sans-serif;
-                font-size: 11px;
-            }
-        }
-    }
+  }
 }
-#clock-header{
-    font-size: 10px;
+
+#clock-header {
+  font-size: 10px;
 }
+
 #clock {
-    font-family: 'Oswald', sans-serif;
-    font-size: 24px;
-    max-width: 110px;
-    position: relative;
-    margin: 0 auto;
-    border-radius: 10px;
-    background: rgb(12, 45, 48);
+  font-family: 'Oswald', sans-serif;
+  font-size: 24px;
+  max-width: 110px;
+  position: relative;
+  margin: 0 auto;
+  border-radius: 10px;
+  background: rgb(12, 45, 48);
 }
-#clock.red{
-    background: #cb0000;
+
+#clock.red {
+  background: #cb0000;
+}
+
+.modal-body{
+  img {
+    height: 180px;
+    width: auto;
+    display: block;
+    margin: 0 auto;
+  }
+}
+.modal-footer button {
+  width: 100%;
+  display: block;
 }
