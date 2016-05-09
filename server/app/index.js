@@ -12,6 +12,8 @@ require('./configure')(app);
 // /api so they are isolated from our GET /* wildcard.
 app.use('/api', require('./routes'));
 
+// Static routing
+app.use('/components', express.static(path.join(__dirname, "/browser/components")))
 
 /*
  This middleware will catch any URLs resembling a file extension

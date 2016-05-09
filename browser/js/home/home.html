@@ -72,12 +72,11 @@
     <div id="left">
       <div id="menu"><i class="glyphicon glyphicon-menu-hamburger"></i>
       </div><div id="logo">GIFS<br/>AGAINST<br/>HUMANITY.</div>
-    </div><div id="center">{{stats.message}}</div><div id="right">
-      <div id="round">Round: {{stats.round}}</div>
-      <div id="goal">
-        <div>{{stats.goal}}</div>
-        <div id="goal-text">to win</div>
-      </div>
+    </div><!--
+ --><div id="center">{{stats.message}}</div><!--
+ --><div id="right">
+      <div id="clock-header">Clock</div>
+      <div id="clock" ng-class="{red: timer.running }">{{timer.getMins() | ifUndefined: '' }}:{{timer.getSecs() | ifUndefined:'00'}}</div>
     </div>
   </div>
 </section>

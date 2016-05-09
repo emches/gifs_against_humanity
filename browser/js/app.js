@@ -48,4 +48,14 @@ app.run(function ($rootScope, AuthService, $state) {
 
     });
 
+})
+
+.filter('ifUndefined', function(){
+    return function(input, def){
+        return input === undefined ? def : input;
+    }
+})
+.filter('timerSeconds', function(input){
+    if(input < 10) return '0' + input;
+    else return input;
 });

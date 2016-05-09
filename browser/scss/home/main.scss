@@ -349,3 +349,18 @@ div#game-bar {
         }
     }
 }
+#clock-header{
+    font-size: 10px;
+}
+#clock {
+    font-family: 'Oswald', sans-serif;
+    font-size: 24px;
+    max-width: 110px;
+    position: relative;
+    margin: 0 auto;
+    border-radius: 10px;
+    background: rgb(12, 45, 48);
+}
+#clock.red{
+    background: #cb0000;
+}
