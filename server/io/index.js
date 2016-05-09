@@ -116,6 +116,10 @@ module.exports = function (server) {
       socket.on('readyForUsername', function(){
           io.emit('readyForUsername');
       })
+
+      socket.on('killGame', function() {
+             //TODO kill the game
+      });
   });
 
     return io;
