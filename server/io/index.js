@@ -43,43 +43,6 @@ module.exports = function (server) {
             io.emit('revealPicks');
         });
 
-        socket.on('cleanupPhase', function () {
-            io.emit('cleanupPhase');
-        });
-
-        socket.on('revealReady', function () {
-            io.emit('revealReady');
-        });
-
-        socket.on('doCleanupPhase', function (card) {
-            io.emit('doCleanupPhase', card);
-        });
-
-        socket.on('newDealer', function () {
-            io.emit('newDealer');
-        });
-
-        socket.on('toQuestionPhase', function () {
-            io.emit('toQuestionPhase');
-        });
-        socket.on('updateOnePlayerStats', function (stats, ind) {
-            io.emit('updateOnePlayerStats', stats, ind);
-        });
-
-        socket.on('winningCard', function (card) {
-            //Depricted: This is merged with `doCleanupPhase`
-            io.emit('winningCard', card);
-        })
-
-        socket.on('newConnection', function () {
-            console.log("fsdafsadf");
-            io.emit('newConnection');
-        })
-        socket.on('readyForUsername', function () {
-            io.emit('readyForUsername');
-        })
-    });
-
       socket.on('cleanupPhase', function(){
           io.emit('cleanupPhase');
       });
