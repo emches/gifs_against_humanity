@@ -7,7 +7,8 @@ app.config(function ($stateProvider) {
       allPlayers: null,
       me: null,
       deckId: null,
-      socketId: null
+      socketId: null,
+      room: null,
     },
     resolve: {
       deck: function ($stateParams, GifFactory) {
@@ -54,6 +55,7 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
   // internals
   var mySocketId = $state.params.socketId;
   var me = $state.params.me;
+  var room = $state.params.room
   var cpu = me.cpu;
   let timerTime = {
     round: 45,
@@ -289,7 +291,7 @@ app.controller('QuestionController', function ($scope, $window, Socket, UserFact
       _.remove($scope.allPlayers[$scope.primaryPlayerIndex].hand, {imageUrl: card.imageUrl});
       console.log("new gif deck", $scope.allPlayers[$scope.primaryPlayerIndex].hand);
       card.player = $scope.primaryPlayer;
-      Socket.emit('chooseGif', card)
+      Socket.emit('chooseGif', card, room)
     }
   };
   Socket.on('chooseGif', function (card) {
