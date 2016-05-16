@@ -20,7 +20,7 @@
                 <div>
                     <form ng-submit="createRoom()">
                         <input class="loginForm entry" placeholder="Enter Username (a-z,0-9)" ng-model="newUser" maxlength="18" ng-disabled="submitted" />
-                        <input class="loginForm entry" placeholder="Add Room" ng-model="createdRoom.name" maxlength="18" ng-disabled="submitted" />
+                        <input class="loginForm entry" placeholder="Enter Game" ng-model="createdRoom.name" maxlength="18" ng-disabled="submitted" />
                         <input class="loginForm entry" placeholder="Enter Player Count" ng-model="createdRoom.playerMax" maxlength="18" ng-disabled="submitted" />
                         <input type="password" class="loginForm entry" placeholder="Enter Password" ng-model="createdRoom.password" maxlength="18" ng-disabled="submitted" />
                         <button ng-show="allPlayers.length<1" type="submit" class="join-room btn-warning loginForm">CREATE!!</button>
