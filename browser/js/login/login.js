@@ -33,7 +33,6 @@ app.controller('LoginCtrl', function ($scope, rooms, Socket, $window, AuthServic
     $scope.entryType=null;
     $scope.rooms = rooms
     $scope.selectedRoom=false;
-    $scope.joinedRoom=false
     $scope.allPlayers = [];
 
     Socket.on('connect', function (socket) {
@@ -103,6 +102,12 @@ app.controller('LoginCtrl', function ($scope, rooms, Socket, $window, AuthServic
         if ($scope.allPlayers.indexOf($scope.newUser) > -1) {
             return $window.alert("USER ALREADY EXISTS");
         }
+        console.log("entered: ", $scope.enteredPW)
+        console.log("correct: ", $scope.selectedRoom.password)
+        if ($scope.enteredPW !== $scope.selectedRoom.password){
+            alert("Wrong Password! Try Again, Bud")
+            return;
+        }
 
         $scope.submitted = true;
         UserFactory.addUser($scope.newUser)
@@ -123,7 +128,7 @@ app.controller('LoginCtrl', function ($scope, rooms, Socket, $window, AuthServic
                 $scope.joinedRoom = true;
                 console.log("joinedRoom", $scope.joinedRoom)
                // debugger
-                myRoom = room.data;
+                //$scope.myRoom = room.data;
                 $scope.joinedRoom = true;
                 Socket.emit('joinRoom', room.data);
                 //debugger

@@ -22,7 +22,7 @@
                         <input class="loginForm entry" placeholder="Enter Username (a-z,0-9)" ng-model="newUser" maxlength="18" ng-disabled="submitted" />
                         <input class="loginForm entry" placeholder="Add Room" ng-model="createdRoom.name" maxlength="18" ng-disabled="submitted" />
                         <input class="loginForm entry" placeholder="Enter Player Count" ng-model="createdRoom.playerMax" maxlength="18" ng-disabled="submitted" />
-                        <input class="loginForm entry" placeholder="Enter Password" ng-model="createdRoom.password" maxlength="18" ng-disabled="submitted" />
+                        <input type="password" class="loginForm entry" placeholder="Enter Password" ng-model="createdRoom.password" maxlength="18" ng-disabled="submitted" />
                         <button ng-show="allPlayers.length<1" type="submit" class="join-room btn-warning loginForm">CREATE!!</button>
                     </form>
                 </div>
@@ -49,7 +49,8 @@
             </div>
 
             <input class="loginForm entry" placeholder="Enter Username (a-z,0-9)"  ng-model="newUser" maxlength="18" ng-disabled="submitted" />
-            <button type="button" ng-show="!myRoom" class="btn-warning loginForm join-room" ng-click="addUserToRoom()">Join Game!!
+            <input type="password" class="loginForm entry" placeholder="Enter Password" ng-model="enteredPW" maxlength="18" ng-disabled="submitted" />
+            <button type="button" ng-show="!submitted" class="btn-warning loginForm join-room" ng-click="addUserToRoom()">Join Game!!
             </button>
 
             <button type="button" ng-show="allPlayers.length>= playerMinimum" class="join-room btn-warning loginForm" ng-click="joinRoom()">ENTER!!
