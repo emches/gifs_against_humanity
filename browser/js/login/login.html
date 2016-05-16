@@ -5,13 +5,57 @@
             <p class="text-center">
                 <br>
                 <div ng-show="!readyForUsername">
-                    <h3>JOIN OR ADD A ROOM??</h3></div>
                 <div>
-                        <a ui-sref="create">ADD ROOM</a>
-                        <a ui-sref="join">JOIN ROOM</a>
+                        <button class="btn btn-success" ng-click="showEntryForm('create')">CREATE GAME </button>
+                        <button class="btn btn-success" ng-click="showEntryForm('join')">JOIN GAME </button>
 
                 </div>
 
         </div>
+        <div ng-show="entryType=='create'" class="loginForm col-xs-12">
+            <p class="text-center">
+                <br>
+                <div ng-show="!readyForUsername">
+                    <h3>Create Your Game!</h3></div>
+                <div>
+                    <form ng-submit="createRoom()">
+                        <input class="loginForm entry" placeholder="Enter Username (a-z,0-9)" ng-model="newUser" maxlength="18" ng-disabled="submitted" />
+                        <input class="loginForm entry" placeholder="Add Room" ng-model="createdRoom.name" maxlength="18" ng-disabled="submitted" />
+                        <input class="loginForm entry" placeholder="Enter Player Count" ng-model="createdRoom.playerMax" maxlength="18" ng-disabled="submitted" />
+                        <input class="loginForm entry" placeholder="Enter Password" ng-model="createdRoom.password" maxlength="18" ng-disabled="submitted" />
+                        <button ng-show="allPlayers.length<1" type="submit" class="join-room btn-warning loginForm">CREATE!!</button>
+                    </form>
+                </div>
+                <button type="button" ng-show="allPlayers.length>= playerMinimum" class="join-room btn-warning loginForm" ng-click="joinRoom()">ENTER!!
+ +              </button>
+
+                <h1 class="playerName" ng-repeat="player in allPlayers track by player._id">{{player.name}}</h1>
+
+            </p>
+        </div>
+        <div  ng-show="entryType=='join'" class="loginForm col-xs-12">
+            <p class="text-center">
+                <br>
+                <h3>Join A Game!</h3>
+            </p>
+
+            <div class="btn-group join-room-dropdown" uib-dropdown>
+                <button type="button" class="btn btn-primary room-dropdown room-list-item" uib-dropdown-toggle>
+                    {{selectedRoom ? selectedRoom.name : "Games"}} <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu room-dropdown" uib-dropdown-menu role="menu" aria-labelledby="simple-btn-keyboard-nav">
+                    <li role="menuitem" ng-repeat="room in rooms"><a class="room-list-item" ng-click="dropboxitemselected(room)">{{room.name}}</a></li>
+                </ul>
+            </div>
+
+            <input class="loginForm entry" placeholder="Enter Username (a-z,0-9)"  ng-model="newUser" maxlength="18" ng-disabled="submitted" />
+            <button type="button" ng-show="!myRoom" class="btn-warning loginForm join-room" ng-click="addUserToRoom()">Join Game!!
+            </button>
+
+            <button type="button" ng-show="allPlayers.length>= playerMinimum" class="join-room btn-warning loginForm" ng-click="joinRoom()">ENTER!!
+            </button>
+            <h1 class="playerName" ng-repeat="player in allPlayers track by player._id">{{player.name}}</h1>
+
+    </div>
     </div>
 </section>

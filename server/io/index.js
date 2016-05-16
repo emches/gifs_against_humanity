@@ -19,52 +19,68 @@ module.exports = function (server) {
         });
 
         socket.on('newPlayer', function (allPlayers, userCount, userId) {
-            players.push({_id: userId, socketId: socket.id});
-            console.log("THE PLAYERS", players);
-            io.emit('newPlayer', allPlayers, userCount, socket.id);
+          players.push({_id: userId, socketId: socket.id});
+          console.log("THE PLAYERS", players);
+          io.sockets.in(socket.room).emit('newPlayer', allPlayers, userCount, socket.id);
         });
 
-        socket.on('joinRoom', function (deckId) {
-            io.emit('gameStart', deckId, socket.id);
+        socket.on('gameStart', function(room){
+           var myRoom = (room._id).toString()
+           console.log("joining game", room.name)
+           socket.broadcast.to(myRoom).emit('gameStart', room)
         });
 
-        socket.on('newQuestion', function (questionDeck) {
-            console.log("new question at back end", questionDeck);
-            io.emit('changeQuestion', questionDeck);
+        socket.on('joinRoom', function (room) {
+          console.log("starting", room.name)
+          var myRoom = (room._id).toString()
+          socket.room = myRoom
+          socket.join(myRoom)
+          //io.emit('gameStart', room);
+          socket.broadcast.to(myRoom).emit('newPlayerTest', room)
+          io.emit('updateRooms');
         });
 
-        socket.on('chooseGif', function (card) {
-            console.log("chooseGif", card);
-            io.emit('chooseGif', card);
-        });
+      socket.on('newQuestion', function(questionDeck){
+          io.sockets.in(socket.room).emit('changeQuestion', questionDeck)
+      });
 
-        socket.on('revealPicks', function () {
-            console.log("got picks");
-            io.emit('revealPicks');
-        });
+      socket.on('chooseGif', function(card, room){
+          var myRoom = (room._id).toString()
+          console.log("has a room?", socket.room)
+         // socket.broadcast.to(room).emit('chooseGif', card);
+        io.sockets.in(socket.room).emit('chooseGif', card)
+      });
 
-      socket.on('cleanupPhase', function(){
-          io.emit('cleanupPhase');
+      socket.on('revealPicks', function(){
+        io.sockets.in(socket.room).emit('revealPicks')
+      });
+
+     socket.on('cleanupPhase', function(){
+        io.sockets.in(socket.room).emit('cleanupPhase')
       });
 
       socket.on('revealReady', function(){
-          io.emit('revealReady');
+        io.sockets.in(socket.room).emit('revealReady')
       });
 
       socket.on('doCleanupPhase', function(card){
-          io.emit('doCleanupPhase', card);
+        io.sockets.in(socket.room).emit('doCleanupPhase', card)
       });
 
       socket.on('newDealer', function(){
-          io.emit('newDealer');
+        io.sockets.in(socket.room).emit('newDealer')
       });
 
       socket.on('toQuestionPhase', function(){
-         io.emit('toQuestionPhase');
+        io.sockets.in(socket.room).emit('toQuestionPhase')
       });
 
       socket.on('updateOnePlayerStats', function(stats, ind){
-          io.emit('updateOnePlayerStats', stats, ind);
+        io.sockets.in(socket.room).emit('updateOnePlayerStats', stats, ind)
+      });
+
+      socket.on('updateGifDeck', function(){
+        io.sockets.in(socket.room).emit('updateGifDeck')
       });
 
       socket.on('winningCard', function(card){
