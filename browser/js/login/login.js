@@ -132,7 +132,8 @@ app.controller('LoginCtrl', function ($scope, rooms, Socket, $window, AuthServic
                 $scope.joinedRoom = true;
                 console.log("joinedRoom", $scope.joinedRoom)
                // debugger
-                //$scope.myRoom = room.data;
+                myRoom = room.data;
+                console.log("my room", myRoom)
                 $scope.joinedRoom = true;
                 Socket.emit('joinRoom', room.data);
                 //debugger
@@ -143,7 +144,7 @@ app.controller('LoginCtrl', function ($scope, rooms, Socket, $window, AuthServic
     Socket.on('removePlayer', function(removedId){
         if(gameStarted) return;
 
-        console.log("REMVOED ID", removedId);
+        console.log("REMOVED ID", removedId);
         var split = _.findIndex($scope.allPlayers, {'_id': removedId});
         $scope.allPlayers.splice(split, 1);
         console.log("NEW PLAYERS", $scope.allPlayers);
@@ -169,6 +170,7 @@ app.controller('LoginCtrl', function ($scope, rooms, Socket, $window, AuthServic
     // };
 
     $scope.joinRoom = function(){
+        console.log("joining game")
         Socket.emit('gameStart', myRoom)
         $state.go('home', {
             allPlayers: $scope.allPlayers,
