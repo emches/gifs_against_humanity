@@ -7,16 +7,16 @@ app.config(function ($stateProvider) {
         resolve: {
             rooms: function(GameFactory){
                 return GameFactory.getGames();
-            },
-            backgroundGif: function(GifFactory){
-                return GifFactory.getBackgroundGif();
             }
+            // backgroundGif: function(GifFactory){
+            //     return GifFactory.getBackgroundGif();
+            // }
         }
     });
 
 });
 
-app.controller('LoginCtrl', function ($scope, rooms, backgroundGif, Socket, $window, AuthService, $state, GameFactory, UserFactory, GifFactory, QuestionFactory) {
+app.controller('LoginCtrl', function ($scope, rooms, Socket, $window, AuthService, $state, GameFactory, UserFactory, GifFactory, QuestionFactory) {
 
     var mySocketId;
     var me;
@@ -37,7 +37,7 @@ app.controller('LoginCtrl', function ($scope, rooms, backgroundGif, Socket, $win
     $scope.rooms = rooms
     $scope.selectedRoom=false;
     $scope.allPlayers = [];
-    $scope.backgroundGif = backgroundGif;
+    //$scope.backgroundGif = backgroundGif;
 
     Socket.on('connect', function (socket) {
         console.log("I HAVE CONNECTED");
