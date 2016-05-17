@@ -36,7 +36,14 @@ app.factory('GifFactory', function ($http) {
         dealGifCard: function(id){
             return $http.get('/api/deck/'+id+'/gif/new-card')
                 .then(cardObj => cardObj.data);
-        }
+        },
+        getBackgroundGif: function() {
+          return $http.get('http://api.giphy.com/v1/gifs/search?q=puppy&api_key=dc6zaTOxFJmzC&limit=20&offset=0&rating=r')
+            .then(res => {
+                var randomGifs = _.shuffle(res.data.data)
+                return randomGifs[0].images.downsized.url
+            })
+        },
     }
 });
 
